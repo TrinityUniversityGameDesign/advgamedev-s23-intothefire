@@ -24,3 +24,7 @@ public class ItemData : ScriptableObject
     //GameObject to be shown in the scene
     public GameObject gameModel;
 }
+
+// ScriptableObjects used: https://blog.terresquall.com/2021/09/creating-farming-rpg-in-unity-part-4/
+// Possible UI Manager: https://gamedev-resources.com/create-an-item-management-editor-tool-with-ui-toolkit/
+// Possible Inventory UI: https://gamedev-resources.com/create-an-in-game-inventory-ui-with-ui-toolkit/
