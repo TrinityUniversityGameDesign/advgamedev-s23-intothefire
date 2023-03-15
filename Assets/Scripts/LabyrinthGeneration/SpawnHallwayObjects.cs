@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SpawnHallwayObjects : MonoBehaviour
 {
-
-	public GameObject hallwayObject;
+	//pool of hallway objects- set these in the inspector for hallways
+	public List<GameObject> hallwayObjects;
 	
 	[SerializeField]
 	private List<Transform> spawnpoints = new List<Transform>();
@@ -25,7 +25,10 @@ public class SpawnHallwayObjects : MonoBehaviour
 		//This is where we would put in any global % chance stuff for hallway object generation, such as outer hallways are safer, more centeral hallways are more dangerous, etc
 		if (randomIndex != numOfSpawnPoints)
 		{
-			Instantiate(hallwayObject, spawnpoints[Random.Range(0, numOfSpawnPoints - 1)].position, gameObject.transform.rotation, this.transform);
+			int numOfHallwayObjects = hallwayObjects.Count;
+			int randomHallwayObjectIndex = Random.Range(0, numOfHallwayObjects);
+
+			Instantiate(hallwayObjects[randomHallwayObjectIndex], spawnpoints[randomIndex].position, gameObject.transform.rotation, this.transform);
 		}
 	}
 
