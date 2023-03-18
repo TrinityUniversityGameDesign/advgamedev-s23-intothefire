@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class DungeonGeneration : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class DungeonGeneration : MonoBehaviour
   [SerializeField]
   private int distanceApart = 120;
 
+
+
   //prefab references
   [Header("Labyrinth Prefabs")]
   public GameObject placeholderRoom;
@@ -20,6 +23,9 @@ public class DungeonGeneration : MonoBehaviour
   public GameObject centerRoomHallwayNegative;
   public GameObject centerRoomHallwayPositive;
 
+  [HideInInspector]
+  public Transform GeometryHolder;
+
   [Header("Labyrinth Geometry Lists")]
   public List<GameObject> roomList = new List<GameObject>();
   public List<GameObject> crossRoomHallwayList = new List<GameObject>();
@@ -27,19 +33,20 @@ public class DungeonGeneration : MonoBehaviour
 
 
 
-
   // Start is called before the first frame update
   void Start()
   {
+    GeometryHolder = transform.GetChild(0);
+    
     //just in case you forget to specify labyrinthSize in the editor, generates a minimum of 25 rooms so there's no errors
-    if(labyrinthSize <= 5)
-		{
+    if (labyrinthSize <= 5)
+    {
       labyrinthSize = 5;
-		}
+    }
     GenerateLabyrinth();
-  }
+	}
 
-  public void GenerateLabyrinth()
+	public void GenerateLabyrinth()
 	{
     //spawn rooms
     GenerateRooms();
@@ -61,13 +68,18 @@ public class DungeonGeneration : MonoBehaviour
         //if we are at the location of the center room
         if (i == Mathf.CeilToInt(labyrinthSize / 2) && j == Mathf.CeilToInt(labyrinthSize / 2))
         {
-          GameObject centerRoom = Instantiate(placeholderCenterRoom, new Vector3(i * distanceApart, 0, j * distanceApart), Quaternion.Euler(0, 0, 0)); //If we want a room manager/ hallway manager, this is where we would add objects to it 
+          GameObject centerRoom = Instantiate(placeholderCenterRoom,
+            new Vector3(i * distanceApart, 0, j * distanceApart),
+            Quaternion.Euler(0, 0, 0));
           roomList.Add(centerRoom);
         }
         else
         {
           //spawn prefabs at set intervals
-          GameObject newRoom = Instantiate(placeholderRoom, new Vector3(i * distanceApart, 0, j * distanceApart), Quaternion.Euler(0, 0, 0)); //If we want a room manager/ hallway manager, this is where we would add objects to it 
+          GameObject newRoom = Instantiate(placeholderRoom,
+            new Vector3(i * distanceApart, 0, j * distanceApart),
+            Quaternion.Euler(0, 0, 0),
+            GeometryHolder.transform);
 
           //this is where we would tell the new thing to have a variant based on if it's on the edge of the labyrinth
 
@@ -88,7 +100,10 @@ public class DungeonGeneration : MonoBehaviour
       {
 
         //spawn prefabs at set intervals
-        GameObject newThing = Instantiate(intersectionHallway, new Vector3(i * distanceApart + distanceApart / 2, 0, j * distanceApart + distanceApart / 2), Quaternion.Euler(0, 0, 0)); //If we want a room manager/ hallway manager, this is where we would add objects to it 
+        GameObject newThing = Instantiate(intersectionHallway,
+          new Vector3(i * distanceApart + distanceApart / 2, 0, j * distanceApart + distanceApart / 2),
+          Quaternion.Euler(0, 0, 0),
+          GeometryHolder.transform);
 
         //this is where we would tell the new thing to have a variant based on if it's on the edge of the labyrinth
 
@@ -135,7 +150,10 @@ public class DungeonGeneration : MonoBehaviour
           hallwayToSpawn = crossRoomHallway;
         }
         
-        GameObject newHallway = Instantiate(hallwayToSpawn, new Vector3(i * distanceApart + distanceApart/2, 0, j * distanceApart + 0), Quaternion.Euler(0, 0, 0)); //If we want a room manager/ hallway manager, this is where we would add objects to it           
+        GameObject newHallway = Instantiate(hallwayToSpawn,
+          new Vector3(i * distanceApart + distanceApart/2, 0, j * distanceApart + 0),
+          Quaternion.Euler(0, 0, 0),
+          GeometryHolder.transform);
 
         //add the most recently made object to the appropriate list
         crossRoomHallwayList.Add(newHallway);
@@ -170,7 +188,10 @@ public class DungeonGeneration : MonoBehaviour
           hallwayToSpawn = crossRoomHallway;
         }
 
-        GameObject newHallway = Instantiate(hallwayToSpawn, new Vector3(i * distanceApart, 0, j * distanceApart + distanceApart/2), Quaternion.Euler(0, -90, 0)); //If we want a room manager/ hallway manager, this is where we would add objects to it           
+        GameObject newHallway = Instantiate(hallwayToSpawn,
+          new Vector3(i * distanceApart, 0, j * distanceApart + distanceApart/2),
+          Quaternion.Euler(0, -90, 0),
+          GeometryHolder.transform);
 
         //add the most recently made object to the appropriate list
         crossRoomHallwayList.Add(newHallway);
