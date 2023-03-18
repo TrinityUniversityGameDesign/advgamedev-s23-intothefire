@@ -24,6 +24,10 @@ public class ImpactEffect : MonoBehaviour
             // Move the GameObject to the position of the hit
             transform.position = hit.point;
         }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     void Update()
