@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
 
     [Tooltip("Represents the number of minutes the game should last")]
     public float Minutes = 5;
+
+    public GameObject[] players;
     #endregion
 
     #region Private Fields
