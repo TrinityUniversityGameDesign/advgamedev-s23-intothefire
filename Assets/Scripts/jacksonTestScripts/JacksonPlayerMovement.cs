@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class JacksonPlayerMovement : MonoBehaviour
 {
@@ -57,10 +58,26 @@ public class JacksonPlayerMovement : MonoBehaviour
     {
         
     }
+    public void JumpInput(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            jumpHold = true;
+            jumpPress = 3;
+        }
+        else if (ctx.canceled)
+        {
+            jumpHold = false;
+        }
+        else
+        {
+            jumpHold = true;
+        }
+    }
     // Update is called once per frame
     void Update()
     {
-        jumpHold = inputs.Jump.ReadValue<float>() > 0.1f;
+        //jumpHold = inputs.Jump.ReadValue<float>() > 0.1f;
         lightHold = inputs.LightAttack.ReadValue<float>() > 0.1f;
         heavyHold = inputs.HeavyAttack.ReadValue<float>() > 0.1f;
         dodgeHold = inputs.Dodgeroll.ReadValue<float>() > 0.1f;
@@ -72,10 +89,10 @@ public class JacksonPlayerMovement : MonoBehaviour
         {
             //Debug.Log("jumpweeeeeee");
         }
-        if (inputs.Jump.WasPerformedThisFrame())
-        {
-            jumpPress = 3;
-        }
+        //if (inputs.Jump.WasPerformedThisFrame())
+        //{
+         //   jumpPress = 3;
+        //}
         if (inputs.LightAttack.triggered)
         {
            // Debug.Log("YOOO WE FIGHTING");
