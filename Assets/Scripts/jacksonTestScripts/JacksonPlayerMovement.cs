@@ -244,9 +244,43 @@ public class JacksonPlayerMovement : MonoBehaviour
              * */
             Rotating(horizontal, vertical);
             float angle = Vector3.Angle(rb.velocity, transform.forward);
-            if (Magnitude() < maxSpeed || Mathf.Abs(angle) > 45)
+            if (grounded)
             {
-                rb.AddRelativeForce(new Vector3(0, 0, 1f), ForceMode.VelocityChange);
+                if (Magnitude() < maxSpeed)
+                {
+                    rb.velocity = Magnitude() * transform.forward + new Vector3(0f, rb.velocity.y, 0f); ;
+                    rb.AddRelativeForce(new Vector3(0, 0, 1f), ForceMode.VelocityChange);
+                }
+                else if (Magnitude() >= maxSpeed)
+                {
+                    rb.velocity = Magnitude() * transform.forward + new Vector3(0f, rb.velocity.y, 0f);
+                }
+            }
+            else
+            {
+                if(Magnitude() < maxSpeed)
+                {
+                    rb.AddRelativeForce(new Vector3(0, 0, 1f), ForceMode.VelocityChange);
+                }
+                else
+                {
+                    rb.velocity = Magnitude() * .95f * new Vector3(rb.velocity.x, 0f, rb.velocity.z).normalized + new Vector3(0f, rb.velocity.y, 0f);
+                    if (ArbitraryMagnitude(rb.velocity) < maxSpeed)
+                    {
+                        rb.AddRelativeForce(new Vector3(0, 0, 1f), ForceMode.VelocityChange);
+                    }
+
+                    /*
+                    if (ArbitraryMagnitude(rb.velocity + new Vector3(0, 0, 1f)) <= maxSpeed)
+                    {
+                        rb.AddRelativeForce(new Vector3(0, 0, 1f), ForceMode.VelocityChange);
+                    }
+                    else
+                    {
+                        rb.velocity = Magnitude() * .95f * transform.forward + new Vector3(0f, rb.velocity.y, 0f); 
+                    }
+                    */
+                }
             }
             //anim.SetFloat("Speed", 5.3f, speedDampTime, Time.deltaTime);
         }
