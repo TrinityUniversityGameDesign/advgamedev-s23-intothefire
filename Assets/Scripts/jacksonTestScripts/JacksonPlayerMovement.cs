@@ -10,6 +10,7 @@ public class JacksonPlayerMovement : MonoBehaviour
     {
         idle,
         attack,
+        special,
         invincible,
         dead
     }
@@ -34,7 +35,9 @@ public class JacksonPlayerMovement : MonoBehaviour
     bool specialHold = false;
     bool isDodging = false;
     float iFrames = -1f;
+    bool airStrike = false;
     float lerpTime = 0.2f;
+    Vector3 oldSpeed = Vector3.zero;
     Camera cam;
     Vector2 ul;
     Vector3 lassoPoint = Vector3.zero;
@@ -255,9 +258,12 @@ public class JacksonPlayerMovement : MonoBehaviour
                     }
                     if(specialPress > 0)
                     {
-                        isDodging = true;
-                        state = PlayerState.invincible;
+                        //isDodging = true;
+                        state = PlayerState.special;
                         Rotating(h, v);
+                        currSword = Instantiate(sword, transform.position, transform.rotation);
+                        currSword.transform.parent = transform;
+                        currSword.GetComponent<DamageScript>().SetDamage(15f);
                         rb.AddRelativeForce(new Vector3(0, 0, 10f), ForceMode.VelocityChange);
 
                     }
@@ -266,30 +272,97 @@ public class JacksonPlayerMovement : MonoBehaviour
                 break;
             case PlayerState.attack:
                 {
-                    MovementManagement(h, v);
+                    //Movement shit
+                    if ((grounded && !airStrike) || (h == 0f && v == 0f))
+                    {
+                        if (Magnitude() < 3f)
+                        {
+                            rb.velocity = new Vector3(0f, rb.velocity.y, 0f);
+                        }
+                        else
+                        {
+                            Vector2 drag = new Vector2(rb.velocity.x, rb.velocity.z);
+                            drag = drag.normalized;
+                            Vector3 lazy = new Vector3(drag.x, 0f, drag.y);
+
+                            rb.velocity = lazy * (Magnitude() - 1f) + new Vector3(0f, rb.velocity.y, 0f);
+                        }
+                    }
+                    else if (!grounded)
+                    {
+                        airStrike = true;
+                    }
+                    if (airStrike)
+                    {
+                        if (ArbitraryMagnitude(oldSpeed) > Magnitude() && (h != 0 && v !=0))
+                        {
+                            rb.velocity = new Vector3(oldSpeed.x, rb.velocity.y, oldSpeed.z);
+                        }
+                    }
+                    
+                    if (ArbitraryMagnitude(oldSpeed) < Magnitude())
+                    {
+                        oldSpeed = rb.velocity;
+                    }
+
                     rb.AddForce(new Vector3(0f, -1f, 0f) * gravity);
+
+                    //combat shit
                     currSword.transform.localRotation = Quaternion.Lerp(currSword.transform.localRotation, targetRot, lerpTime) ;
                     if(currSword.transform.localRotation == targetRot || timer < 0)
                     {
                         Destroy(currSword);
+                        if (h != 0f || v != 0f)
+                        {
+                            rb.velocity = new Vector3(oldSpeed.x, rb.velocity.y, oldSpeed.z);
+                        }
+                        MovementManagement(h, v);
+                        oldSpeed = Vector3.zero;
+                        airStrike = false;
                         state = PlayerState.idle;
                     }
                     else
                     {
                         timer--;
                     }
+                    //Movement shit
                     
+                }
+                break;
+            case PlayerState.special:
+                {
+                    rb.velocity = transform.forward * 30f;
+
+                    if (iFrames > 15)
+                    {
+                        iFrames = 15;
+                    }
+                }
+                if (iFrames == -1)
+                {
+                    iFrames = 60;
+                }
+                else if (iFrames == 0)
+                {
+                    iFrames = -1;
+                    Destroy(currSword);
+                    state = PlayerState.idle;
+                    //isDodging = false;
+                }
+                else
+                {
+                    iFrames--;
                 }
                 break;
             case PlayerState.invincible:
                 {
                     if (isDodging)
                     {
-                        rb.velocity = transform.forward * 15f;
+                        rb.velocity = transform.forward * 30f;
 
-                        if (iFrames > 30)
+                        if (iFrames > 15)
                         {
-                            iFrames = 30;
+                            iFrames = 15;
                         }
                     }
                     else
@@ -347,7 +420,7 @@ public class JacksonPlayerMovement : MonoBehaviour
                 if (Magnitude() < maxSpeed)
                 {
                     rb.velocity = Magnitude() * transform.forward + new Vector3(0f, rb.velocity.y, 0f); ;
-                    rb.AddRelativeForce(new Vector3(0, 0, 1f), ForceMode.VelocityChange);
+                    rb.AddRelativeForce(new Vector3(0, 0, 2f), ForceMode.VelocityChange);
                 }
                 else if (Magnitude() >= maxSpeed)
                 {
@@ -358,14 +431,21 @@ public class JacksonPlayerMovement : MonoBehaviour
             {
                 if(Magnitude() < maxSpeed)
                 {
-                    rb.AddRelativeForce(new Vector3(0, 0, 1f), ForceMode.VelocityChange);
+                    rb.AddRelativeForce(new Vector3(0, 0, 2f), ForceMode.VelocityChange);
                 }
                 else
                 {
-                    rb.velocity = Magnitude() * .95f * new Vector3(rb.velocity.x, 0f, rb.velocity.z).normalized + new Vector3(0f, rb.velocity.y, 0f);
+                    if (Mathf.Abs(angle) < 30)
+                    {
+
+                    }
+                    else
+                    {
+                        rb.velocity = Magnitude() * .95f * new Vector3(rb.velocity.x, 0f, rb.velocity.z).normalized + new Vector3(0f, rb.velocity.y, 0f);
+                    }
                     if (ArbitraryMagnitude(rb.velocity) < maxSpeed)
                     {
-                        rb.AddRelativeForce(new Vector3(0, 0, 1f), ForceMode.VelocityChange);
+                        rb.AddRelativeForce(new Vector3(0, 0, 2f), ForceMode.VelocityChange);
                     }
 
                     /*
@@ -396,7 +476,7 @@ public class JacksonPlayerMovement : MonoBehaviour
                     drag = drag.normalized;
                     Vector3 lazy = new Vector3(drag.x, 0f, drag.y);
 
-                    rb.velocity = lazy * (Magnitude() - 0.5f) + new Vector3(0f, rb.velocity.y, 0f);
+                    rb.velocity = lazy * (Magnitude() - 1f) + new Vector3(0f, rb.velocity.y, 0f);
                 }
             //}
         }
