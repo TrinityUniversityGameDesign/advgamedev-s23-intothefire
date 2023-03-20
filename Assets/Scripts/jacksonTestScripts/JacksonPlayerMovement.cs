@@ -14,7 +14,7 @@ public class JacksonPlayerMovement : MonoBehaviour
         dead
     }
     PlayerState state = PlayerState.idle;
-    JacksonPlayerControls playerMovement;
+    //JacksonPlayerControls playerMovement;
     GameObject sword;
     GameObject currSword = null;
     Quaternion targetRot;
@@ -30,26 +30,30 @@ public class JacksonPlayerMovement : MonoBehaviour
     bool lightHold = false;
     float heavyPress = 0f;
     bool heavyHold = false;
-    float dodgePress = 0f;
-    bool dodgeHold = false;
+    float specialPress = 0f;
+    bool specialHold = false;
     bool isDodging = false;
     float iFrames = -1f;
     float lerpTime = 0.2f;
-
+    Camera cam;
+    Vector2 ul;
     Vector3 lassoPoint = Vector3.zero;
-    JacksonPlayerControls.JacksonControlsActions inputs;
+    //JacksonPlayerControls.JacksonControlsActions inputs;
     float v;
     float h;
     Rigidbody rb;
     bool lasso = false;
     float maxSpeed = 20f;
     float timer = 0;
+    GameObject player;
     void Start()
     {
-        playerMovement = new JacksonPlayerControls();
-        playerMovement.Enable();
-        inputs = playerMovement.jacksonControls;
-        rb = GetComponent<Rigidbody>();
+        //playerMovement = new JacksonPlayerControls();
+        //playerMovement.Enable();    
+        cam = transform.parent.GetChild(1).gameObject.GetComponent<Camera>();
+        //inputs = playerMovement.jacksonControls;
+        player = transform.GetChild(0).gameObject;
+        rb = gameObject.GetComponent<Rigidbody>();
         sword = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
         lr = GetComponent<LineRenderer>();
     }
@@ -60,10 +64,12 @@ public class JacksonPlayerMovement : MonoBehaviour
     }
     public void JumpInput(InputAction.CallbackContext ctx)
     {
+        
         if (ctx.started)
         {
             jumpHold = true;
             jumpPress = 3;
+            
         }
         else if (ctx.canceled)
         {
@@ -74,13 +80,72 @@ public class JacksonPlayerMovement : MonoBehaviour
             jumpHold = true;
         }
     }
+    public void LightInput(InputAction.CallbackContext ctx)
+    {
+       
+        if (ctx.started)
+        {
+            lightHold = true;
+            lightPress = 3;
+            
+        }
+        else if (ctx.canceled)
+        {
+            lightHold = false;
+        }
+        else
+        {
+            lightHold = true;
+        }
+    }
+    public void HeavyInput(InputAction.CallbackContext ctx)
+    {
+        Debug.Log("we jumping");
+        if (ctx.started)
+        {
+            heavyHold = true;
+            heavyPress = 3;
+            Debug.Log("we jumping");
+        }
+        else if (ctx.canceled)
+        {
+            heavyHold = false;
+        }
+        else
+        {
+            heavyHold = true;
+        }
+    }
+    public void SpecialInput(InputAction.CallbackContext ctx)
+    {
+        Debug.Log("we jumping");
+        if (ctx.started)
+        {
+            specialHold = true;
+            specialPress = 3;
+            Debug.Log("we jumping");
+        }
+        else if (ctx.canceled)
+        {
+            specialHold = false;
+        }
+        else
+        {
+            specialHold = true;
+        }
+    }
+    public void MoveInput(InputAction.CallbackContext ctx)
+    {
+        Debug.Log("we moving");
+        ul = ctx.ReadValue<Vector2>();
+    }
     // Update is called once per frame
     void Update()
     {
         //jumpHold = inputs.Jump.ReadValue<float>() > 0.1f;
-        lightHold = inputs.LightAttack.ReadValue<float>() > 0.1f;
-        heavyHold = inputs.HeavyAttack.ReadValue<float>() > 0.1f;
-        dodgeHold = inputs.Dodgeroll.ReadValue<float>() > 0.1f;
+       // lightHold = inputs.LightAttack.ReadValue<float>() > 0.1f;
+        //heavyHold = inputs.HeavyAttack.ReadValue<float>() > 0.1f;
+        //dodgeHold = inputs.Dodgeroll.ReadValue<float>() > 0.1f;
         if(lightHold)
         {
             //Debug.Log("butthonos wokr");
@@ -93,6 +158,7 @@ public class JacksonPlayerMovement : MonoBehaviour
         //{
          //   jumpPress = 3;
         //}
+        /*
         if (inputs.LightAttack.triggered)
         {
            // Debug.Log("YOOO WE FIGHTING");
@@ -106,14 +172,16 @@ public class JacksonPlayerMovement : MonoBehaviour
         {
             dodgePress = 3;
         }
+        */
 
 
     }
 
     private void FixedUpdate()
     {
-        Vector2 ul = inputs.Move.ReadValue<Vector2>();
+        //Vector2 ul = inputs.Move.ReadValue<Vector2>();
         //Debug.Log(ul);
+        Debug.Log(health);
         h = ul.x;
         v = ul.y;
         if(jumpPress > 0)
@@ -128,15 +196,19 @@ public class JacksonPlayerMovement : MonoBehaviour
         {
             heavyPress--;
         }
-        if(dodgePress > 0)
+        if(specialPress > 0)
         {
-            dodgePress--;
+            specialPress--;
         }
 
         switch (state)
         {
             case PlayerState.idle:
                 {
+                    if(health < 0)
+                    {
+                        state = PlayerState.dead;
+                    }
                     rb.AddForce(new Vector3(0f, -1f, 0f) * gravity);
                     MovementManagement(h, v);
                     if (lightPress > 0)
@@ -144,6 +216,7 @@ public class JacksonPlayerMovement : MonoBehaviour
                         lightPress = 0f;
                         state = PlayerState.attack;
                         currSword = Instantiate(sword, transform.position, transform.rotation);
+                        currSword.GetComponent<DamageScript>().SetDamage(10f);
                         currSword.transform.parent = transform;
                         //currSword.transform.rotation = Quaternion.AngleAxis(90f, Vector3.right) * transform.rotation;// * Quaternion.Euler(0f, 0f, 90f);
                         timer = 30f;
@@ -159,6 +232,7 @@ public class JacksonPlayerMovement : MonoBehaviour
                         currSword = Instantiate(sword, transform.position, transform.rotation);
                         
                         currSword.transform.parent = transform;
+                        currSword.GetComponent<DamageScript>().SetDamage(20f);
                         //currSword.transform.rotation = Quaternion.AngleAxis(90f, Vector3.right) * transform.rotation;// * Quaternion.Euler(0f, 0f, 90f);
                         timer = 30f;
                         // currSword.transform.localRotation = transform.rotation * Quaternion.Euler(0f, 0f, 90f);
@@ -179,7 +253,7 @@ public class JacksonPlayerMovement : MonoBehaviour
                         }
                         rb.AddRelativeForce(new Vector3(0, 15f, 0f), ForceMode.VelocityChange);
                     }
-                    if(dodgePress > 0)
+                    if(specialPress > 0)
                     {
                         isDodging = true;
                         state = PlayerState.invincible;
@@ -212,7 +286,8 @@ public class JacksonPlayerMovement : MonoBehaviour
                     if (isDodging)
                     {
                         rb.velocity = transform.forward * 15f;
-                        if(iFrames > 30)
+
+                        if (iFrames > 30)
                         {
                             iFrames = 30;
                         }
@@ -237,6 +312,12 @@ public class JacksonPlayerMovement : MonoBehaviour
                         iFrames--;
                     }
 
+                }
+                break;
+            case PlayerState.dead:
+                {
+                    gravity = -30;
+                    rb.AddForce(new Vector3(0f, -1f, 0f) * gravity);
                 }
                 break;
 
@@ -327,7 +408,7 @@ public class JacksonPlayerMovement : MonoBehaviour
     {
         // Create a new vector of the horizontal and vertical inputs.
         Vector3 targetDirection = new Vector3(horizontal, 0f, vertical);
-        targetDirection = Camera.main.transform.TransformDirection(targetDirection);
+        targetDirection = cam.transform.TransformDirection(targetDirection);
         targetDirection.y = 0.0f;
 
         // Create a rotation based on t$$anonymous$$s new vector assuming that up is the global y axis.
@@ -368,5 +449,12 @@ public class JacksonPlayerMovement : MonoBehaviour
     public void HurtPlayer(float f)
     {
         health -= f;
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Damage")
+        {
+            health -= other.gameObject.GetComponent<DamageScript>().GetDamage();
+        }
     }
 }

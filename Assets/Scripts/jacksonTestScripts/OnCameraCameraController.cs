@@ -13,13 +13,14 @@ public class OnCameraCameraController : MonoBehaviour
 
     private float yaw = 0f;
     private float pitch = 0f;
-
+    Vector2 inputs;
     public bool lostFocus = true;
 
     private void LateUpdate()
     {
         if (target != null)
         {
+            /*
             Gamepad gamepad = Gamepad.current;
             if (gamepad != null)
             {
@@ -27,16 +28,19 @@ public class OnCameraCameraController : MonoBehaviour
                 yaw -= stickL.x;
                 pitch += stickL.y;
             }
-
+            
             // Get mouse inputs for camera rotation
             yaw -= Input.GetAxis("Mouse X") * cameraSensitivity;
             pitch += Input.GetAxis("Mouse Y") * cameraSensitivity;
      
+            */
 
+            yaw -= inputs.x;
+            pitch += inputs.y;
             lostFocus = false;
             // Limit pitch rotation
-            pitch = Mathf.Clamp(pitch, 10f, 80f);
 
+            pitch = Mathf.Clamp(pitch, 10f, 80f);
             // Convert spherical coordinates to Cartesian coordinates
             float x = radius * Mathf.Sin(pitch * Mathf.Deg2Rad) * Mathf.Cos(yaw * Mathf.Deg2Rad);
             float y = radius * Mathf.Cos(pitch * Mathf.Deg2Rad);
@@ -54,5 +58,14 @@ public class OnCameraCameraController : MonoBehaviour
         {
             lostFocus = true;
         }
+    }
+    public void CameraInput(InputAction.CallbackContext ctx)
+    {
+        Debug.Log("we moving");
+        inputs = ctx.ReadValue<Vector2>();
+        //yaw -= lazy.x * cameraSensitivity;
+        //pitch += lazy.y * cameraSensitivity;
+
+
     }
 }
