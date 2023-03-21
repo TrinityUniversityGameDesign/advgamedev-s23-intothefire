@@ -150,7 +150,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.RightControl)) //Activate Debug KeyCommands
+        if (Input.GetKey(KeyCode.LeftControl)) //Activate Debug KeyCommands
         {
             if (Input.GetKeyDown(KeyCode.I))
             {

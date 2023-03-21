@@ -551,4 +551,12 @@ public class JacksonPlayerMovement : MonoBehaviour
             health -= other.gameObject.GetComponent<DamageScript>().GetDamage();
         }
     }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Damage")
+        {
+            health -= other.gameObject.GetComponent<DamageScript>().GetDamage();
+        }
+    }
 }
