@@ -61,6 +61,11 @@ public class JacksonPlayerMovement : MonoBehaviour
         sword = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
         lr = GetComponent<LineRenderer>();
         GameManager.Instance?.FirstTimeStartup.AddListener(StartPlayer);
+        if(GameManager.Instance == null)
+        {
+            state = PlayerState.idle;
+            transform.position = FindObjectOfType<PlayerInputManager>().transform.position;
+        }
     }
 
     private void OnEnable()
