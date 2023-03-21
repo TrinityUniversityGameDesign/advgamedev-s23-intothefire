@@ -139,7 +139,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        FirstTimeStartup.Invoke();
+        
     }
 
     private void FixedUpdate()
@@ -154,6 +154,7 @@ public class GameManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.I))
             {
+                FirstTimeStartup.Invoke();
                 OnStateEnter(GameState.Labyrinth_Explore);
             }
         }
