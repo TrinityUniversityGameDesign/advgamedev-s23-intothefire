@@ -60,7 +60,7 @@ public class JacksonPlayerMovement : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody>();
         sword = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
         lr = GetComponent<LineRenderer>();
-        GameManager.Instance?.FirstTimeStartup.AddListener(StartPlayer);
+        GameManager.Instance?.StartupNewGameBegin.AddListener(StartPlayer);
         if(GameManager.Instance == null)
         {
             state = PlayerState.idle;
@@ -110,12 +110,12 @@ public class JacksonPlayerMovement : MonoBehaviour
     }
     public void HeavyInput(InputAction.CallbackContext ctx)
     {
-        Debug.Log("we jumping");
+        //Debug.Log("we jumping");
         if (ctx.started)
         {
             heavyHold = true;
             heavyPress = 3;
-            Debug.Log("we jumping");
+            //Debug.Log("we jumping");
         }
         else if (ctx.canceled)
         {
@@ -128,12 +128,12 @@ public class JacksonPlayerMovement : MonoBehaviour
     }
     public void SpecialInput(InputAction.CallbackContext ctx)
     {
-        Debug.Log("we jumping");
+        //Debug.Log("we jumping");
         if (ctx.started)
         {
             specialHold = true;
             specialPress = 3;
-            Debug.Log("we jumping");
+            //Debug.Log("we jumping");
         }
         else if (ctx.canceled)
         {
@@ -146,7 +146,7 @@ public class JacksonPlayerMovement : MonoBehaviour
     }
     public void MoveInput(InputAction.CallbackContext ctx)
     {
-        Debug.Log("we moving");
+        //Debug.Log("we moving");
         ul = ctx.ReadValue<Vector2>();
     }
     // Update is called once per frame
@@ -191,7 +191,7 @@ public class JacksonPlayerMovement : MonoBehaviour
     {
         //Vector2 ul = inputs.Move.ReadValue<Vector2>();
         //Debug.Log(ul);
-        Debug.Log(health);
+        //Debug.Log(health);
         h = ul.x;
         v = ul.y;
         if(jumpPress > 0)

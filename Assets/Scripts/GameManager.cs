@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.InputSystem;
 
 
 //GameState to represent the possible states the game can be in.
@@ -15,7 +16,8 @@ public enum GameState
     Paused,
     GameOver,
     SideEvent,
-    EndScreen
+    EndScreen,
+    Startup_New_Game
 }
 
 public class GameManager : MonoBehaviour
@@ -33,7 +35,7 @@ public class GameManager : MonoBehaviour
     [Tooltip("Distance rooms are apart from one another. Default is 120")]
     public int DistanceApart = 120;
 
-    public GameObject[] players;
+    public List<GameObject> players = new List<GameObject>();
     #endregion
 
     #region Private Fields
@@ -41,7 +43,6 @@ public class GameManager : MonoBehaviour
     private GameState _state;
 
     [Tooltip("Simple timer for testing purposes")]
-    [SerializeField]
     private GameObject timerTextObj;
 
     [Tooltip("Represents the number of seconds since the game has started.")]
@@ -77,9 +78,6 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Unity Events
-    [Tooltip("A demo event used to demonstrate how events can be used.")]
-    public static UnityEvent DemoEvent = new UnityEvent();
-
     [Tooltip("Event uesd to call when a Micro Event is starting")]
     public UnityEvent MicroEventBegin = new UnityEvent();
     [Tooltip("Event used to call when a Micro Event is ending")]
@@ -95,10 +93,43 @@ public class GameManager : MonoBehaviour
     [Tooltip("Event used to indicate when the Labyrinth explore phase is being exited")]
     public UnityEvent LabyrinthExploreEnd = new UnityEvent();
 
+    [Tooltip("Event called when the Showdown begins")]
+    public UnityEvent ShowdownBegin = new UnityEvent();
+    [Tooltip("Event call when the Showdown ends")]
+    public UnityEvent ShowdownEnd = new UnityEvent();
+
+    [Tooltip("Event called when the lobby begins")]
+    public UnityEvent LobbyBegin = new UnityEvent();
+    [Tooltip("Event called when the lobby ends")]
+    public UnityEvent LobbyEnd = new UnityEvent();
+
+    [Tooltip("Event called when the game pauses")]
+    public UnityEvent PausedBegin = new UnityEvent();
+    [Tooltip("Event called when the game unpauses")]
+    public UnityEvent PausedEnd = new UnityEvent();
+
+    [Tooltip("Event called when the Game over begins")]
+    public UnityEvent GameOverBegin = new UnityEvent();
+    [Tooltip("Event called when the Game over ends")]
+    public UnityEvent GameOverEnd = new UnityEvent();
+
+    [Tooltip("Event called when the end screen sequence begins")]
+    public UnityEvent EndScreenBegin = new UnityEvent();
+    [Tooltip("Event called when the end screen sequence ends")]
+    public UnityEvent EndScreenEnd = new UnityEvent();
+
+    [Tooltip("Event called when the startup screen begins")]
+    public UnityEvent StartupNewGameBegin = new UnityEvent();
+    [Tooltip("Event called when the startup screen ends")]
+    public UnityEvent StartupNewGameEnd = new UnityEvent();
+
+    [Tooltip("Event called when a Major event begins")]
     public UnityEvent MajorEventBegin = new UnityEvent();
+    [Tooltip("Event called when the Major event ends")]
     public UnityEvent MajorEventEnd = new UnityEvent();
 
-    public UnityEvent FirstTimeStartup = new UnityEvent();
+    [Tooltip("Event called when a player joined.")]
+    public UnityEvent PlayerJoined = new UnityEvent();
     #endregion
 
     #region Private Methods
@@ -106,17 +137,45 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
 
-        DemoEvent.AddListener(TestDemoEvent);
         MicroEventBegin.AddListener(BeginMicroEvent);
         MicroEventEnd.AddListener(EndMicroEvent);
+
         SideEventBegin.AddListener(BeginSideEvent);
         SideEventEnd.AddListener(EndSideEvent);
+
+        MajorEventBegin.AddListener(TestBeginMajorEvent);
+        MajorEventEnd.AddListener(TestEndMajorEvent);
+
         LabyrinthExploreBegin.AddListener(TestLabyrinthBegin);
-        FirstTimeStartup.AddListener(TestFirstTimeStartup);
+        LabyrinthExploreEnd.AddListener(TestLabyrinthEnd);
+
+        ShowdownBegin.AddListener(TestShowdownBegin);
+        ShowdownEnd.AddListener(TestShowdownEnd);
+
+        LobbyBegin.AddListener(TestLobbyBegin);
+        LobbyEnd.AddListener(TestLobbyEnd);
+
+        PausedBegin.AddListener(TestPausedBegin);
+        PausedEnd.AddListener(TestPausedEnd);
+
+        GameOverBegin.AddListener(TestGameOverBegin);
+        GameOverEnd.AddListener(TestGameOverEnd);
+
+        EndScreenBegin.AddListener(TestEndScreenBegin);
+        EndScreenEnd.AddListener(TestEndScreenEnd);
+
+        StartupNewGameBegin.AddListener(TestStartupNewGameBegin);
+        StartupNewGameEnd.AddListener(TestStartupNewGameEnd);
 
         secondsOfGameTime = 60 * Minutes;
 
+        timerTextObj = GameObject.Find("Timer");
         timer = timerTextObj?.GetComponent<TMP_Text>();
+
+        if (!timer)
+        {
+            Debug.LogError("Could not find a TMP_Text component on a GameObject named Timer. Are you missing the UI?");
+        }
 
         if (!GameObject.Find("DungeonGenerator"))
         {
@@ -128,18 +187,17 @@ public class GameManager : MonoBehaviour
         if (!EvtCtrl)
         {
             Debug.LogError("Could not find EventController. Are you missing it in the scene?");
-        } else
+        }
+        else
         {
             EvtCtrl.transform.position = new Vector3((LabyrinthSize / 2) * DistanceApart, 90, (LabyrinthSize / 2) * DistanceApart);
-        }
-
-        OnStateEnter(GameState.Lobby);
-        
+        }        
     }
 
     private void Start()
     {
-        
+        PlayerInputManager.instance?.playerJoinedEvent.AddListener(InputManagerPlayerJoinedEvent);
+        OnStateEnter(GameState.Lobby);
     }
 
     private void FixedUpdate()
@@ -154,8 +212,7 @@ public class GameManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.I))
             {
-                FirstTimeStartup.Invoke();
-                OnStateEnter(GameState.Labyrinth_Explore);
+                OnStateEnter(GameState.Startup_New_Game);
             }
         }
     }
@@ -171,12 +228,6 @@ public class GameManager : MonoBehaviour
                 Timer = 0;
                 break;
             case GameState.Labyrinth_Explore:
-                if (!gameInProgress)
-                {
-                    MajorEventBegin.Invoke();
-                }
-
-                gameInProgress = true;
 
                 Debug.Log("Entering Labyrinth_Explore");
 
@@ -189,6 +240,8 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Time until next Side Event: " + timeUntilNextSideEvent + " s");
                 break;
             case GameState.Lobby:
+                timerTextObj.SetActive(false);
+                
                 break;
             case GameState.Paused:
                 break;
@@ -201,6 +254,11 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.EndScreen:
                 gameInProgress = false;
+                break;
+            case GameState.Startup_New_Game:
+                StartupNewGameBegin.Invoke();
+                PlayerInputManager.instance.splitScreen = true;
+                MajorEventBegin.Invoke();
                 break;
             default:
                 break;
@@ -262,6 +320,9 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.EndScreen:
                 break;
+            case GameState.Startup_New_Game:
+                OnStateEnter(GameState.Labyrinth_Explore);
+                break;
             default:
                 break;
         }
@@ -286,45 +347,43 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.EndScreen:
                 break;
+            case GameState.Startup_New_Game:
+                break;
             default:
                 break;
         }
     }
 
-    void TestDemoEvent()
-    {
-        Debug.Log("TestDemoEvent");
-    }
 
-    void TestSideEventBegin()
-    {
-        Debug.Log("SideEventBegin");
-    }
+    #region Event Calls
 
-    void TestSideEventEnd()
-    {
-        Debug.Log("SideEventEnding");
-    }
+    void TestLabyrinthBegin() { Debug.Log("LabyrinthBegin"); }
 
-    void TestLabyrinthBegin()
-    {
-        Debug.Log("LabyrinthBegin");
-    }
+    void TestLabyrinthEnd() { Debug.Log("Labyrinth Ends"); }
 
-    void TestBeginMajorEvent()
-    {
-        Debug.Log("Beginning Major Event Setup");
-    }
+    void TestShowdownBegin() { Debug.Log("Showdown Begins"); }
 
-    void TestEndMajorEvent()
-    {
-        Debug.Log("Ending Major Event");
-    }
+    void TestShowdownEnd() { Debug.Log("Showdown Ends"); }
 
-    void TestFirstTimeStartup()
-    {
-        Debug.Log("Received Call that GameManager has Started");
-    }
+    void TestLobbyBegin() { Debug.Log("Lobby Begins"); }
+    void TestLobbyEnd() { Debug.Log("Lobby Ends"); }
+
+    void TestPausedBegin() { Debug.Log("Paused Begins"); }
+    void TestPausedEnd() { Debug.Log("Paused Ends"); }
+
+    void TestGameOverBegin() { Debug.Log("GameOver Begins"); }
+    void TestGameOverEnd() { Debug.Log("GameOver Ends"); }
+
+    void TestEndScreenBegin() { Debug.Log("EndScreen Begins"); }
+    void TestEndScreenEnd() { Debug.Log("EndScreen Ends"); }
+
+    void TestStartupNewGameBegin() { Debug.Log("StartupNewGame Begins"); }
+
+    void TestStartupNewGameEnd() { Debug.Log("StartupNewGame Ends"); }
+
+    void TestBeginMajorEvent() { Debug.Log("MajorEvent Begins"); }
+
+    void TestEndMajorEvent() { Debug.Log("MajorEvent Ends"); }
 
     void BeginSideEvent()
     {
@@ -333,10 +392,7 @@ public class GameManager : MonoBehaviour
         timeLeftInSideEvent = SecondsDurationSideEvent;
     }
 
-    void EndSideEvent()
-    {
-        Debug.Log("Ending Side event at " + Timer + " game seconds.");
-    }
+    void EndSideEvent() { Debug.Log("Ending Side event at " + Timer + " game seconds."); }
 
     void BeginMicroEvent()
     {
@@ -356,5 +412,14 @@ public class GameManager : MonoBehaviour
         Debug.Log("Time until next Micro Event: " + timeUntilNextMicroEvent + " s");
     }
 
+    private void InputManagerPlayerJoinedEvent(PlayerInput newPlayer)
+    {
+        Debug.Log("New Player Joined");
+        players.Add(newPlayer.gameObject);
+        PlayerJoined.Invoke();
+        //newPlayer.gameObject.SetActive(false);
+        
+    }
+    #endregion
     #endregion
 }

@@ -62,7 +62,7 @@ public class DungeonGeneration : MonoBehaviour
         }
 
         //Call Labyrinth generation on first time startup rather than when the comonent starts. This might want to be bound to LabyrinthExplore, I am not sure, or a loading state in between
-        GameManager.Instance?.FirstTimeStartup.AddListener(GenerateLabyrinth);
+        GameManager.Instance?.StartupNewGameBegin.AddListener(GenerateLabyrinth);
         //GenerateLabyrinth();
     }
 

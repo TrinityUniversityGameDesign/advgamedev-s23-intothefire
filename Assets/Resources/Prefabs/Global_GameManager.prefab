@@ -45,8 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Minutes: 20
+  LabyrinthSize: 5
+  DistanceApart: 120
   players: []
-  timerTextObj: {fileID: 0}
   MaxSecondsBetweenSideEvents: 600
   MinSecondsBetweenSideEvents: 300
   MaxSecondsBetweenMicroEvents: 20
@@ -76,5 +77,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   MajorEventEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  FirstTimeStartup:
     m_PersistentCalls:
       m_Calls: []
