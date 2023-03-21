@@ -15,6 +15,7 @@ public class TrialRoomScript : MonoBehaviour
 	public TrialType trialType;
 	public RoomSize roomSize;
 	protected RoomState currRoomState;
+	[SerializeField]
 	protected Transform[] doors;
 
 	[SerializeField]
@@ -42,7 +43,7 @@ public class TrialRoomScript : MonoBehaviour
 	private void Start()
 	{
 		//room initial setup
-		doors = transform.GetChild(0).transform.GetComponentsInChildren<Transform>();
+		//doors = transform.GetChild(0).transform.GetComponentsInChildren<Transform>();
 		SetDoorPresence(false);
 		currRoomState = RoomState.empty;
 
@@ -178,8 +179,8 @@ public class TrialRoomScript : MonoBehaviour
 
 		//Create an endPad at the transform of the room w/ -10 in the z
 		Vector3 endPadPos = this.transform.position + new Vector3(0, 0, 10);
-		Instantiate(endPad, endPadPos, new Quaternion(0, 0, 0, 0), this.transform);
-		GameObject endPadReference = transform.GetChild(5).gameObject;
+		GameObject endPadReference = Instantiate(endPad, endPadPos, new Quaternion(0, 0, 0, 0), this.transform);
+		//GameObject endPadReference = transform.GetChild(5).gameObject;
 		//Set the host room of the endPad to this room
 		endPadReference.GetComponent<EndPadScript>().hostRoom = this;
 		//Add the endPad to our trial geometry so we can delete it once a room is cleared
@@ -203,7 +204,7 @@ public class TrialRoomScript : MonoBehaviour
 		Debug.Log("Number of enemies for this room: " + numOfEnemies);
 		for (int i = 0; i < numOfEnemies; i++)
 		{
-			Vector3 spawnLocation = new Vector3(transform.position.x + Random.Range(-15, 15), 1f, transform.position.z + Random.Range(-15, 15));
+			Vector3 spawnLocation = new Vector3(transform.position.x + Random.Range(-15, 15), -3f, transform.position.z + Random.Range(-15, 15));
 			GameObject enemy = Instantiate(enemyPrefab, spawnLocation, new Quaternion(0, 0, 0, 0), this.transform);
 			enemy.GetComponent<EnemyScript>().hostRoom = this;
 			enemyCount++;
@@ -223,7 +224,7 @@ public class TrialRoomScript : MonoBehaviour
 
 	private void SpawnBoxes(){
 		List<GameObject> boxes = new List<GameObject>();
-		int numOfBoxes = 2;
+		int numOfBoxes = 3;
 		for(int i = 0; i < numOfBoxes; i++){
 			Vector3 spawnLocation = new Vector3(transform.position.x + Random.Range(-20, 20), 2f, transform.position.z + Random.Range(-20, 20));
 			GameObject box = Instantiate(boxPrefab, spawnLocation, new Quaternion(0, 0, 0, 0), this.transform);
@@ -268,6 +269,7 @@ public class TrialRoomScript : MonoBehaviour
 		Debug.Log("Room Completed");
 		SetDoorPresence(false);
 	}
+	
 	public virtual void DespawnTrialGeometry()
 	{
 		//go through trial geometry list and set to Active(false)

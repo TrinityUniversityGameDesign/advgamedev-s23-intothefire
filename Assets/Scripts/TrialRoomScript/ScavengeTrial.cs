@@ -9,7 +9,6 @@ public class ScavengeTrial : TrialRoomScript
     // Start is called before the first frame update
     void Start()
     {
-        doors = transform.GetChild(0).transform.GetComponentsInChildren<Transform>();
 		SetDoorPresence(false);
 		currRoomState = RoomState.empty;
 
