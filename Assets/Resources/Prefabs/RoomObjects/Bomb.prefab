@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 2162508051157948721}
   - component: {fileID: 4259879654044527004}
   - component: {fileID: 3826649608056963720}
+  - component: {fileID: 3230657316696851192}
   m_Layer: 0
   m_Name: Explosion
-  m_TagString: Untagged
+  m_TagString: Damage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -110,6 +111,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f734bcb6eb919a3468a8c012c1c8fbc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3230657316696851192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7617498801433056857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfc98f4d60377f34b95e4ffc82ae074f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7673766643533070768
 GameObject:
   m_ObjectHideFlags: 0
@@ -123,9 +136,10 @@ GameObject:
   - component: {fileID: 5091718582629960599}
   - component: {fileID: 6140942626204661684}
   - component: {fileID: 4685912686712895942}
+  - component: {fileID: 3767144878093791031}
   m_Layer: 0
   m_Name: Bomb
-  m_TagString: Untagged
+  m_TagString: Damage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -222,3 +236,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explodeTime: 2
+--- !u!114 &3767144878093791031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7673766643533070768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfc98f4d60377f34b95e4ffc82ae074f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

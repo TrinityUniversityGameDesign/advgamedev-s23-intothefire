@@ -24,9 +24,18 @@ public class Box : ScavengeEntity
     {
         
     }
-
+    /*
     void OnCollisionEnter(Collision target){
         if(target.transform.tag == "Player"){
+            Break();
+        }
+    }
+    */
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.transform.tag == "Damage")
+        {
             Break();
         }
     }

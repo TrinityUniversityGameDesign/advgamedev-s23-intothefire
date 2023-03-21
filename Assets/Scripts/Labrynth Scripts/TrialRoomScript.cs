@@ -106,7 +106,7 @@ public class TrialRoomScript : MonoBehaviour
 				meshRenderer.enabled = doorsEnabled;
 			}
 
-			BoxCollider boxCollider = childObject.GetComponent<BoxCollider>();
+			MeshCollider boxCollider = childObject.GetComponent<MeshCollider>();
 			if (boxCollider != null)
 			{
 				boxCollider.enabled = doorsEnabled;
@@ -204,7 +204,7 @@ public class TrialRoomScript : MonoBehaviour
 		Debug.Log("Number of enemies for this room: " + numOfEnemies);
 		for (int i = 0; i < numOfEnemies; i++)
 		{
-			Vector3 spawnLocation = new Vector3(transform.position.x + Random.Range(-15, 15), -3f, transform.position.z + Random.Range(-15, 15));
+			Vector3 spawnLocation = new Vector3(transform.position.x + Random.Range(-15, 15), transform.position.y + 1f, transform.position.z + Random.Range(-15, 15));
 			GameObject enemy = Instantiate(enemyPrefab, spawnLocation, new Quaternion(0, 0, 0, 0), this.transform);
 			enemy.GetComponent<EnemyScript>().hostRoom = this;
 			enemyCount++;
