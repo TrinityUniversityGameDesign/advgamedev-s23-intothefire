@@ -20,13 +20,18 @@ public enum GameState
 
 public class GameManager : MonoBehaviour
 {
-
     #region Public Fields
     [Tooltip("Static gamemanager instance.")]
     public static GameManager Instance;
 
     [Tooltip("Represents the number of minutes the game should last")]
     public float Minutes = 5;
+
+    [Tooltip("Size of the labyrinth across one axis. Default is 5")]
+    public int LabyrinthSize = 5;
+
+    [Tooltip("Distance rooms are apart from one another. Default is 120")]
+    public int DistanceApart = 120;
 
     public GameObject[] players;
     #endregion
@@ -92,6 +97,8 @@ public class GameManager : MonoBehaviour
 
     public UnityEvent MajorEventBegin = new UnityEvent();
     public UnityEvent MajorEventEnd = new UnityEvent();
+
+    public UnityEvent FirstTimeStartup = new UnityEvent();
     #endregion
 
     #region Private Methods
@@ -105,13 +112,34 @@ public class GameManager : MonoBehaviour
         SideEventBegin.AddListener(BeginSideEvent);
         SideEventEnd.AddListener(EndSideEvent);
         LabyrinthExploreBegin.AddListener(TestLabyrinthBegin);
+        FirstTimeStartup.AddListener(TestFirstTimeStartup);
 
         secondsOfGameTime = 60 * Minutes;
 
         timer = timerTextObj?.GetComponent<TMP_Text>();
 
+        if (!GameObject.Find("DungeonGenerator"))
+        {
+            Debug.LogError("Could not find Dungeon Generator. Are you missing it in the scene?");
+        }
+
+        GameObject EvtCtrl = GameObject.Find("EventController");
+
+        if (!EvtCtrl)
+        {
+            Debug.LogError("Could not find EventController. Are you missing it in the scene?");
+        } else
+        {
+            EvtCtrl.transform.position = new Vector3((LabyrinthSize / 2) * DistanceApart, 90, (LabyrinthSize / 2) * DistanceApart);
+        }
+
         OnStateEnter(GameState.Lobby);
         
+    }
+
+    private void Start()
+    {
+        FirstTimeStartup.Invoke();
     }
 
     private void FixedUpdate()
@@ -290,6 +318,11 @@ public class GameManager : MonoBehaviour
     void TestEndMajorEvent()
     {
         Debug.Log("Ending Major Event");
+    }
+
+    void TestFirstTimeStartup()
+    {
+        Debug.Log("Received Call that GameManager has Started");
     }
 
     void BeginSideEvent()
