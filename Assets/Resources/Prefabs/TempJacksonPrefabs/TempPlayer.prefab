@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3883576070092283551}
   - component: {fileID: 3883576070092283550}
   - component: {fileID: 3883576070092283549}
-  - component: {fileID: 3883576070092283521}
   - component: {fileID: 3883576070092283522}
+  - component: {fileID: 7747076170907679699}
   m_Layer: 0
   m_Name: TempPlayer
   m_TagString: Untagged
@@ -101,21 +101,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3883576070092283521
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1816465084898165553}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df67369ae6013bb4b8dee6286ce700de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lm:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!54 &3883576070092283522
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -132,6 +117,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &7747076170907679699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816465084898165553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df67369ae6013bb4b8dee6286ce700de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lm:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &5579287831048565995
 GameObject:
   m_ObjectHideFlags: 0
@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 4856520018967486418}
   - component: {fileID: 7816140703698428974}
   - component: {fileID: 286927186013806243}
-  - component: {fileID: 1296847179613517911}
+  - component: {fileID: 4228753008853904486}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -230,7 +230,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.2
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1296847179613517911
+--- !u!114 &4228753008853904486
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
