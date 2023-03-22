@@ -154,7 +154,6 @@ public class TrialRoomScript : MonoBehaviour
 			if (trialType == TrialType.combat)
 			{
 				GenerateCombatInside();
-				SpawnEnemies();
 			}
 			if (trialType == TrialType.plat)
 			{
@@ -195,26 +194,14 @@ public class TrialRoomScript : MonoBehaviour
 		//use room type and dungeonDepth to create a room layout-- generating encounters happens when currRoomState is set to Trialing
 		//add everything to List TrialGeometry
 	}
-	private void SpawnEnemies()
-	{
-		//spawn a bunch of enemies and add them to List<GameObject>EnemyList
-		//trial is over when EnemyList.Count == 0;
 
-		int numOfEnemies = Random.Range(3, 5);
-		Debug.Log("Number of enemies for this room: " + numOfEnemies);
-		for (int i = 0; i < numOfEnemies; i++)
-		{
-			Vector3 spawnLocation = new Vector3(transform.position.x + Random.Range(-15, 15), -3f, transform.position.z + Random.Range(-15, 15));
-			GameObject enemy = Instantiate(enemyPrefab, spawnLocation, new Quaternion(0, 0, 0, 0), this.transform);
-			enemy.GetComponent<EnemyScript>().hostRoom = this;
-			enemyCount++;
-		}
-	}
+	public int GetEnemyCount(){return enemyCount;}
 
-	public void DecrementEnemyCount()
-	{
-		enemyCount--;
-	}
+	public void SetEnemyCount(int val){enemyCount = val;}
+
+	public void DecrementEnemyCount(){enemyCount--;}
+
+	public void IncrementEnemyCount(){enemyCount++;}
 
 	private void GenerateHuntInside(){
 		//Debug.Log("hunt started");
@@ -246,16 +233,6 @@ public class TrialRoomScript : MonoBehaviour
 			scavengeEnemies.Add(enemy);
 		}
 		scavengeEnemies[Random.Range(0, scavengeEnemies.Count - 1)].GetComponent<ScavengeEnemy>().hasTreasure = true;
-	}
-
-
-	public void Update()//is there a way to only call update once a combat room is started?
-	{
-		//checks to see if all enemies are defeated for a combat room
-		if(trialType == TrialType.combat && currRoomState == RoomState.trialing && enemyCount == 0)
-		{
-			TrialCompleted();
-		}
 	}
 
 //____________________________________________________________________________________________________________

@@ -16,8 +16,10 @@ public class ChaserEnemyAI : EnemyUpdate
     // Update is called once per frame
     void Update()
     {
-        Vector3 targetPos = Vector3.zero;
-        Vector3 vel = (targetPos - transform.position).normalized * moveSpeed;
-        rb.AddForce(vel, ForceMode.Force);
+        Vector3 targetPos = GetTargetPosition();
+        if (targetPos != null) {
+            Vector3 vel = (targetPos - transform.position).normalized * moveSpeed;
+            rb.AddForce(vel, ForceMode.Force);
+        }
     }
 }
