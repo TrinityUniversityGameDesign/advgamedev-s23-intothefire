@@ -6,6 +6,7 @@ public class DamageScript : MonoBehaviour
 {
     // Start is called before the first frame update
     float damage = 0f;
+    float knockback = 5f;
     void Start()
     {
         
@@ -23,5 +24,14 @@ public class DamageScript : MonoBehaviour
     public float GetDamage()
     {
         return damage;
+    }
+
+    public void SetKnockback(float f)
+    {
+        knockback = 0f;
+    }
+    public float GetKnockback()
+    {
+        return knockback;
     }
 }
