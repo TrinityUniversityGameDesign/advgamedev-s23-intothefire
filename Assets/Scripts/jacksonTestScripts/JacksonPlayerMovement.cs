@@ -23,7 +23,7 @@ public class JacksonPlayerMovement : MonoBehaviour
     bool grounded = true;
     private LineRenderer lr;
     GameObject enemy = null;
-    float health = 100;
+    
     float gravity = 30f;
     float jumpPress = 0f;
     bool jumpHold = false;
@@ -38,6 +38,28 @@ public class JacksonPlayerMovement : MonoBehaviour
     float iFrames = -1f;
     bool airStrike = false;
     float lerpTime = 0.2f;
+
+
+    //Here's a list of all the stats a player can obtain / items can modify:
+    float maxHealth = 100;
+    float health = 100;
+    float maxSpeed = 20f;
+    float damage = 10f;
+    float attackSpeed = 1f;
+    float critRate = 0.1f;
+    float armor = 0f;
+    float lifesteal = 0f;
+    float lifegain = 0f;
+    float knockback = 0f;
+    float KnockbackResistance = 0f;
+    float damageOverTime = 0f;
+    float MaxJumps = 1f;
+    float currJumps = 1f;
+    float MaxSpecials = 1f;
+    float currSpecials = 1f;
+    float jumpHeight = 15f;
+
+
     Vector3 oldSpeed = Vector3.zero;
     Camera cam;
     Vector2 ul;
@@ -47,7 +69,7 @@ public class JacksonPlayerMovement : MonoBehaviour
     float h;
     Rigidbody rb;
     bool lasso = false;
-    float maxSpeed = 20f;
+    
     float timer = 0;
     GameObject player;
     void Start()
@@ -226,7 +248,7 @@ public class JacksonPlayerMovement : MonoBehaviour
                         lightPress = 0f;
                         state = PlayerState.attack;
                         currSword = Instantiate(sword, transform.position, transform.rotation);
-                        currSword.GetComponent<DamageScript>().SetDamage(10f);
+                        currSword.GetComponent<DamageScript>().SetDamage(damage);
                         currSword.transform.parent = transform;
                         //currSword.transform.rotation = Quaternion.AngleAxis(90f, Vector3.right) * transform.rotation;// * Quaternion.Euler(0f, 0f, 90f);
                         timer = 30f;
@@ -242,7 +264,7 @@ public class JacksonPlayerMovement : MonoBehaviour
                         currSword = Instantiate(sword, transform.position, transform.rotation);
                         
                         currSword.transform.parent = transform;
-                        currSword.GetComponent<DamageScript>().SetDamage(20f);
+                        currSword.GetComponent<DamageScript>().SetDamage(damage*2f);
                         //currSword.transform.rotation = Quaternion.AngleAxis(90f, Vector3.right) * transform.rotation;// * Quaternion.Euler(0f, 0f, 90f);
                         timer = 30f;
                         // currSword.transform.localRotation = transform.rotation * Quaternion.Euler(0f, 0f, 90f);
@@ -261,7 +283,7 @@ public class JacksonPlayerMovement : MonoBehaviour
                         {
                             rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
                         }
-                        rb.AddRelativeForce(new Vector3(0, 15f, 0f), ForceMode.VelocityChange);
+                        rb.AddRelativeForce(new Vector3(0, jumpHeight, 0f), ForceMode.VelocityChange);
                     }
                     if(specialPress > 0)
                     {
@@ -559,4 +581,19 @@ public class JacksonPlayerMovement : MonoBehaviour
             health -= other.gameObject.GetComponent<DamageScript>().GetDamage();
         }
     }
+
+    public void ChangeHealth(float f) { maxHealth += f; health += f; }
+    public void ChangeSpeed(float f) { maxSpeed += f; }
+    public void ChangeDamage(float f) { damage += f; }
+    public void ChangeAttackSpeed(float f) { attackSpeed += f; }
+    public void ChangeArmor(float f) { armor += f; }
+    public void ChangeCrit(float f) { critRate += f; }
+    public void ChangeLifesteal(float f) { lifesteal += f; }
+    public void ChangeLifegain(float f) { lifegain += f; }
+    public void ChangeDamageOverTime(float f) { damageOverTime += f; }
+    public void ChangeKnockback(float f) { knockback += f; }
+    public void ChangeKockbackResistance(float f) { KnockbackResistance += f; }
+    public void ChangeMaxSpecials(float f) { MaxSpecials += f; }
+    public void ChangeMaxJumps(float f) { MaxJumps += f; }
+    public void ChangeJumpHeight(float f) { jumpHeight += f; }
 }
