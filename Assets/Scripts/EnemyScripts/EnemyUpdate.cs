@@ -31,11 +31,6 @@ public class EnemyUpdate : MonoBehaviour
         frameCount += 1;
     }
 
-    public bool TakeDamage(float amount){
-        hitPoints = hitPoints - amount;
-        return true;
-    }
-
     public GameObject GetTarget(){ //Get the closest player
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         GameObject target = gameObject;
@@ -57,16 +52,19 @@ public class EnemyUpdate : MonoBehaviour
         else {return transform.position;}
     }
 
+    public bool TakeDamage(float amount){
+        hitPoints = hitPoints - amount;
+        return true;
+    }
+
     public void Kill(){
         
         if (trialSpawned) {hostRoom.DecrementEnemyCount();}
         Destroy(gameObject);
     }
 
-	private void OnCollisionEnter(Collision collision) 
+	private void OnTriggerEnter(Collider other) 
 	{
-		if(collision.transform.tag == "Player") {
-            //idk
-		} else if(collision.transform.tag == "Damage") {Kill();}
+		if(other.transform.tag == "Damage") {TakeDamage(5f);}
 	}
 } 
