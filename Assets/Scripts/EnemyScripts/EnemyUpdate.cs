@@ -63,11 +63,10 @@ public class EnemyUpdate : MonoBehaviour
         Destroy(gameObject);
     }
 
-	private void OnCollisionEnter(Collision collision) //Debugging thing for now
+	private void OnCollisionEnter(Collision collision) 
 	{
-		if(collision.transform.tag == "Player")
-		{
-            Kill();
-		}
+		if(collision.transform.tag == "Player") {
+            //idk
+		} else if(collision.transform.tag == "Damage") {Kill();}
 	}
-}
+} 
