@@ -23,11 +23,12 @@ public class EnemyUpdate : MonoBehaviour
 
     void Update()
     {
-        if (hitPoints <= 0 || transform.position.y < -50){
-            Kill();
-        } else {
-            frameCount += 1;
-        }
+        if (hitPoints <= 0 || transform.position.y < -50){Kill();}
+    }
+
+    void FixedUpdate()
+    {
+        frameCount += 1;
     }
 
     public bool TakeDamage(float amount){
@@ -57,6 +58,7 @@ public class EnemyUpdate : MonoBehaviour
     }
 
     public void Kill(){
+        
         if (trialSpawned) {hostRoom.DecrementEnemyCount();}
         Destroy(gameObject);
     }

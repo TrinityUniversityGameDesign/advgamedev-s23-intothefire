@@ -14,7 +14,7 @@ public class ChaserEnemyAI : EnemyUpdate
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Vector3 targetPos = GetTargetPosition();
         if (targetPos != null) {
