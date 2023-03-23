@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 
 //GameState to represent the possible states the game can be in.
@@ -36,11 +37,13 @@ public class GameManager : MonoBehaviour
     public int DistanceApart = 120;
 
     public List<GameObject> players = new List<GameObject>();
+
+    public GameObject lobbyUI;
     #endregion
 
     #region Private Fields
     [Tooltip("Internal state the game manager is currently in.")]
-    private GameState _state;
+    private GameState _state = GameState.Lobby;
 
     [Tooltip("Simple timer for testing purposes")]
     private GameObject timerTextObj;
@@ -169,6 +172,12 @@ public class GameManager : MonoBehaviour
 
         secondsOfGameTime = 60 * Minutes;
 
+
+        if (!GameObject.Find("MainCanvas"))
+        {
+            Debug.LogError("Could not find UI Prefab named MainCanvas");
+        }
+
         timerTextObj = GameObject.Find("Timer");
         timer = timerTextObj?.GetComponent<TMP_Text>();
 
@@ -197,7 +206,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         PlayerInputManager.instance?.playerJoinedEvent.AddListener(InputManagerPlayerJoinedEvent);
-        OnStateEnter(GameState.Lobby);
     }
 
     private void FixedUpdate()
@@ -221,10 +229,12 @@ public class GameManager : MonoBehaviour
     {
         //Exit the current state, then call the enter on the nextState.
         OnStateExit();
-        _state = nextState;
-        switch (_state)
+        Instance._state = nextState;
+        Debug.Log(Instance._state);
+        switch (Instance._state)
         {
             case GameState.GameOver:
+                GameOverBegin.Invoke();
                 Timer = 0;
                 break;
             case GameState.Labyrinth_Explore:
@@ -240,12 +250,14 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Time until next Side Event: " + timeUntilNextSideEvent + " s");
                 break;
             case GameState.Lobby:
-                timerTextObj.SetActive(false);
-                
+                LobbyBegin.Invoke();
+                timerTextObj?.SetActive(false);
                 break;
             case GameState.Paused:
+                PausedBegin.Invoke();
                 break;
             case GameState.Showdown:
+                ShowdownBegin.Invoke();
                 MajorEventEnd.Invoke();
                 Debug.Log("Entering Showdown");
                 break;
@@ -253,6 +265,7 @@ public class GameManager : MonoBehaviour
                 SideEventBegin?.Invoke();
                 break;
             case GameState.EndScreen:
+                EndScreenBegin.Invoke();
                 gameInProgress = false;
                 break;
             case GameState.Startup_New_Game:
@@ -267,7 +280,7 @@ public class GameManager : MonoBehaviour
 
     private void TickState()
     {
-        switch (_state)
+        switch (Instance._state)
         {
             case GameState.GameOver:
                 break;
@@ -330,24 +343,31 @@ public class GameManager : MonoBehaviour
 
     private void OnStateExit()
     {
-        switch (_state)
+        switch (Instance._state)
         {
             case GameState.GameOver:
+                GameOverEnd.Invoke();
                 break;
             case GameState.Labyrinth_Explore:
+                LabyrinthExploreEnd.Invoke();
                 break;
             case GameState.Lobby:
+                LobbyEnd.Invoke();
                 break;
             case GameState.Paused:
+                PausedEnd.Invoke();
                 break;
             case GameState.Showdown:
+                ShowdownEnd.Invoke();
                 break;
             case GameState.SideEvent:
                 SideEventEnd?.Invoke();
                 break;
             case GameState.EndScreen:
+                EndScreenEnd.Invoke();
                 break;
             case GameState.Startup_New_Game:
+                StartupNewGameEnd.Invoke();
                 break;
             default:
                 break;
@@ -416,9 +436,23 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("New Player Joined");
         players.Add(newPlayer.gameObject);
+
+        GameObject newUI = Instantiate(lobbyUI, GameObject.Find("Player" + newPlayer.playerIndex).transform);
+        newUI.name = "Player" + newPlayer.playerIndex + "Canvas";
+
+        newPlayer.GetComponent<PlayerInput>().uiInputModule = newUI.transform.GetChild(0).GetComponent<InputSystemUIInputModule>();
+
         PlayerJoined.Invoke();
         //newPlayer.gameObject.SetActive(false);
         
+    }
+
+    public void ContinueInput(InputAction.CallbackContext ctx)
+    {
+        if (Instance._state == GameState.Lobby)
+        {
+            OnStateEnter(GameState.Startup_New_Game);
+        }
     }
     #endregion
     #endregion

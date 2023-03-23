@@ -48,6 +48,7 @@ MonoBehaviour:
   LabyrinthSize: 5
   DistanceApart: 120
   players: []
+  lobbyUI: {fileID: 8162475761223437536, guid: 4ad96f3806669784eab41ddaa7e1a34f, type: 3}
   MaxSecondsBetweenSideEvents: 600
   MinSecondsBetweenSideEvents: 300
   MaxSecondsBetweenMicroEvents: 20
@@ -73,12 +74,48 @@ MonoBehaviour:
   LabyrinthExploreEnd:
     m_PersistentCalls:
       m_Calls: []
+  ShowdownBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  ShowdownEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  LobbyBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  LobbyEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  PausedBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  PausedEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  GameOverBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  GameOverEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  EndScreenBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  EndScreenEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  StartupNewGameBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  StartupNewGameEnd:
+    m_PersistentCalls:
+      m_Calls: []
   MajorEventBegin:
     m_PersistentCalls:
       m_Calls: []
   MajorEventEnd:
     m_PersistentCalls:
       m_Calls: []
-  FirstTimeStartup:
+  PlayerJoined:
     m_PersistentCalls:
       m_Calls: []

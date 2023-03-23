@@ -7,8 +7,8 @@ public class UI_Controller : MonoBehaviour
 {
 
     #region Private Fields
-    private GameObject lobbyUI;
-    private GameObject labyrinthUI;
+    public GameObject lobbyUI;
+    public GameObject labyrinthUI;
     #endregion
 
 
@@ -24,7 +24,7 @@ public class UI_Controller : MonoBehaviour
         GameManager.Instance?.LabyrinthExploreEnd.AddListener(DeactivateLabyrinthUI);
 
         GameManager.Instance?.LobbyBegin.AddListener(ActivateLobbyUI);
-        GameManager.Instance?.LobbyEnd.AddListener(DeactivateLabyrinthUI);
+        GameManager.Instance?.LobbyEnd.AddListener(DeactivateLobbyUI);
     }
 
     void ActivateLabyrinthUI()
