@@ -17,10 +17,19 @@ public class SpleefSideEventController : MonoBehaviour
   [SerializeField]
   private GameObject platformHolder;
 
+  float ourX;
+  float ourY;
+  float ourZ;
+
 
   // Start is called before the first frame update
   void Start()
   {
+    ourX = gameObject.transform.position.x;
+    ourY = gameObject.transform.position.y;
+    ourZ = gameObject.transform.position.z;
+
+
     SpawnPlatforms();
   }
 
@@ -32,9 +41,9 @@ public class SpleefSideEventController : MonoBehaviour
 		{
       for (int j = -spleefLength; j < spleefLength; j++)
       {
-        Instantiate(spleefPlatform, new Vector3(i * 5 + 2.5f, -3, j * 5 + 2.5f), Quaternion.Euler(0, 0, 0), platformHolder.transform);
-        Instantiate(spleefPlatform, new Vector3(i * 5 + 2.5f, -23, j * 5 + 2.5f), Quaternion.Euler(0, 0, 0), platformHolder.transform);
-        Instantiate(spleefPlatform, new Vector3(i * 5 + 2.5f, -43, j * 5 + 2.5f), Quaternion.Euler(0, 0, 0), platformHolder.transform);
+        Instantiate(spleefPlatform, new Vector3(ourX + i * 5 + 2.5f, ourY -3, ourZ + j * 5 + 2.5f), Quaternion.Euler(0, 0, 0), platformHolder.transform);
+        Instantiate(spleefPlatform, new Vector3(ourX + i * 5 + 2.5f, ourY - 23, ourZ + j * 5 + 2.5f), Quaternion.Euler(0, 0, 0), platformHolder.transform);
+        Instantiate(spleefPlatform, new Vector3(ourX + i * 5 + 2.5f, ourY - 43, ourZ + j * 5 + 2.5f), Quaternion.Euler(0, 0, 0), platformHolder.transform);
       }
     }
 	}
