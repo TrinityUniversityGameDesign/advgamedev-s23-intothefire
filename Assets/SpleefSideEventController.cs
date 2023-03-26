@@ -7,15 +7,24 @@ public class SpleefSideEventController : MonoBehaviour
   [SerializeField]
   public int spleefLength = 10;
   [SerializeField]
-  GameObject spleefPlatform;
+  private GameObject spleefPlatform;
+
+  public Transform P1SpawnPoint;
+  public Transform P2SpawnPoint;
+  public Transform P3SpawnPoint;
+  public Transform P4SpawnPoint;
+
+  [SerializeField]
+  private GameObject platformHolder;
 
 
   // Start is called before the first frame update
   void Start()
   {
-    SpawnPlatforms(); 
+    SpawnPlatforms();
   }
 
+  
   
   private void SpawnPlatforms()
 	{
@@ -23,9 +32,14 @@ public class SpleefSideEventController : MonoBehaviour
 		{
       for (int j = -spleefLength; j < spleefLength; j++)
       {
-        Instantiate(spleefPlatform, new Vector3(i * 5, -3, j * 5), Quaternion.Euler(0, 0, 0));
+        Instantiate(spleefPlatform, new Vector3(i * 5 + 2.5f, -3, j * 5 + 2.5f), Quaternion.Euler(0, 0, 0), platformHolder.transform);
+        Instantiate(spleefPlatform, new Vector3(i * 5 + 2.5f, -23, j * 5 + 2.5f), Quaternion.Euler(0, 0, 0), platformHolder.transform);
+        Instantiate(spleefPlatform, new Vector3(i * 5 + 2.5f, -43, j * 5 + 2.5f), Quaternion.Euler(0, 0, 0), platformHolder.transform);
       }
     }
 	}
+
+
+
 
 }
