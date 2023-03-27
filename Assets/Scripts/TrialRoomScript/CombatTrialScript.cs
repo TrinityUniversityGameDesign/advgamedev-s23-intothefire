@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class CombatTrialScript : TrialRoomScript
 {
-[SerializeField]
+    [SerializeField]
     public List<GameObject> enemyPool = new List<GameObject>();
-    int wavesRemaining;
+    int currentWave;
 
     void Start()
-    {
+    {   
 		SetDoorPresence(false);
+        currentWave = 0;
 		currRoomState = RoomState.empty;
     }
 
@@ -19,26 +20,43 @@ public class CombatTrialScript : TrialRoomScript
     {   
         Debug.Log("Current Enemy Count: " + GetEnemyCount());
         if (currRoomState == RoomState.trialing && GetEnemyCount() <= 0) {
-            Debug.Log("Waves Remaining: " + wavesRemaining);
-            if (wavesRemaining <= 0){
-                TrialCompleted();
+            ++currentWave;
+            if (TrySpawnEnemyWave()) {
+                Debug.Log("Spawning Enemy Wave " + currentWave);
             } else {
-                SpawnEnemyWave();
+                TrialCompleted();
             }
-		}
+        }
     }
 
-    void SpawnEnemyWave(){
+    bool TrySpawnEnemyWave(){
+        bool didSpawn = false;
+        GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("EnemySpawnPoint");
+        foreach (GameObject spawnPoint in spawnPoints) {   
+            EnemySpawnPoint script = spawnPoint.GetComponent<EnemySpawnPoint>();
+            if (script.GetWaveNumber() == currentWave) {
+                GameObject enemy = script.SpawnEnemy();
+                RegisterEnemy(enemy);
+                didSpawn = true;
+            }
+        }
+        return didSpawn;
+    }
+
+    void SpawnRandomEnemyWave(){
         int numEnemies = Random.Range(3,5);
         for (int i = 0; i < numEnemies; i++) {
             Vector3 spawnPos = transform.position + new Vector3(Random.Range(0,30), 2, Random.Range(0,30));
             GameObject enemyPrefab = enemyPool[Random.Range(0, enemyPool.Count)];
             enemyPrefab = Instantiate(enemyPrefab, spawnPos, Quaternion.identity, this.transform);
-            enemyPrefab.GetComponent<EnemyUpdate>().hostRoom = this;
-            enemyPrefab.GetComponent<EnemyUpdate>().trialSpawned = true;
-            IncrementEnemyCount();
+            RegisterEnemy(enemyPrefab);
         }
-        wavesRemaining -= 1;
+    }
+
+    void RegisterEnemy(GameObject enemy){
+        enemy.GetComponent<EnemyUpdate>().hostRoom = this;
+        enemy.GetComponent<EnemyUpdate>().trialSpawned = true;
+        IncrementEnemyCount();
     }
 
     public override void PlaceStartPad(){
@@ -50,9 +68,7 @@ public class CombatTrialScript : TrialRoomScript
 
     public override void StartTrial(){
         if (currRoomState == RoomState.closed) {
-            wavesRemaining = 3;
             SetEnemyCount(0);
-            SpawnEnemyWave();
             currRoomState = RoomState.trialing;
         }
     }

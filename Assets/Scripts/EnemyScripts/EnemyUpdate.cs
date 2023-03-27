@@ -65,6 +65,6 @@ public class EnemyUpdate : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other) 
 	{
-		if(other.transform.tag == "Damage") {TakeDamage(5f);}
+		if(other.transform.tag == "Damage") {TakeDamage(other.gameObject.GetComponent<DamageScript>().GetDamage());}
 	}
 } 
