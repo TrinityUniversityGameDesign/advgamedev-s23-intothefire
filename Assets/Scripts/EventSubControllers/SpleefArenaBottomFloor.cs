@@ -8,7 +8,7 @@ public class SpleefArenaBottomFloor : MonoBehaviour
 	{
 		if(collision.transform.tag == "Player")
 		{
-			collision.transform.position = new Vector3(collision.transform.position.x, gameObject.transform.position.y + 21, collision.transform.position.z);
+			collision.transform.position = new Vector3(collision.transform.position.x, gameObject.transform.position.y + 81, collision.transform.position.z);
 		}
 	}
 }
