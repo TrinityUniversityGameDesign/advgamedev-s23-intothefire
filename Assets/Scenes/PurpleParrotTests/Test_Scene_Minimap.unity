@@ -320,8 +320,8 @@ Camera:
   m_GameObject: {fileID: 176568886}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -342,7 +342,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 65
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8600000, guid: 4eda424860de4459d9fde3708145f2ca, type: 2}
   m_TargetDisplay: 0
@@ -376,6 +376,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 567485558, guid: 8d875887bf7172148818c050331e2be2, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 694799114838789185, guid: 8d875887bf7172148818c050331e2be2, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -485,6 +489,10 @@ PrefabInstance:
       propertyPath: m_SplitScreen
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1650088341185316463, guid: 7cb23561b949edd4eae2b1c023c766eb, type: 3}
+      propertyPath: m_PlayerPrefab
+      value: 
+      objectReference: {fileID: 7001510471671862647, guid: 8dc3b3cfb51a343288790cd1db0e8838, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7cb23561b949edd4eae2b1c023c766eb, type: 3}
 --- !u!1 &581096759
@@ -535,7 +543,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 63
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
