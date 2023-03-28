@@ -14,7 +14,7 @@ public class BombScript : MonoBehaviour
         explosion = GameObject.Find("Explosion");
         ExplosionScript explosionScript = explosion.GetComponent<ExplosionScript>();
         explosionScript.TriggerExplode();
-        Destroy(gameObject, explodeTime);
+        Destroy(gameObject, explosionScript.timeUntilExplosion + 0.5f);
     }
 
     // Update is called once per frame

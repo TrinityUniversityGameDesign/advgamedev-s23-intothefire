@@ -11,7 +11,7 @@ public class EnemyScript : MonoBehaviour
 	{
 		if(collision.transform.tag == "Player")
 		{
-			hostRoom.DecrementEnemyCount();
+			//hostRoom.DecrementEnemyCount();
 
 			Destroy(gameObject);
 			Debug.Log("Enemy died.");
@@ -22,7 +22,7 @@ public class EnemyScript : MonoBehaviour
     {
         if(other.transform.tag == "Damage")
         {
-			hostRoom.DecrementEnemyCount();
+			//hostRoom.DecrementEnemyCount();
 			Destroy(gameObject);
 			Debug.Log("Enemy died.");
 		}
