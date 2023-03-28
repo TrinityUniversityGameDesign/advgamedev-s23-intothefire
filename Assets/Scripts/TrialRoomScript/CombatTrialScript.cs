@@ -18,8 +18,8 @@ public class CombatTrialScript : TrialRoomScript
     // Update is called once per frame
     void Update()
     {   
-        Debug.Log("Current Enemy Count: " + GetEnemyCount());
-        if (currRoomState == RoomState.trialing && GetEnemyCount() <= 0) {
+        Debug.Log("Current Enemy Count: " + enemyCount);
+        if (currRoomState == RoomState.trialing && enemyCount <= 0) {
             ++currentWave;
             if (TrySpawnEnemyWave()) {
                 Debug.Log("Spawning Enemy Wave " + currentWave);
@@ -56,7 +56,7 @@ public class CombatTrialScript : TrialRoomScript
     void RegisterEnemy(GameObject enemy){
         enemy.GetComponent<EnemyUpdate>().hostRoom = this;
         enemy.GetComponent<EnemyUpdate>().trialSpawned = true;
-        IncrementEnemyCount();
+        ++enemyCount;
     }
 
     public override void PlaceStartPad(){
@@ -68,7 +68,7 @@ public class CombatTrialScript : TrialRoomScript
 
     public override void StartTrial(){
         if (currRoomState == RoomState.closed) {
-            SetEnemyCount(0);
+            enemyCount = 0;
             currRoomState = RoomState.trialing;
         }
     }
