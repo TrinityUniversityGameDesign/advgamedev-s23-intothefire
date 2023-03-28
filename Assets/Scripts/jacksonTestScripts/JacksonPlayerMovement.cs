@@ -49,6 +49,7 @@ public class JacksonPlayerMovement : MonoBehaviour
     float lerpTime = 0.2f;
     float stunTimer = 0f;
     float stunValue = 0f;
+    Weapon weapon = new Swords();
 
 
     //Here's a list of all the stats a player can obtain / items can modify:
@@ -109,6 +110,7 @@ public class JacksonPlayerMovement : MonoBehaviour
             state = PlayerState.idle;
             transform.position = FindObjectOfType<PlayerInputManager>().transform.position;
         }
+        weapon.AssignPlayer(this.gameObject);
     }
 
     private void OnEnable()
@@ -412,11 +414,14 @@ public class JacksonPlayerMovement : MonoBehaviour
                         currSpecials--;
                         //isDodging = true;
                         state = PlayerState.special;
-                        Rotating(h, v);
+                        if (h != 0 || v != 0)
+                        {
+                            Rotating(h, v);
+                        }
                         currSword = Instantiate(sword, transform.position, transform.rotation);
                         currSword.transform.parent = transform;
                         currSword.GetComponent<DamageScript>().SetDamage(15f);
-                        rb.AddRelativeForce(new Vector3(0, 0, 10f), ForceMode.VelocityChange);
+                        //rb.AddRelativeForce(new Vector3(0, 0, 10f), ForceMode.VelocityChange);
 
                     }
                     
@@ -483,28 +488,21 @@ public class JacksonPlayerMovement : MonoBehaviour
                 break;
             case PlayerState.special:
                 {
-                    rb.velocity = transform.forward * 30f;
-
-                    if (iFrames > 15)
+                    Debug.Log("currently in the special state");
+                    bool ahhh = weapon.SpecialAttack();
+                    if (ahhh)
                     {
-                        iFrames = 15;
+
                     }
-                }
-                if (iFrames == -1)
-                {
-                    iFrames = 60;
-                }
-                else if (iFrames == 0)
-                {
-                    iFrames = -1;
-                    Destroy(currSword);
-                    state = PlayerState.idle;
+                    else
+                    {
+                        iFrames = -1;
+                        Destroy(currSword);
+                        state = PlayerState.idle;
+                    }
                     //isDodging = false;
                 }
-                else
-                {
-                    iFrames--;
-                }
+                
                 break;
             case PlayerState.invincible:
                 {
