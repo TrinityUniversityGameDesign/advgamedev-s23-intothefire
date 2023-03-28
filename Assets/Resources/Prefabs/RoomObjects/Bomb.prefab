@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 2162508051157948721}
   - component: {fileID: 4259879654044527004}
   - component: {fileID: 3826649608056963720}
+  - component: {fileID: 3230657316696851192}
   m_Layer: 0
   m_Name: Explosion
-  m_TagString: Untagged
+  m_TagString: Damage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -50,7 +51,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7617498801433056857}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -94,7 +95,7 @@ SphereCollider:
   m_GameObject: {fileID: 7617498801433056857}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -108,6 +109,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f734bcb6eb919a3468a8c012c1c8fbc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeUntilExplosion: 1.3
+  explosionSize: 7
+  damage: 25
+--- !u!114 &3230657316696851192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7617498801433056857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfc98f4d60377f34b95e4ffc82ae074f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7673766643533070768
@@ -125,7 +141,7 @@ GameObject:
   - component: {fileID: 4685912686712895942}
   m_Layer: 0
   m_Name: Bomb
-  m_TagString: Untagged
+  m_TagString: Damage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
