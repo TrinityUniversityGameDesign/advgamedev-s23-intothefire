@@ -9,12 +9,16 @@ public class DamageItem : Item
     void start()
     {
         value = 10;
+        icon = Resources.Load("Prefabs/Textures/grud") as Sprite;
+        name = "spikeyBall";
+        description = "putting this spikey ball on your weapon should make it hurt some more. It does +" + value as string + "more damage now";
     }
     
 
     // Update is called once per frame
-   public new void ItemPickup()
+   public new bool ItemPickup()
     {
         player.GetComponent<JacksonPlayerMovement>().ChangeDamage(value);
+        return true;
     }
 }
