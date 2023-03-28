@@ -24,6 +24,7 @@ public class JacksonPlayerMovement : MonoBehaviour
     bool grounded = true;
     private LineRenderer lr;
     GameObject enemy = null;
+    List<Item> inventory = new List<Item>();
     
     float gravity = 30f;
     float jumpPress = 0f;
@@ -705,6 +706,11 @@ public class JacksonPlayerMovement : MonoBehaviour
         rb.velocity = kb * transform.forward;
     }
 
+    public List<Item> GetInventory()
+    {
+        return inventory;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Damage")
@@ -721,6 +727,7 @@ public class JacksonPlayerMovement : MonoBehaviour
             HurtPlayer(other.gameObject);
         }
     }
+
 
     public void ChangeHealth(float f) { maxHealth += f; health += f; }
     public void ChangeSpeed(float f) { maxSpeed += f; }
