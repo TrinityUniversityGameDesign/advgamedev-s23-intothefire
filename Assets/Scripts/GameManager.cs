@@ -37,6 +37,11 @@ public class GameManager : MonoBehaviour
     public int DistanceApart = 120;
 
     public List<GameObject> players = new List<GameObject>();
+    static Color player1color = new Color(102, 204, 238, 255); //Cyan
+    static Color player2color = new Color(34, 136, 51, 255); //Green
+    static Color player3color = new Color(204, 187, 68, 255); //Yellow
+    static Color player4color = new Color(170, 51, 119, 255); //Purple
+    Color[] colors = new Color[4] { player1color, player2color, player3color, player4color };
 
     public GameObject lobbyUI;
     #endregion
@@ -370,7 +375,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     #region Event Calls
 
     void TestLabyrinthBegin() { Debug.Log("Labyrinth Begin"); }
@@ -435,9 +439,11 @@ public class GameManager : MonoBehaviour
 
         GameObject newUI = Instantiate(lobbyUI, GameObject.Find("Player" + newPlayer.playerIndex).transform);
         newUI.name = "Player" + newPlayer.playerIndex + "Canvas";
+        newUI.transform.GetChild(1).GetComponent<Outline>().effectColor = colors[newPlayer.playerIndex];
+        newUI.transform.GetChild(1).GetComponent<Outline>().effectColor = colors[newPlayer.playerIndex];
 
         newPlayer.GetComponent<PlayerInput>().uiInputModule = newUI.transform.GetChild(0).GetComponent<InputSystemUIInputModule>();
-
+        
         Instance.PlayerJoined.Invoke();
         //newPlayer.gameObject.SetActive(false);
         
