@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Inventory.uss?fileID=7433441132597879392&amp;guid=7e925dea81e9f4fefb174f493851c6a7&amp;type=3#Inventory" />
+    <ui:VisualElement name="Container" class="container">
+        <ui:VisualElement name="Inventory" class="inventory">
+            <ui:Label text="Inventory" display-tooltip-when-elided="true" name="Header" class="header" />
+            <ui:VisualElement name="SlotContainer" class="slotcontainer" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
