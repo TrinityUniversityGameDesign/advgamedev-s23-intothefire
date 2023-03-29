@@ -16,16 +16,20 @@ public class UI_Controller : MonoBehaviour
 
     #endregion
 
-
-    // Start is called before the first frame update
-    void Start()
-    { 
+    private void Awake()
+    {
         GameManager.Instance.LabyrinthExploreBegin.AddListener(ActivateLabyrinthUI);
         GameManager.Instance.LabyrinthExploreEnd.AddListener(DeactivateLabyrinthUI);
 
         GameManager.Instance.LobbyBegin.AddListener(ActivateLobbyUI);
         GameManager.Instance.LobbyEnd.AddListener(DeactivateLobbyUI);
-        DeactivateLabyrinthUI();
+        Debug.Log("Awake UI Controller");
+    }
+    // Start is called before the first frame update
+    void Start()
+    { 
+        Debug.Log("Start UI Controller");
+        //DeactivateLabyrinthUI();
     }
 
     void ActivateLabyrinthUI()
@@ -41,6 +45,7 @@ public class UI_Controller : MonoBehaviour
 
     void ActivateLobbyUI()
     {
+        Debug.LogError("Beginning Lobby from UI");
         lobbyUI.SetActive(true);
         labyrinthUI.SetActive(false);
     }

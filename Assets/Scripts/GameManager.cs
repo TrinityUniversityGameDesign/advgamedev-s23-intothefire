@@ -37,11 +37,11 @@ public class GameManager : MonoBehaviour
     public int DistanceApart = 120;
 
     public List<GameObject> players = new List<GameObject>();
-    static Color player1color = new Color(102, 204, 238, 255); //Cyan
-    static Color player2color = new Color(34, 136, 51, 255); //Green
-    static Color player3color = new Color(204, 187, 68, 255); //Yellow
-    static Color player4color = new Color(170, 51, 119, 255); //Purple
-    Color[] colors = new Color[4] { player1color, player2color, player3color, player4color };
+    static Color player1color = new Color(0.4f, 0.8f, 0.9f, 1); //Cyan
+    static Color player2color = new Color(0.13f, 0.53f, 0.2f, 1); //Green
+    static Color player3color = new Color(0.8f, 0.73f, 0.26f, 1); //Yellow
+    static Color player4color = new Color(0.6f,  0.2f,  0.46f, 1); //Purple
+    public static Color[] colors = new Color[4] { player1color, player2color, player3color, player4color };
 
     public GameObject lobbyUI;
     #endregion
@@ -206,12 +206,12 @@ public class GameManager : MonoBehaviour
         {
             EvtCtrl.transform.position = new Vector3((LabyrinthSize / 2) * DistanceApart, 90, (LabyrinthSize / 2) * DistanceApart);
         }
-
-        Instance.OnStateEnter(GameState.Lobby);
+        
     }
 
     private void Start()
     {
+        Instance.OnStateEnter(GameState.Lobby);
         PlayerInputManager.instance?.playerJoinedEvent.AddListener(InputManagerPlayerJoinedEvent);
     }
 
@@ -352,7 +352,6 @@ public class GameManager : MonoBehaviour
                 Instance.LabyrinthExploreEnd.Invoke();
                 break;
             case GameState.Lobby:
-                Debug.Log("Should exit");
                 Instance.LobbyEnd.Invoke();
                 break;
             case GameState.Paused:
@@ -440,10 +439,9 @@ public class GameManager : MonoBehaviour
         GameObject newUI = Instantiate(lobbyUI, GameObject.Find("Player" + newPlayer.playerIndex).transform);
         newUI.name = "Player" + newPlayer.playerIndex + "Canvas";
         newUI.transform.GetChild(1).GetComponent<Outline>().effectColor = colors[newPlayer.playerIndex];
-        newUI.transform.GetChild(1).GetComponent<Outline>().effectColor = colors[newPlayer.playerIndex];
 
         newPlayer.GetComponent<PlayerInput>().uiInputModule = newUI.transform.GetChild(0).GetComponent<InputSystemUIInputModule>();
-        
+
         Instance.PlayerJoined.Invoke();
         //newPlayer.gameObject.SetActive(false);
         
