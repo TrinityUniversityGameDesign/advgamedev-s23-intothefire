@@ -60,7 +60,7 @@ public class JacksonPlayerMovement : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody>();
         sword = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
         lr = GetComponent<LineRenderer>();
-        GameManager.Instance?.FirstTimeStartup.AddListener(StartPlayer);
+        GameManager.Instance?.StartupNewGameBegin.AddListener(StartPlayer);
         if(GameManager.Instance == null)
         {
             state = PlayerState.idle;
