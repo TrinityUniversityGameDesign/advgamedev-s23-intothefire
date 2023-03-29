@@ -17,7 +17,7 @@ public class SideEventController : MonoBehaviour
 
   public GameObject spleefControllerPrefab;
   GameObject spawnedSpleefController;
-
+  public List<Vector3> preSideEventPlayerPositions = new List<Vector3>();
 
 
   // Start is called before the first frame update
@@ -41,8 +41,19 @@ public class SideEventController : MonoBehaviour
         _currentEvent = (SideEvents)randomIndex;
     
         Debug.Log("Chosen option: " + _currentEvent);
-    
-        switch (_currentEvent)
+
+        //save copies of player position components before players are sent to side event
+        for (int i = 0; i < 4; i++)
+        {
+          if (i+1 <= GameManager.Instance.players.Count)
+          {
+            preSideEventPlayerPositions.Add(GameManager.Instance.players[i].transform.position);
+          }
+        }
+
+
+
+    switch (_currentEvent)
         {
           case SideEvents.Spleef:
             spawnedSpleefController = Instantiate(spleefControllerPrefab, this.transform);
@@ -55,6 +66,15 @@ public class SideEventController : MonoBehaviour
     void EndCurrentSideEvent()
     {
         Debug.Log("Ending SideEvent from SideEventController");
+
+        //teleport players back to where they were before side event
+        for (int i = 0; i < 4; i++)
+        {
+          if (i + 1 <= GameManager.Instance.players.Count)
+          {
+            GameManager.Instance.players[i].transform.position = preSideEventPlayerPositions[i];
+          }
+        }
 
         switch (_currentEvent)
         {

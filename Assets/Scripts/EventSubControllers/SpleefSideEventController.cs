@@ -29,6 +29,25 @@ public class SpleefSideEventController : MonoBehaviour
     ourY = gameObject.transform.position.y;
     ourZ = gameObject.transform.position.z;
 
+    List<Transform> spawnPoints = new List<Transform>();
+    spawnPoints.Add(P1SpawnPoint);
+    spawnPoints.Add(P2SpawnPoint);
+    spawnPoints.Add(P3SpawnPoint);
+    spawnPoints.Add(P4SpawnPoint);
+
+
+    for (int i = 0; i < 4; i++)
+		{
+      if(i + 1 <= GameManager.Instance.players.Count)
+			{
+        Debug.Log("Before: " + GameManager.Instance.players[i].transform.position);
+        GameManager.Instance.players[i].transform.position = spawnPoints[i].position;
+        Debug.Log("After: " + GameManager.Instance.players[i].transform.position);
+
+        //Error being caused by Player+Camera Object transform.position being updated, but the actual player part is being teleported wierdly in relation to it's parent object
+			}
+		}
+
 
     SpawnPlatforms();
   }
