@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Weapon
+public class Weapon
 {
     // Start is called before the first frame update
     public string name = "";
@@ -28,7 +28,7 @@ public abstract class Weapon
     {
 
     }
-    public abstract bool SpecialAttack();
+    public virtual bool SpecialAttack() { return true; }
 
         public void AssignPlayer(GameObject g)
     {

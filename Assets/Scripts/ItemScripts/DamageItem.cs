@@ -6,7 +6,7 @@ public class DamageItem : Item
 {
     // Start is called before the first frame update
     
-    void start()
+    public DamageItem()
     {
         value = 10;
         icon = Resources.Load("Prefabs/Textures/grud") as Sprite;
@@ -16,7 +16,7 @@ public class DamageItem : Item
     
 
     // Update is called once per frame
-   public new bool ItemPickup()
+   public override bool ItemPickup()
     {
         player.GetComponent<JacksonPlayerMovement>().ChangeDamage(value);
         return true;

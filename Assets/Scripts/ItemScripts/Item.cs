@@ -45,7 +45,7 @@ public class Item
     }
 
     // Update is called once per frame
-    public bool UpdateItem()
+    public virtual bool UpdateItem()
     {
         timer++;
         if(timer > time)
@@ -56,31 +56,31 @@ public class Item
         return false;
     }
 
-    public bool ItemCooldown()
+    public virtual bool ItemCooldown()
     {
         return false;
     }
-    public bool ItemPickup()
+    public virtual bool ItemPickup()
     {
         return false;
     }
-    public bool ItemJump()
+    public virtual bool ItemJump()
     {
         return false;
     }
-    public bool ItemMove()
+    public virtual bool ItemMove()
     {
         return false;
     }
-    public bool ItemSpecial()
+    public virtual bool ItemSpecial()
     {
         return false;
     }
-    public bool ItemLight()
+    public virtual bool ItemLight()
     {
         return false;
     }
-    public bool ItemHeavy()
+    public virtual bool ItemHeavy()
     {
         return false;
     }
