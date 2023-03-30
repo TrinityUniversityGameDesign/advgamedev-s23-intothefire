@@ -1,25 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ChaserEnemyAI : EnemyUpdate
 {   
-    public float moveSpeed;
-    
+    NavMeshAgent navMesh;
+
     // Start is called before the first frame update
     void Start()
     {
-        
-
+        navMesh = GetComponent<NavMeshAgent>();
+        navMesh.updateUpAxis = true;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 targetPos = GetTargetPosition();
-        if (targetPos != null) {
-            Vector3 vel = (targetPos - transform.position).normalized * moveSpeed;
-            rb.AddForce(vel, ForceMode.Force);
-        }
+        navMesh.destination = GetTargetPosition();
     }
 }

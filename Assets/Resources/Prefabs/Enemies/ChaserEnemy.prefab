@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3175745481559521571}
   - component: {fileID: 5688185664714756025}
   - component: {fileID: 3092374562443816386}
+  - component: {fileID: 8252302903218100632}
   m_Layer: 0
   m_Name: ChaserEnemy
   m_TagString: Enemy
@@ -114,12 +115,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHitPoints: 40
   detectionRange: 200
-  rb: {fileID: 3092374562443816386}
   hitPoints: 10
   frameCount: 0
   hostRoom: {fileID: 0}
   trialSpawned: 0
-  moveSpeed: 8
 --- !u!54 &3092374562443816386
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -136,3 +135,25 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!195 &8252302903218100632
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6187715198934969372}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 6
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

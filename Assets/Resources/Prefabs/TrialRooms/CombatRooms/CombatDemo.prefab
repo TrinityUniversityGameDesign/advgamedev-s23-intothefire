@@ -304,6 +304,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5238163496281388858}
   - component: {fileID: 6026759553578749950}
+  - component: {fileID: 368503043}
   m_Layer: 0
   m_Name: CombatDemo
   m_TagString: Untagged
@@ -319,7 +320,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5238163496281388859}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.9, y: 0.5, z: 114.95337}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -352,6 +353,26 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 60, y: 50, z: 60}
   m_Center: {x: 0, y: 24.5, z: 0}
+--- !u!114 &368503043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5238163496281388859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e78112732c96afe4fb4180ee3661762c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doors: []
+  enemyPrefab: {fileID: 0}
+  startPad: {fileID: 2746824381483398428, guid: a9d36c9f83f2995448e84630cea72c20, type: 3}
+  endPad: {fileID: 4825946071030987746, guid: e2b7f3c3989865f4b99523faed2b6c93, type: 3}
+  trialGeometry: []
+  enemyList: []
+  enemyPool:
+  - {fileID: 6187715198934969372, guid: 63863c934051a3840aaade311f25b5c5, type: 3}
 --- !u!1 &7531154100851242674
 GameObject:
   m_ObjectHideFlags: 0

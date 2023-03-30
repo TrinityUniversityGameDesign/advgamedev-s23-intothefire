@@ -7,7 +7,6 @@ public class EnemyUpdate : MonoBehaviour
     //Public values to be set in the editor
     public float maxHitPoints;
     public float detectionRange;
-    public Rigidbody rb;
 
     //Public values to be ignored in the editor
     public float hitPoints;
