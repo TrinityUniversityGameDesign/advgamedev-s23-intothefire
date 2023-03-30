@@ -17,6 +17,7 @@ public class ImpactEffect : MonoBehaviour
     {
         startTime = Time.time;
         endTime = startTime + duration;
+        gameObject.GetComponent<DamageScript>().SetDamage(10f);
 
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.down, out hit, raycastDistance, raycastLayerMask))

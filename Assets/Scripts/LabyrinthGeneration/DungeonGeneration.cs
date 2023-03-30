@@ -19,6 +19,7 @@ public class DungeonGeneration : MonoBehaviour
     [Header("Labyrinth Prefabs")]
     public GameObject placeholderRoom;
     public GameObject placeholderCenterRoom;
+    public GameObject sorryPurpleTeam;
     public GameObject intersectionHallway;
     public GameObject crossRoomHallway;
     public GameObject centerRoomHallwayNegative;
@@ -61,11 +62,12 @@ public class DungeonGeneration : MonoBehaviour
         }
 
         //Call Labyrinth generation on first time startup rather than when the comonent starts. This might want to be bound to LabyrinthExplore, I am not sure, or a loading state in between
-        GameManager.Instance?.FirstTimeStartup.AddListener(GenerateLabyrinth);
+        GameManager.Instance?.StartupNewGameBegin.AddListener(GenerateLabyrinth);
         //GenerateLabyrinth();
     }
 
     public void GenerateLabyrinth() {
+        Debug.Log("Generating Labyrinth");
         //spawn rooms
         GenerateRooms();
 
@@ -94,10 +96,22 @@ public class DungeonGeneration : MonoBehaviour
             else
             {
                 //spawn prefabs at set intervals
-                GameObject newRoom = Instantiate(placeholderRoom,
-                new Vector3(i * distanceApart, 0, j * distanceApart),
-                Quaternion.Euler(0, 0, 0),
-                GeometryHolder.transform);
+                int rand = Random.Range(0, 2);
+                GameObject newRoom;
+                if (rand == 0)
+                {
+                    newRoom = Instantiate(placeholderRoom,
+                    new Vector3(i * distanceApart, 0, j * distanceApart),
+                    Quaternion.Euler(0, 0, 0),
+                    GeometryHolder.transform);
+                }
+                else
+                {
+                    newRoom = Instantiate(sorryPurpleTeam,
+                    new Vector3(i * distanceApart, 0, j * distanceApart),
+                    Quaternion.Euler(0, 0, 0),
+                    GeometryHolder.transform);
+                }
 
                 //this is where we would tell the new thing to have a variant based on if it's on the edge of the labyrinth
 
