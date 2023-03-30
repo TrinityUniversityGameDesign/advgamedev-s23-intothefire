@@ -9,7 +9,9 @@ public class Item
     public float time = 0f;
     public float timer = 0f;
     public GameObject player;
-
+    public Sprite icon;
+    public string name = "";
+    public string description = "";
     public Item()
     {
 
@@ -31,8 +33,19 @@ public class Item
         time = iterationTime;
     }
 
+    public Item(float itemValue)
+    {
+        value = itemValue;
+    }
+    
+    public Item(float itemValue, float iterationTime)
+    {
+        value = itemValue;
+        time = iterationTime;
+    }
+
     // Update is called once per frame
-    public void UpdateItem()
+    public virtual bool UpdateItem()
     {
         timer++;
         if(timer > time)
@@ -40,35 +53,36 @@ public class Item
             timer = 0f;
             ItemCooldown();
         }
+        return false;
     }
 
-    public void ItemCooldown()
+    public virtual bool ItemCooldown()
     {
-
+        return false;
     }
-    public void ItemPickup()
+    public virtual bool ItemPickup()
     {
-
+        return false;
     }
-    public void ItemJump()
+    public virtual bool ItemJump()
     {
-
+        return false;
     }
-    public void ItemMove()
+    public virtual bool ItemMove()
     {
-
+        return false;
     }
-    public void ItemSpecial()
+    public virtual bool ItemSpecial()
     {
-
+        return false;
     }
-    public void ItemLight()
+    public virtual bool ItemLight()
     {
-
+        return false;
     }
-    public void ItemHeavy()
+    public virtual bool ItemHeavy()
     {
-
+        return false;
     }
 
     public void AssignPlayer(GameObject play)

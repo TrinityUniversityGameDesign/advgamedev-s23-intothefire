@@ -25,7 +25,14 @@ public class JacksonPlayerMovement : MonoBehaviour
     private LineRenderer lr;
     GameObject enemy = null;
     List<Item> inventory = new List<Item>();
-    
+    List<Item> Moveinventory = new List<Item>();
+    List<Item> Jumpinventory = new List<Item>();
+    List<Item> Lightinventory = new List<Item>();
+    List<Item> Heavyinventory = new List<Item>();
+    List<Item> Specialinventory = new List<Item>();
+    List<Item> Cooldowninventory = new List<Item>();
+
+
     float gravity = 30f;
     float jumpPress = 0f;
     bool jumpHold = false;
@@ -42,6 +49,7 @@ public class JacksonPlayerMovement : MonoBehaviour
     float lerpTime = 0.2f;
     float stunTimer = 0f;
     float stunValue = 0f;
+    Weapon weapon = new Swords();
 
 
     //Here's a list of all the stats a player can obtain / items can modify:
@@ -49,7 +57,7 @@ public class JacksonPlayerMovement : MonoBehaviour
     public float health { get; private set; } = 100;
     float maxSpeed = 20f;
     float damage = 10f;
-    float attackSpeed = 1f;
+    float attackSpeed = 0f;
     float critRate = 0.1f;
     float armor = 0f;
     float lifesteal = 0f;
@@ -90,6 +98,7 @@ public class JacksonPlayerMovement : MonoBehaviour
         cam = transform.parent.GetChild(1).gameObject.GetComponent<Camera>();
         //inputs = playerMovement.jacksonControls;
         player = transform.GetChild(0).gameObject;
+        transform.GetChild(1).gameObject.GetComponent<CapsuleCollider>().enabled = false;
         rb = gameObject.GetComponent<Rigidbody>();
         rb.drag = 0;
         rb.angularDrag = 0;
@@ -101,6 +110,7 @@ public class JacksonPlayerMovement : MonoBehaviour
             state = PlayerState.idle;
             transform.position = FindObjectOfType<PlayerInputManager>().transform.position;
         }
+        weapon.AssignPlayer(this.gameObject);
     }
 
     private void OnEnable()
@@ -263,12 +273,16 @@ public class JacksonPlayerMovement : MonoBehaviour
             {
                 health = maxHealth;
             }
+            foreach (Item it in Cooldowninventory)
+            {
+                it.ItemCooldown();
+            }
         }
         else
         {
             repeatTimer++;
         }
-        Debug.Log("grounded: " + grounded);
+        //Debug.Log("grounded: " + grounded);
         switch (state)
         {
             
@@ -287,6 +301,10 @@ public class JacksonPlayerMovement : MonoBehaviour
                     MovementManagement(h, v);
                     if (lightPress > 0)
                     {
+                        foreach(Item it in Lightinventory)
+                        {
+                            it.ItemLight();
+                        }
                         lightPress = 0f;
                         state = PlayerState.attack;
                         currSword = Instantiate(sword, transform.position, transform.rotation);
@@ -321,6 +339,10 @@ public class JacksonPlayerMovement : MonoBehaviour
                     }
                     if(heavyPress > 0)
                     {
+                        foreach (Item it in Heavyinventory)
+                        {
+                            it.ItemHeavy();
+                        }
                         heavyPress = 0f;
                         state = PlayerState.attack;
                         currSword = Instantiate(sword, transform.position, transform.rotation);
@@ -359,6 +381,10 @@ public class JacksonPlayerMovement : MonoBehaviour
                     }
                     if(jumpPress > 0 && currJumps >0)
                     {
+                        foreach (Item it in Jumpinventory)
+                        {
+                            it.ItemJump();
+                        }
                         grounded = false;
                         currJumps--;
                         jumpPress = 0;
@@ -381,14 +407,21 @@ public class JacksonPlayerMovement : MonoBehaviour
                     }
                     if(specialPress > 0 && currSpecials > 0)
                     {
+                        foreach (Item it in Specialinventory)
+                        {
+                            it.ItemSpecial();
+                        }
                         currSpecials--;
                         //isDodging = true;
                         state = PlayerState.special;
-                        Rotating(h, v);
+                        if (h != 0 || v != 0)
+                        {
+                            Rotating(h, v);
+                        }
                         currSword = Instantiate(sword, transform.position, transform.rotation);
                         currSword.transform.parent = transform;
                         currSword.GetComponent<DamageScript>().SetDamage(15f);
-                        rb.AddRelativeForce(new Vector3(0, 0, 10f), ForceMode.VelocityChange);
+                        //rb.AddRelativeForce(new Vector3(0, 0, 10f), ForceMode.VelocityChange);
 
                     }
                     
@@ -455,28 +488,21 @@ public class JacksonPlayerMovement : MonoBehaviour
                 break;
             case PlayerState.special:
                 {
-                    rb.velocity = transform.forward * 30f;
-
-                    if (iFrames > 15)
+                    Debug.Log("currently in the special state");
+                    bool ahhh = weapon.SpecialAttack();
+                    if (ahhh)
                     {
-                        iFrames = 15;
+
                     }
-                }
-                if (iFrames == -1)
-                {
-                    iFrames = 60;
-                }
-                else if (iFrames == 0)
-                {
-                    iFrames = -1;
-                    Destroy(currSword);
-                    state = PlayerState.idle;
+                    else
+                    {
+                        iFrames = -1;
+                        Destroy(currSword);
+                        state = PlayerState.idle;
+                    }
                     //isDodging = false;
                 }
-                else
-                {
-                    iFrames--;
-                }
+                
                 break;
             case PlayerState.invincible:
                 {
@@ -710,6 +736,19 @@ public class JacksonPlayerMovement : MonoBehaviour
     {
         return inventory;
     }
+
+    public void AddItem(Item i)
+    {
+        i.AssignPlayer(this.gameObject);
+        i.ItemPickup();
+        inventory.Add(i);
+        if (i.ItemLight()) { Lightinventory.Add(i); }
+        if (i.ItemHeavy()) { Heavyinventory.Add(i); }
+        if (i.ItemJump()) { Jumpinventory.Add(i); }
+        if (i.ItemMove()) { Moveinventory.Add(i); }
+        if (i.ItemCooldown()) { Cooldowninventory.Add(i); }
+        if (i.ItemSpecial()) { Specialinventory.Add(i); }
+       }
 
     private void OnTriggerEnter(Collider other)
     {
