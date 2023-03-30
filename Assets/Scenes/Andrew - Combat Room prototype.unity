@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -106,15 +106,15 @@ NavMeshSettings:
   m_BuildSettings:
     serializedVersion: 2
     agentTypeID: 0
-    agentRadius: 0.5
+    agentRadius: 1
     agentHeight: 2
-    agentSlope: 50
-    agentClimb: 1
+    agentSlope: 35
+    agentClimb: 0.334
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
-    cellSize: 0.16666667
+    cellSize: 0.33333334
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
@@ -130,22 +130,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1838471286011912346, guid: e6d90f008ee33a04296b8298948bc99f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 1838471286011912346, guid: e6d90f008ee33a04296b8298948bc99f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1892186098020672800, guid: e6d90f008ee33a04296b8298948bc99f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 3356571856647904549, guid: e6d90f008ee33a04296b8298948bc99f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 5238163496281388858, guid: e6d90f008ee33a04296b8298948bc99f, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -193,10 +177,6 @@ PrefabInstance:
     - target: {fileID: 5238163496281388859, guid: e6d90f008ee33a04296b8298948bc99f, type: 3}
       propertyPath: m_Name
       value: CombatRoom1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5895632266449586953, guid: e6d90f008ee33a04296b8298948bc99f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6d90f008ee33a04296b8298948bc99f, type: 3}
