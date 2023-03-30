@@ -7,19 +7,15 @@ public class Weapon
     // Start is called before the first frame update
     public string name = "";
     public string description = "";
-    public float lightStartup;
-    public float lightActive;
-    public float lightEndlag;
+    public float lightSpeed;
     public float lightDamage;
-    public float heavyStartup;
-    public float heavyActive;
-    public float heavyEndlag;
+    public float heavySpeed;
     public float heavyDamage;
-
     public float specialDamage;
     public float specialDuration;
     public float specialTimer = 0;
     public GameObject player;
+    public GameObject hitbox;
 
     public Weapon() { }
 
@@ -33,5 +29,10 @@ public class Weapon
         public void AssignPlayer(GameObject g)
     {
         player = g;
+    }
+
+    public void AssignHitbox(GameObject g)
+    {
+        hitbox = g;
     }
 }

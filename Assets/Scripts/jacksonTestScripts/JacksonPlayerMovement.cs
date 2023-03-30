@@ -56,7 +56,7 @@ public class JacksonPlayerMovement : MonoBehaviour
     float maxHealth = 100;
     float health = 100;
     float maxSpeed = 20f;
-    float damage = 10f;
+    float damage = 0f;
     float attackSpeed = 0f;
     float critRate = 0.1f;
     float armor = 0f;
@@ -308,21 +308,7 @@ public class JacksonPlayerMovement : MonoBehaviour
                         lightPress = 0f;
                         state = PlayerState.attack;
                         currSword = Instantiate(sword, transform.position, transform.rotation);
-                        float rand = Random.Range(0f, 1f);
-                        float dmg = damage;
-                        if (rand > critRate)
-                        {
-                            if (critRate > 1)
-                            {
-                                dmg = dmg * (1f + critRate);
-                            }
-                            else
-                            {
-                                dmg *= 2;
-                            }
-                        }
-                        dmg = Mathf.Ceil(dmg);
-                        currSword.GetComponent<DamageScript>().SetDamage(dmg);
+                        currSword.GetComponent<DamageScript>().SetDamage(CalculateDamage(weapon.lightDamage));
                         currSword.GetComponent<DamageScript>().SetKnockback(5f + knockback);
                         currSword.GetComponent<DamageScript>().SetDamageOverTime(damageOverTime);
                         if (lifesteal > 0)
@@ -335,7 +321,7 @@ public class JacksonPlayerMovement : MonoBehaviour
                         // currSword.transform.localRotation = transform.rotation * Quaternion.Euler(0f, 0f, 90f);
                         targetRot = currSword.transform.localRotation * Quaternion.AngleAxis(-45f, Vector3.up); //* currSword.transform.localRotation;
                         currSword.transform.localRotation = currSword.transform.localRotation * Quaternion.AngleAxis(45f, Vector3.up); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);
-                        lerpTime = 0.2f + attackSpeed;
+                        lerpTime = weapon.lightSpeed + attackSpeed;
                     }
                     if(heavyPress > 0)
                     {
@@ -348,21 +334,8 @@ public class JacksonPlayerMovement : MonoBehaviour
                         currSword = Instantiate(sword, transform.position, transform.rotation);
                         
                         currSword.transform.parent = transform;
-                        float rand = Random.Range(0f, 1f);
-                        float dmg = damage;
-                        if(rand > critRate)
-                        {
-                            if(critRate > 1)
-                            {
-                                dmg = dmg * (1f + critRate);
-                            }
-                            else
-                            {
-                                dmg *= 2;
-                            }
-                        }
-                        dmg = Mathf.Ceil(dmg);
-                        currSword.GetComponent<DamageScript>().SetDamage(dmg*2f);
+                        
+                        currSword.GetComponent<DamageScript>().SetDamage(CalculateDamage(weapon.heavyDamage));
                         currSword.GetComponent<DamageScript>().SetKnockback(10f + knockback);
                         currSword.GetComponent<DamageScript>().SetDamageOverTime(damageOverTime);
                         if(lifesteal > 0)
@@ -377,7 +350,7 @@ public class JacksonPlayerMovement : MonoBehaviour
                            // GameObject bullet = Instantiate(Resources.Load("Prefabs/IceBullet") as GameObject, transform.position + transform.forward * 2f, transform.rotation);
                             //bullet.GetComponent<Rigidbody>().velocity = transform.forward * 15f;
                        
-                        lerpTime = 0.1f + attackSpeed;
+                        lerpTime = weapon.heavySpeed + attackSpeed;
                     }
                     if(jumpPress > 0 && currJumps >0)
                     {
@@ -749,7 +722,24 @@ public class JacksonPlayerMovement : MonoBehaviour
         if (i.ItemCooldown()) { Cooldowninventory.Add(i); }
         if (i.ItemSpecial()) { Specialinventory.Add(i); }
        }
-
+    float CalculateDamage(float d)
+    {
+        float rand = Random.Range(0f, 1f);
+        float dmg = d + damage;
+        if (rand > critRate)
+        {
+            if (critRate > 1)
+            {
+                dmg = dmg * (1f + critRate);
+            }
+            else
+            {
+                dmg *= 2;
+            }
+        }
+        dmg = Mathf.Ceil(dmg);
+        return dmg;
+    }
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Damage")
