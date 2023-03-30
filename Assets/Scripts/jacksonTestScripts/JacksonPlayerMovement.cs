@@ -46,7 +46,7 @@ public class JacksonPlayerMovement : MonoBehaviour
 
     //Here's a list of all the stats a player can obtain / items can modify:
     float maxHealth = 100;
-    float health = 100;
+    public float health { get; private set; } = 100;
     float maxSpeed = 20f;
     float damage = 10f;
     float attackSpeed = 1f;
@@ -743,4 +743,9 @@ public class JacksonPlayerMovement : MonoBehaviour
     public void ChangeMaxSpecials(float f) { maxSpecials += f; }
     public void ChangeMaxJumps(float f) { maxJumps += f; }
     public void ChangeJumpHeight(float f) { jumpHeight += f; }
+
+    public float GetPlayerHealth()
+    {
+        return health / maxHealth;
+    }
 }

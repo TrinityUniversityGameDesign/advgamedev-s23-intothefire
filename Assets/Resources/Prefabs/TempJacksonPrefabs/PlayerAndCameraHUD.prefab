@@ -290,7 +290,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 140, y: 140}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7891563630230966685
 CanvasRenderer:
@@ -405,7 +405,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1200, y: 800}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -440,8 +440,9 @@ GameObject:
   m_Component:
   - component: {fileID: 186065181501984245}
   - component: {fileID: 1381696847582150834}
+  - component: {fileID: 5790091575747097286}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: Healthbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -466,8 +467,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 126, y: -60.25}
-  m_SizeDelta: {x: 22.14801, y: 100}
+  m_AnchoredPosition: {x: 172.2, y: -79.2}
+  m_SizeDelta: {x: 22, y: 140}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1381696847582150834
 MonoBehaviour:
@@ -519,19 +520,20 @@ MonoBehaviour:
   m_Value: 0.667
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4049864562113928098}
-        m_TargetAssemblyTypeName: LerpColor, Assembly-CSharp
-        m_MethodName: OnSliderValueChanged
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+--- !u!114 &5790091575747097286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4092222171573436987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca9dcdbf459b549f78558fcf23181028, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 7974954030672114784}
 --- !u!1 &4324681929662941827
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,13 +544,14 @@ GameObject:
   m_Component:
   - component: {fileID: 79320723815255549}
   - component: {fileID: 3500745283404773770}
+  - component: {fileID: 6957213774837873180}
   m_Layer: 5
-  m_Name: UserInterface
+  m_Name: UIDocument
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &79320723815255549
 Transform:
   m_ObjectHideFlags: 0
@@ -580,6 +583,18 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 2c5812fa07232469099b0c793c6d09b7, type: 3}
   m_SortingOrder: 0
+--- !u!114 &6957213774837873180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4324681929662941827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 500cfc45ffa144225bc110b10dd9e662, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6318554654897670529
 GameObject:
   m_ObjectHideFlags: 0
@@ -617,8 +632,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 60, y: -60}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 79.200195, y: -79.20021}
+  m_SizeDelta: {x: 140, y: 140}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4437642836640528279
 CanvasRenderer:
@@ -800,8 +815,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -62, y: -60.25}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -80, y: -79.2}
+  m_SizeDelta: {x: 140, y: 140}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &710859268971486571
 CanvasRenderer:
@@ -1005,6 +1020,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 7f19b758-7cf1-4dd0-af83-14916cbcdb6b
     m_ActionName: jacksonControls/Join[/Keyboard/escape,/DualShock4GamepadHID/start]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 51316645-c2db-4d3b-bbbe-f9f28c2e1ad5
+    m_ActionName: jacksonControls/Inventory[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: jacksonControls
@@ -1381,6 +1400,10 @@ PrefabInstance:
     - target: {fileID: 1816465084898165553, guid: febd0508a1576414cb5ec905f58cc70c, type: 3}
       propertyPath: m_Name
       value: TempPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 7747076170907679699, guid: febd0508a1576414cb5ec905f58cc70c, type: 3}
+      propertyPath: health
+      value: 14.33
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1296847179613517911, guid: febd0508a1576414cb5ec905f58cc70c, type: 3}
