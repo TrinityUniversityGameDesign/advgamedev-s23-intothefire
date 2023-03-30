@@ -9,28 +9,31 @@ public class EnemyUpdate : MonoBehaviour
     public float detectionRange;
 
     //Public values to be ignored in the editor
-    public float hitPoints;
-    public float frameCount;
     public TrialRoomScript hostRoom;
     public bool trialSpawned;
 
-    void Start()
-    {
+    protected float hitPoints;
+    protected float frameCount;
+    protected Rigidbody rb;
+
+    void Start() {   
         hitPoints = maxHitPoints;
         frameCount = 0;
+        rb = GetComponent<Rigidbody>();
+        EnemyInit();
     }
 
-    void Update()
-    {
+    protected virtual void EnemyInit() {}
+
+    void Update() {   
         if (hitPoints <= 0 || transform.position.y < -50){Kill();}
     }
 
-    void FixedUpdate()
-    {
+    void FixedUpdate() {
         frameCount += 1;
     }
 
-    public GameObject GetTarget(){ //Get the closest player
+    public GameObject GetTarget() { //Get the closest player
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         GameObject target = gameObject;
         float distance = detectionRange;
@@ -45,25 +48,25 @@ public class EnemyUpdate : MonoBehaviour
         return target;
     }
 
-    public Vector3 GetTargetPosition(){
+    public Vector3 GetTargetPosition() {
         GameObject player = GetTarget();
         if (player) {return player.transform.position;}
         else {return transform.position;}
     }
 
-    public bool TakeDamage(float amount){
+    public bool TakeDamage(float amount) {
         hitPoints = hitPoints - amount;
         return true;
     }
 
-    public void Kill(){
-        
+    public void Kill() {
         if (trialSpawned) {hostRoom.DecrementEnemyCount();}
         Destroy(gameObject);
     }
 
-	private void OnTriggerEnter(Collider other) 
-	{
-		if(other.transform.tag == "Damage") {TakeDamage(other.gameObject.GetComponent<DamageScript>().GetDamage());}
+	private void OnTriggerEnter(Collider other) {
+		if(other.transform.tag == "Damage") {
+            TakeDamage(other.gameObject.GetComponent<DamageScript>().GetDamage());
+        }
 	}
 } 

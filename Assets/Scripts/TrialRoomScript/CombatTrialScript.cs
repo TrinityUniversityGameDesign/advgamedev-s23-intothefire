@@ -18,11 +18,11 @@ public class CombatTrialScript : TrialRoomScript
     // Update is called once per frame
     void Update()
     {   
-        Debug.Log("Current Enemy Count: " + enemyCount);
+        //Debug.Log("Current Enemy Count: " + enemyCount);
         if (currRoomState == RoomState.trialing && enemyCount <= 0) {
             ++currentWave;
             if (TrySpawnEnemyWave()) {
-                Debug.Log("Spawning Enemy Wave " + currentWave);
+                //Debug.Log("Spawning Enemy Wave " + currentWave);
             } else {
                 TrialCompleted();
             }

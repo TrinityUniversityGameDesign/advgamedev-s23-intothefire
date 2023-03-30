@@ -7,16 +7,11 @@ public class ChaserEnemyAI : EnemyUpdate
 {   
     NavMeshAgent navMesh;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    protected override void EnemyInit() {   
         navMesh = GetComponent<NavMeshAgent>();
-        navMesh.updateUpAxis = true;
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
+    void FixedUpdate() {
         navMesh.destination = GetTargetPosition();
     }
 }
