@@ -56,16 +56,16 @@ public class JacksonPlayerMovement : MonoBehaviour
         //playerMovement.Enable();    
         cam = transform.parent.GetChild(1).gameObject.GetComponent<Camera>();
         //inputs = playerMovement.jacksonControls;
-        player = transform.GetChild(0).gameObject;
+        //player = transform.GetChild(0).gameObject;
         rb = gameObject.GetComponent<Rigidbody>();
         sword = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
         lr = GetComponent<LineRenderer>();
         GameManager.Instance?.StartupNewGameBegin.AddListener(StartPlayer);
-        if(GameManager.Instance == null)
-        {
-            state = PlayerState.idle;
-            transform.position = FindObjectOfType<PlayerInputManager>().transform.position;
-        }
+        //if(GameManager.Instance == null)
+        //{
+        //    state = PlayerState.idle;
+        //    transform.position = FindObjectOfType<PlayerInputManager>().transform.position;
+        //}
     }
 
     private void OnEnable()

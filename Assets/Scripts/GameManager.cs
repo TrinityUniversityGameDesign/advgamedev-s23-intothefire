@@ -43,6 +43,11 @@ public class GameManager : MonoBehaviour
     static Color player4color = new Color(0.6f,  0.2f,  0.46f, 1); //Purple
     public static Color[] colors = new Color[4] { player1color, player2color, player3color, player4color };
 
+    List<GameObject> playableMeshes = new List<GameObject>();
+    List<GameObject> pickableWeapons = new List<GameObject>();
+
+    Dictionary<int, int> playerMeshes = new Dictionary<int, int>() { {0, 0}, { 1, 0 }, { 2, 0 }, { 3, 0 } };
+
     public GameObject lobbyUI;
     #endregion
 
@@ -434,17 +439,38 @@ public class GameManager : MonoBehaviour
     private void InputManagerPlayerJoinedEvent(PlayerInput newPlayer)
     {
         //Debug.Log("New Player Joined");
+        newPlayer.gameObject.name = "Player" + newPlayer.playerIndex;
         players.Add(newPlayer.gameObject);
 
         GameObject newUI = Instantiate(lobbyUI, GameObject.Find("Player" + newPlayer.playerIndex).transform);
         newUI.name = "Player" + newPlayer.playerIndex + "Canvas";
         newUI.transform.GetChild(1).GetComponent<Outline>().effectColor = colors[newPlayer.playerIndex];
+        newUI.GetComponent<RotatingSelectScript>().playerIndex = newPlayer.playerIndex;
 
         newPlayer.GetComponent<PlayerInput>().uiInputModule = newUI.transform.GetChild(0).GetComponent<InputSystemUIInputModule>();
 
         Instance.PlayerJoined.Invoke();
         //newPlayer.gameObject.SetActive(false);
-        
+    }
+
+    public int ChangePlayerMesh(int playerIndex)
+    {
+        int currentPlayerMesh = playerMeshes[playerIndex];
+        if(currentPlayerMesh < playerMeshes.Count - 1)
+        {
+            playerMeshes[playerIndex]++;
+        } else if(currentPlayerMesh == playerMeshes.Count - 1)
+        {
+            playerMeshes[playerIndex] = 0;
+        }
+
+        Debug.Log(playerMeshes[playerIndex]);
+        return 1;
+    }
+
+    public int ChangeWeaponMesh(int playerIndex, int currentPosition)
+    {
+        return 1;
     }
 
     public void ContinueInput(InputAction.CallbackContext ctx)
