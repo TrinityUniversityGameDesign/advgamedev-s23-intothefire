@@ -191,7 +191,7 @@ public class JacksonPlayerMovement : MonoBehaviour
     {
         //Vector2 ul = inputs.Move.ReadValue<Vector2>();
         //Debug.Log(ul);
-        Debug.Log(health);
+        //Debug.Log(health);
         h = ul.x;
         v = ul.y;
         if(jumpPress > 0)
