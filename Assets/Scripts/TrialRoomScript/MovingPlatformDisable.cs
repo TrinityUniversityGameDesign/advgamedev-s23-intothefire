@@ -5,6 +5,7 @@ using UnityEngine;
 public class MovingPlatformDisable : SpecialDisable
 {
     // Start is called before the first frame update
+    float timer = 10;
 
     public override void disable(){
         Transform plat = transform.GetChild(0);
@@ -23,10 +24,24 @@ public class MovingPlatformDisable : SpecialDisable
             Debug.Log(player);
         }
 
-        gameObject.SetActive(false);
+        StartCoroutine(TurnOff());
         //Invoke("disablePlatform", 0f);
     }
 
+    IEnumerator TurnOff()
+    {
+        for (int i = 1000; i >= 0; i--)
+        {
+           if(i == 1)
+            {
+                gameObject.SetActive(false);
+            }
+            yield return null;
+        }
+        
+    }
+        
+    
     // async void disablePlatform(){
     //     Transform plat = transform.Find("Platform");
     //     await disablePlatformComponent(plat);
