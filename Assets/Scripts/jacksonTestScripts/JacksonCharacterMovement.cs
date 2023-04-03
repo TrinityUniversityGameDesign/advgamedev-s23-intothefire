@@ -845,4 +845,21 @@ public class JacksonCharacterMovement : MonoBehaviour
     public void ChangeMaxSpecials(float f) { maxSpecials += f; }
     public void ChangeMaxJumps(float f) { maxJumps += f; }
     public void ChangeJumpHeight(float f) { jumpHeight += f; }
+
+
+    public float GetMaxHealth() { return maxHealth; }
+    public float GetHealth() { return health; }
+    public float GetSpeed() { return maxSpeed; }
+    public float GetDamage() { return damage; }
+    public float GetAttackSpeed() {return  attackSpeed; }
+    public float GetArmor() {return  armor; }
+    public float GetCrit() { return critRate; }
+    public float GetLifesteal() { return lifesteal; }
+    public float GetLifegain() { return lifegain; }
+    public float GetDamageOverTime() { return damageOverTime; }
+    public float GetKnockback() { return knockback; }
+    public float GetKockbackResistance() { return KnockbackResistance; }
+    public float GetMaxSpecials() {return  maxSpecials; }
+    public float GetMaxJumps() { return maxJumps; }
+    public float GetJumpHeight() { return jumpHeight; }
 }
