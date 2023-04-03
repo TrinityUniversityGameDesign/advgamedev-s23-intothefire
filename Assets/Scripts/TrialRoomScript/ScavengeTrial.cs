@@ -64,16 +64,16 @@ public class ScavengeTrial : TrialRoomScript
 
     public void OnTriggerEnter(Collider other)
 	{
-		Debug.Log(currRoomState);
-		Debug.Log(trialType);
+		//Debug.Log(currRoomState);
+		//Debug.Log(trialType);
 		//Debug.Log("Collided with: " + other);
 		if(other.transform.tag == "Player" && currRoomState == RoomState.empty)
 		{
-			Debug.Log("Player found for this room");
+			//Debug.Log("Player found for this room");
 			RoomClose();
 			playerRef = other.gameObject;
 		}
-		Debug.Log(doors);
+		//Debug.Log(doors);
 	}
 
 }

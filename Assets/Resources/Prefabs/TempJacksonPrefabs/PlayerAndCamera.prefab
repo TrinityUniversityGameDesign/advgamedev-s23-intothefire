@@ -194,6 +194,7 @@ MonoBehaviour:
   radius: 6
   cameraSensitivity: 4
   lostFocus: 1
+  shouldProcessInput: 0
 --- !u!1 &7001510471671862647
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,7 +205,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7767908231291116222}
   - component: {fileID: 1174211344789034911}
-  - component: {fileID: 3744444619273705742}
+  - component: {fileID: 2284001750617244790}
   m_Layer: 0
   m_Name: PlayerAndCamera
   m_TagString: Untagged
@@ -356,15 +357,39 @@ MonoBehaviour:
     m_ActionId: ce27ef76-6eb1-47f5-b1d9-f39664779551
     m_ActionName: jacksonControls/CameraMove[/Mouse/delta]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 582682666417472267, guid: 2b24ea6f9f873364a80102391dc63098, type: 3}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ContinueInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 7f19b758-7cf1-4dd0-af83-14916cbcdb6b
     m_ActionName: jacksonControls/Join[/Keyboard/escape,/DualShock4GamepadHID/start]
-  m_NeverAutoSwitchControlSchemes: 0
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c7ae2dfe-a88b-4448-93cb-22d7e04f9888
+    m_ActionName: UI/Navigate[/XInputControllerWindows/leftStick/up,/XInputControllerWindows/rightStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/rightStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/rightStick/left,/XInputControllerWindows/leftStick/right,/XInputControllerWindows/rightStick/right,/XInputControllerWindows/dpad,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0b9ef34c-dc77-4e5d-9adf-e2c28eea016d
+    m_ActionName: UI/Submit[/Keyboard/enter,/XInputControllerWindows/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b6842b1e-51da-4d05-a8be-27012508db8e
+    m_ActionName: UI/Cancel[/Keyboard/escape,/XInputControllerWindows/buttonEast]
+  m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: jacksonControls
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 907459286308490896}
---- !u!114 &3744444619273705742
+--- !u!114 &2284001750617244790
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -373,7 +398,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7001510471671862647}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb78a8fdea3c42144b6ab93d8c2c1add, type: 3}
+  m_Script: {fileID: 11500000, guid: ef98382ef84e83e40881e91a5000da8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &373691890364551091

@@ -72,16 +72,16 @@ public class TrialRoomScript : MonoBehaviour
 
 	public void OnTriggerEnter(Collider other)
 	{
-		Debug.Log(currRoomState);
-		Debug.Log(trialType);
-		//Debug.Log("Collided with: " + other);
+		////Debug.Log(currRoomState);
+		//Debug.Log(trialType);
+		////Debug.Log("Collided with: " + other);
 		if(other.transform.tag == "Player" && currRoomState == RoomState.empty)
 		{
-			Debug.Log("Player found for this room");
+			//Debug.Log("Player found for this room");
 			RoomClose();
 			playerRef = other.gameObject;
 		}
-		Debug.Log(doors);
+		//Debug.Log(doors);
 	}
 
 	//Player enters room
@@ -89,14 +89,14 @@ public class TrialRoomScript : MonoBehaviour
 	{
 		SetDoorPresence(true);
 		currRoomState = RoomState.closed;
-		Debug.Log("Room Closed");
+		//Debug.Log("Room Closed");
 
 		//Spawn Startpad in appropriate room location
 		PlaceStartPad();
 	}
 	protected void SetDoorPresence(bool doorsEnabled)
 	{
-		//Debug.Log("Doors are present- " + doorsEnabled);
+		////Debug.Log("Doors are present- " + doorsEnabled);
 
 		foreach (Transform childObject in doors)
 		{
@@ -165,7 +165,7 @@ public class TrialRoomScript : MonoBehaviour
 				GenerateHuntInside();
 			}
 			currRoomState = RoomState.trialing;
-			Debug.Log("Trial Started");
+			//Debug.Log("Trial Started");
 		}
 	}
 
@@ -201,7 +201,7 @@ public class TrialRoomScript : MonoBehaviour
 		//trial is over when EnemyList.Count == 0;
 
 		int numOfEnemies = Random.Range(3, 5);
-		Debug.Log("Number of enemies for this room: " + numOfEnemies);
+		//Debug.Log("Number of enemies for this room: " + numOfEnemies);
 		for (int i = 0; i < numOfEnemies; i++)
 		{
 			Vector3 spawnLocation = new Vector3(transform.position.x + Random.Range(-15, 15), transform.position.y + 1f, transform.position.z + Random.Range(-15, 15));
@@ -217,7 +217,7 @@ public class TrialRoomScript : MonoBehaviour
 	}
 
 	private void GenerateHuntInside(){
-		//Debug.Log("hunt started");
+		////Debug.Log("hunt started");
 		SpawnBoxes();
 		//SpawnScavengeEnemies();
 	}
@@ -233,7 +233,7 @@ public class TrialRoomScript : MonoBehaviour
 			trialGeometry.Add(box);
 		}
 		boxes[Random.Range(0, boxes.Count - 1)].GetComponent<Box>().hasTreasure = true;
-		//Debug.Log(boxes.Count);
+		////Debug.Log(boxes.Count);
 	}
 
 	private void SpawnScavengeEnemies(){
@@ -266,7 +266,7 @@ public class TrialRoomScript : MonoBehaviour
 		DespawnTrialGeometry();
 		GivePlayerLoot();
 		currRoomState = RoomState.completed;
-		Debug.Log("Room Completed");
+		//Debug.Log("Room Completed");
 		SetDoorPresence(false);
 	}
 	

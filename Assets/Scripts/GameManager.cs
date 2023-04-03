@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 
 //GameState to represent the possible states the game can be in.
@@ -36,11 +37,23 @@ public class GameManager : MonoBehaviour
     public int DistanceApart = 120;
 
     public List<GameObject> players = new List<GameObject>();
+    static Color player1color = new Color(0.4f, 0.8f, 0.9f, 1); //Cyan
+    static Color player2color = new Color(0.13f, 0.53f, 0.2f, 1); //Green
+    static Color player3color = new Color(0.8f, 0.73f, 0.26f, 1); //Yellow
+    static Color player4color = new Color(0.6f,  0.2f,  0.46f, 1); //Purple
+    public static Color[] colors = new Color[4] { player1color, player2color, player3color, player4color };
+
+    List<GameObject> playableMeshes = new List<GameObject>();
+    List<GameObject> pickableWeapons = new List<GameObject>();
+
+    Dictionary<int, int> playerMeshes = new Dictionary<int, int>() { {0, 0}, { 1, 0 }, { 2, 0 }, { 3, 0 } };
+
+    public GameObject lobbyUI;
     #endregion
 
     #region Private Fields
     [Tooltip("Internal state the game manager is currently in.")]
-    private GameState _state;
+    private GameState _state = GameState.Lobby;
 
     [Tooltip("Simple timer for testing purposes")]
     private GameObject timerTextObj;
@@ -79,57 +92,57 @@ public class GameManager : MonoBehaviour
 
     #region Unity Events
     [Tooltip("Event uesd to call when a Micro Event is starting")]
-    public UnityEvent MicroEventBegin = new UnityEvent();
+    public UnityEvent MicroEventBegin;
     [Tooltip("Event used to call when a Micro Event is ending")]
-    public UnityEvent MicroEventEnd = new UnityEvent();
+    public UnityEvent MicroEventEnd;
 
     [Tooltip("Event used to call when a Side Event is starting")]
-    public UnityEvent SideEventBegin = new UnityEvent();
+    public UnityEvent SideEventBegin;
     [Tooltip("Event used to cal when a Side Event is Starting")]
-    public UnityEvent SideEventEnd = new UnityEvent();
+    public UnityEvent SideEventEnd;
 
     [Tooltip("Event used to indicate when the Labyrinth is beginning to be explored")]
-    public UnityEvent LabyrinthExploreBegin = new UnityEvent();
+    public UnityEvent LabyrinthExploreBegin;
     [Tooltip("Event used to indicate when the Labyrinth explore phase is being exited")]
-    public UnityEvent LabyrinthExploreEnd = new UnityEvent();
+    public UnityEvent LabyrinthExploreEnd;
 
     [Tooltip("Event called when the Showdown begins")]
-    public UnityEvent ShowdownBegin = new UnityEvent();
+    public UnityEvent ShowdownBegin;
     [Tooltip("Event call when the Showdown ends")]
-    public UnityEvent ShowdownEnd = new UnityEvent();
+    public UnityEvent ShowdownEnd;
 
     [Tooltip("Event called when the lobby begins")]
-    public UnityEvent LobbyBegin = new UnityEvent();
+    public UnityEvent LobbyBegin;
     [Tooltip("Event called when the lobby ends")]
-    public UnityEvent LobbyEnd = new UnityEvent();
+    public UnityEvent LobbyEnd;
 
     [Tooltip("Event called when the game pauses")]
-    public UnityEvent PausedBegin = new UnityEvent();
+    public UnityEvent PausedBegin;
     [Tooltip("Event called when the game unpauses")]
-    public UnityEvent PausedEnd = new UnityEvent();
+    public UnityEvent PausedEnd;
 
     [Tooltip("Event called when the Game over begins")]
-    public UnityEvent GameOverBegin = new UnityEvent();
+    public UnityEvent GameOverBegin;
     [Tooltip("Event called when the Game over ends")]
-    public UnityEvent GameOverEnd = new UnityEvent();
+    public UnityEvent GameOverEnd;
 
     [Tooltip("Event called when the end screen sequence begins")]
-    public UnityEvent EndScreenBegin = new UnityEvent();
+    public UnityEvent EndScreenBegin;
     [Tooltip("Event called when the end screen sequence ends")]
-    public UnityEvent EndScreenEnd = new UnityEvent();
+    public UnityEvent EndScreenEnd;
 
     [Tooltip("Event called when the startup screen begins")]
-    public UnityEvent StartupNewGameBegin = new UnityEvent();
+    public UnityEvent StartupNewGameBegin;
     [Tooltip("Event called when the startup screen ends")]
-    public UnityEvent StartupNewGameEnd = new UnityEvent();
+    public UnityEvent StartupNewGameEnd;
 
     [Tooltip("Event called when a Major event begins")]
-    public UnityEvent MajorEventBegin = new UnityEvent();
+    public UnityEvent MajorEventBegin;
     [Tooltip("Event called when the Major event ends")]
-    public UnityEvent MajorEventEnd = new UnityEvent();
+    public UnityEvent MajorEventEnd;
 
     [Tooltip("Event called when a player joined.")]
-    public UnityEvent PlayerJoined = new UnityEvent();
+    public UnityEvent PlayerJoined;
     #endregion
 
     #region Private Methods
@@ -137,37 +150,43 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
 
-        MicroEventBegin.AddListener(BeginMicroEvent);
-        MicroEventEnd.AddListener(EndMicroEvent);
+        Instance.MicroEventBegin.AddListener(BeginMicroEvent);
+        Instance.MicroEventEnd.AddListener(EndMicroEvent);
 
-        SideEventBegin.AddListener(BeginSideEvent);
-        SideEventEnd.AddListener(EndSideEvent);
+        Instance.SideEventBegin.AddListener(BeginSideEvent);
+        Instance.SideEventEnd.AddListener(EndSideEvent);
 
-        MajorEventBegin.AddListener(TestBeginMajorEvent);
-        MajorEventEnd.AddListener(TestEndMajorEvent);
+        Instance.MajorEventBegin.AddListener(TestBeginMajorEvent);
+        Instance.MajorEventEnd.AddListener(TestEndMajorEvent);
 
-        LabyrinthExploreBegin.AddListener(TestLabyrinthBegin);
-        LabyrinthExploreEnd.AddListener(TestLabyrinthEnd);
+        Instance.LabyrinthExploreBegin.AddListener(TestLabyrinthBegin);
+        Instance.LabyrinthExploreEnd.AddListener(TestLabyrinthEnd);
 
-        ShowdownBegin.AddListener(TestShowdownBegin);
-        ShowdownEnd.AddListener(TestShowdownEnd);
+        Instance.ShowdownBegin.AddListener(TestShowdownBegin);
+        Instance.ShowdownEnd.AddListener(TestShowdownEnd);
 
-        LobbyBegin.AddListener(TestLobbyBegin);
-        LobbyEnd.AddListener(TestLobbyEnd);
+        Instance.LobbyBegin.AddListener(TestLobbyBegin);
+        Instance.LobbyEnd.AddListener(TestLobbyEnd);
 
-        PausedBegin.AddListener(TestPausedBegin);
-        PausedEnd.AddListener(TestPausedEnd);
+        Instance.PausedBegin.AddListener(TestPausedBegin);
+        Instance.PausedEnd.AddListener(TestPausedEnd);
 
-        GameOverBegin.AddListener(TestGameOverBegin);
-        GameOverEnd.AddListener(TestGameOverEnd);
+        Instance.GameOverBegin.AddListener(TestGameOverBegin);
+        Instance.GameOverEnd.AddListener(TestGameOverEnd);
 
-        EndScreenBegin.AddListener(TestEndScreenBegin);
-        EndScreenEnd.AddListener(TestEndScreenEnd);
+        Instance.EndScreenBegin.AddListener(TestEndScreenBegin);
+        Instance.EndScreenEnd.AddListener(TestEndScreenEnd);
 
-        StartupNewGameBegin.AddListener(TestStartupNewGameBegin);
-        StartupNewGameEnd.AddListener(TestStartupNewGameEnd);
+        Instance.StartupNewGameBegin.AddListener(TestStartupNewGameBegin);
+        Instance.StartupNewGameEnd.AddListener(TestStartupNewGameEnd);
 
         secondsOfGameTime = 60 * Minutes;
+
+
+        if (!GameObject.Find("MainCanvas"))
+        {
+            Debug.LogError("Could not find UI Prefab named MainCanvas");
+        }
 
         timerTextObj = GameObject.Find("Timer");
         timer = timerTextObj?.GetComponent<TMP_Text>();
@@ -191,13 +210,14 @@ public class GameManager : MonoBehaviour
         else
         {
             EvtCtrl.transform.position = new Vector3((LabyrinthSize / 2) * DistanceApart, 90, (LabyrinthSize / 2) * DistanceApart);
-        }        
+        }
+        
     }
 
     private void Start()
     {
+        Instance.OnStateEnter(GameState.Lobby);
         PlayerInputManager.instance?.playerJoinedEvent.AddListener(InputManagerPlayerJoinedEvent);
-        OnStateEnter(GameState.Lobby);
     }
 
     private void FixedUpdate()
@@ -220,45 +240,43 @@ public class GameManager : MonoBehaviour
     private void OnStateEnter(GameState nextState)
     {
         //Exit the current state, then call the enter on the nextState.
-        OnStateExit();
-        _state = nextState;
-        switch (_state)
+        Instance.OnStateExit();
+        Instance._state = nextState;
+        switch (Instance._state)
         {
             case GameState.GameOver:
+                Instance.GameOverBegin.Invoke();
                 Timer = 0;
                 break;
             case GameState.Labyrinth_Explore:
-
-                Debug.Log("Entering Labyrinth_Explore");
-
-                LabyrinthExploreBegin?.Invoke();
-
+                Instance.LabyrinthExploreBegin.Invoke();
                 timeUntilNextMicroEvent = Random.Range(MinSecondsBetweenMicroEvents, MaxSecondsBetweenMicroEvents);
                 timeUntilNextSideEvent = Random.Range(MinSecondsBetweenSideEvents, MaxSecondsBetweenSideEvents);
 
-                Debug.Log("Time until next Micro Event: " + timeUntilNextMicroEvent + " s");
-                Debug.Log("Time until next Side Event: " + timeUntilNextSideEvent + " s");
+                //Debug.Log("Time until next Micro Event: " + timeUntilNextMicroEvent + " s");
+                //Debug.Log("Time until next Side Event: " + timeUntilNextSideEvent + " s");
                 break;
             case GameState.Lobby:
-                timerTextObj.SetActive(false);
-                
+                Instance.LobbyBegin.Invoke();
                 break;
             case GameState.Paused:
+                Instance.PausedBegin.Invoke();
                 break;
             case GameState.Showdown:
-                MajorEventEnd.Invoke();
-                Debug.Log("Entering Showdown");
+                Instance.ShowdownBegin.Invoke();
+                Instance.MajorEventEnd.Invoke();
                 break;
             case GameState.SideEvent:
-                SideEventBegin?.Invoke();
+                Instance.SideEventBegin.Invoke();
                 break;
             case GameState.EndScreen:
+                Instance.EndScreenBegin.Invoke();
                 gameInProgress = false;
                 break;
             case GameState.Startup_New_Game:
-                StartupNewGameBegin.Invoke();
+                Instance.StartupNewGameBegin.Invoke();
                 PlayerInputManager.instance.splitScreen = true;
-                MajorEventBegin.Invoke();
+                Instance.MajorEventBegin.Invoke();
                 break;
             default:
                 break;
@@ -267,7 +285,7 @@ public class GameManager : MonoBehaviour
 
     private void TickState()
     {
-        switch (_state)
+        switch (Instance._state)
         {
             case GameState.GameOver:
                 break;
@@ -284,24 +302,24 @@ public class GameManager : MonoBehaviour
 
                 if(timeUntilNextMicroEvent <= 0 && !microEventInProgress)
                 {
-                    MicroEventBegin?.Invoke();
+                    Instance.MicroEventBegin?.Invoke();
                 }
 
                 if(timeUntilNextSideEvent <= 0)
                 {
-                    MicroEventEnd?.Invoke();
+                    Instance.MicroEventEnd?.Invoke();
                     OnStateEnter(GameState.SideEvent);
                     break;
                 }
 
                 if(microEventInProgress && timeLeftInMicroEvent <= 0)
                 {
-                    MicroEventEnd?.Invoke();
+                    Instance.MicroEventEnd?.Invoke();
                 }
 
                 if(Timer >= Minutes * 60)
                 {
-                    OnStateEnter(GameState.Showdown);
+                    Instance.OnStateEnter(GameState.Showdown);
                     break;
                 }
                 break;
@@ -315,13 +333,13 @@ public class GameManager : MonoBehaviour
                 timeLeftInSideEvent -= Time.deltaTime;
                 if(timeLeftInSideEvent <= 0)
                 {
-                    OnStateEnter(GameState.Labyrinth_Explore);
+                    Instance.OnStateEnter(GameState.Labyrinth_Explore);
                 }
                 break;
             case GameState.EndScreen:
                 break;
             case GameState.Startup_New_Game:
-                OnStateEnter(GameState.Labyrinth_Explore);
+                Instance.OnStateEnter(GameState.Labyrinth_Explore);
                 break;
             default:
                 break;
@@ -330,34 +348,40 @@ public class GameManager : MonoBehaviour
 
     private void OnStateExit()
     {
-        switch (_state)
+        switch (Instance._state)
         {
             case GameState.GameOver:
+                Instance.GameOverEnd.Invoke();
                 break;
             case GameState.Labyrinth_Explore:
+                Instance.LabyrinthExploreEnd.Invoke();
                 break;
             case GameState.Lobby:
+                Instance.LobbyEnd.Invoke();
                 break;
             case GameState.Paused:
+                Instance.PausedEnd.Invoke();
                 break;
             case GameState.Showdown:
+                Instance.ShowdownEnd.Invoke();
                 break;
             case GameState.SideEvent:
-                SideEventEnd?.Invoke();
+                Instance.SideEventEnd?.Invoke();
                 break;
             case GameState.EndScreen:
+                Instance.EndScreenEnd.Invoke();
                 break;
             case GameState.Startup_New_Game:
+                Instance.StartupNewGameEnd.Invoke();
                 break;
             default:
                 break;
         }
     }
 
-
     #region Event Calls
 
-    void TestLabyrinthBegin() { Debug.Log("LabyrinthBegin"); }
+    void TestLabyrinthBegin() { Debug.Log("Labyrinth Begin"); }
 
     void TestLabyrinthEnd() { Debug.Log("Labyrinth Ends"); }
 
@@ -414,11 +438,47 @@ public class GameManager : MonoBehaviour
 
     private void InputManagerPlayerJoinedEvent(PlayerInput newPlayer)
     {
-        Debug.Log("New Player Joined");
+        //Debug.Log("New Player Joined");
+        newPlayer.gameObject.name = "Player" + newPlayer.playerIndex;
         players.Add(newPlayer.gameObject);
-        PlayerJoined.Invoke();
+
+        GameObject newUI = Instantiate(lobbyUI, GameObject.Find("Player" + newPlayer.playerIndex).transform);
+        newUI.name = "Player" + newPlayer.playerIndex + "Canvas";
+        newUI.transform.GetChild(1).GetComponent<Outline>().effectColor = colors[newPlayer.playerIndex];
+        newUI.GetComponent<RotatingSelectScript>().playerIndex = newPlayer.playerIndex;
+
+        newPlayer.GetComponent<PlayerInput>().uiInputModule = newUI.transform.GetChild(0).GetComponent<InputSystemUIInputModule>();
+
+        Instance.PlayerJoined.Invoke();
         //newPlayer.gameObject.SetActive(false);
-        
+    }
+
+    public int ChangePlayerMesh(int playerIndex)
+    {
+        int currentPlayerMesh = playerMeshes[playerIndex];
+        if(currentPlayerMesh < playerMeshes.Count - 1)
+        {
+            playerMeshes[playerIndex]++;
+        } else if(currentPlayerMesh == playerMeshes.Count - 1)
+        {
+            playerMeshes[playerIndex] = 0;
+        }
+
+        Debug.Log(playerMeshes[playerIndex]);
+        return 1;
+    }
+
+    public int ChangeWeaponMesh(int playerIndex, int currentPosition)
+    {
+        return 1;
+    }
+
+    public void ContinueInput(InputAction.CallbackContext ctx)
+    {
+        if (Instance._state == GameState.Lobby)
+        {
+            Instance.OnStateEnter(GameState.Startup_New_Game);
+        }
     }
     #endregion
     #endregion
