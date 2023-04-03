@@ -15,6 +15,7 @@ public class Swords : Weapon
         lightSpeed = 0.2f;
         heavyDamage = 20;
         heavySpeed = 0.1f;
+        canMove = false;
     }
     
     public override bool SpecialAttack()

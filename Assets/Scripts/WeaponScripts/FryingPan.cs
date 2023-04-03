@@ -12,10 +12,11 @@ public class FryingPan : Weapon
         description = "Basic sword, pretty fast, with a dash slash to move around";
         specialDuration = 60;
         specialTimer = 0;
-        lightDamage = 10;
-        lightSpeed = 0.2f;
-        heavyDamage = 20;
-        heavySpeed = 0.1f;
+        lightDamage = 15;
+        lightSpeed = 0.35f;
+        heavyDamage = 30;
+        heavySpeed = 0.2f;
+        canMove = true;
     }
     
     public override bool SpecialAttack()

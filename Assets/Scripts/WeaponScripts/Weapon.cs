@@ -16,6 +16,7 @@ public class Weapon
     public float specialTimer = 0;
     public GameObject player;
     public GameObject hitbox;
+    public bool canMove = false;
 
     public Weapon() { }
 

@@ -22,6 +22,7 @@ public class JacksonPlayerMovement : MonoBehaviour
     GameObject currSword = null;
     Quaternion targetRot;
     bool grounded = true;
+    float gravMult = 1f;
     private LineRenderer lr;
     GameObject enemy = null;
     List<Item> inventory = new List<Item>();
@@ -100,6 +101,7 @@ public class JacksonPlayerMovement : MonoBehaviour
         player = transform.GetChild(0).gameObject;
         transform.GetChild(1).gameObject.GetComponent<CapsuleCollider>().enabled = false;
         rb = gameObject.GetComponent<Rigidbody>();
+        //rb.useGravity = true;
         rb.drag = 0;
         rb.angularDrag = 0;
         sword = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
@@ -290,14 +292,21 @@ public class JacksonPlayerMovement : MonoBehaviour
                 {
                     if (grounded)
                     {
+                        //rb.useGravity = true;
+                        gravMult = 3;
                         currSpecials = maxSpecials;
                         currJumps = maxJumps;
+                    }
+                    else
+                    {
+                        gravMult = 1;
+                        //rb.useGravity = false;
                     }
                     if(health < 0)
                     {
                         state = PlayerState.dead;
                     }
-                    rb.AddForce(new Vector3(0f, -1f, 0f) * gravity);
+                    rb.AddForce(new Vector3(0f, -1f, 0f) * (gravMult*gravity));
                     MovementManagement(h, v);
                     if (lightPress > 0)
                     {
@@ -461,6 +470,7 @@ public class JacksonPlayerMovement : MonoBehaviour
                 break;
             case PlayerState.special:
                 {
+                    weapon.AssignHitbox(currSword);
                     Debug.Log("currently in the special state");
                     bool ahhh = weapon.SpecialAttack();
                     if (ahhh)
