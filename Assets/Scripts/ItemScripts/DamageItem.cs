@@ -26,7 +26,7 @@ public class DamageItem : Item
     // Update is called once per frame
    public override bool ItemPickup()
     {
-        player.GetComponent<JacksonPlayerMovement>().ChangeDamage(value);
+        player.GetComponent<JacksonCharacterMovement>().ChangeDamage(value);
         return true;
     }
 }

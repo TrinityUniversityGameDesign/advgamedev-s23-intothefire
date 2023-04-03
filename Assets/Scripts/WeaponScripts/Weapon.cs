@@ -9,10 +9,13 @@ public class Weapon
     public string description = "";
     public float lightSpeed;
     public float lightDamage;
+    public float lightKnockback;
     public float heavySpeed;
     public float heavyDamage;
+    public float heavyKnockback;
     public float specialDamage;
     public float specialDuration;
+    public float specialKnockback;
     public float specialTimer = 0;
     public GameObject player;
     public GameObject hitbox;

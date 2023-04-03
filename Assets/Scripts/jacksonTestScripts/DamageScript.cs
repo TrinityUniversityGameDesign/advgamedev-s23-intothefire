@@ -9,6 +9,7 @@ public class DamageScript : MonoBehaviour
     float dot = 0f;
     float knockback = 5f;
     bool lifesteal = false;
+    GameObject parent;
     GameObject player;
     void Start()
     {
@@ -57,5 +58,13 @@ public class DamageScript : MonoBehaviour
     public bool GetLifesteal()
     {
         return lifesteal;
+    }
+    public void SetParent(GameObject g)
+    {
+        parent = g;
+    }
+    public GameObject GetParent()
+    {
+        return parent;
     }
 }
