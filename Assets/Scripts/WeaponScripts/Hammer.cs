@@ -31,14 +31,10 @@ public class Hammer : Weapon
             {
                 lazy.SetVelocity(new Vector3(tmp.x, 0f, tmp.z));
             }
-            if(lazy.Magnitude() < 10f)
-            {
-                lazy.SetVelocity(lazy.GetVelocity() + player.transform.forward * 30f + new Vector3(0f, 1f, 0f));
-            }
-            else
-            {
-                lazy.SetVelocity(lazy.GetVelocity() + player.transform.forward * 15f + new Vector3(0f, 1f, 0f));
-            }
+            
+                lazy.SetVelocity( player.transform.forward * 35f + new Vector3(0f, 1f, 0f));
+               
+            
             //boomPos = player.transform.position;
         }
         
