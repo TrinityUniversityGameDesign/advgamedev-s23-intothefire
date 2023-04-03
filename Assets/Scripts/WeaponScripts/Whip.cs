@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hammer : Weapon
+public class Whip : Weapon
 {
     // Start is called before the first frame update
     Vector3 boomPos;
-    public Hammer()
+    Vector3 anchor;
+    public Whip()
     {
+
         name = "Hammer";
         description = "Heavy slow big hammer, with a very powerful charge";
         specialDuration = 10000;
@@ -24,7 +26,7 @@ public class Hammer : Weapon
         //Debug.Log("special timer: " +specialTimer + " special duration: " + specialDuration);
         if(specialTimer == 0)
         {
-            
+            anchor = player.transform.position + (player.transform.forward * 20f) + player.transform.up * 20f;
             JacksonCharacterMovement lazy = player.GetComponent<JacksonCharacterMovement>();
             Vector3 tmp = lazy.GetVelocity();
             if(tmp.y < 0)
