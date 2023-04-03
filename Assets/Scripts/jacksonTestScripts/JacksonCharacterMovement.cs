@@ -50,7 +50,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     float lerpTime = 0.2f;
     float stunTimer = 0f;
     float stunValue = 0f;
-    Weapon weapon = new Swords();
+    Weapon weapon = new FryingPan();
     GameObject lastDam;
 
 
@@ -426,6 +426,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                         {
                             currSword.GetComponent<DamageScript>().DoLifesteal(this.gameObject);
                         }
+                        weapon.AssignHitbox(currSword);
                         //rb.AddRelativeForce(new Vector3(0, 0, 10f), ForceMode.VelocityChange);
 
                     }
@@ -496,7 +497,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                 {
                     weapon.AssignHitbox(currSword);
                     Debug.Log("currently in the special state");
-                    bool ahhh = weapon.SpecialAttack();
+                    bool ahhh = weapon.SpecialAttack(h,v);
                     if (ahhh)
                     {
 
@@ -587,7 +588,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         state = PlayerState.idle;
     }
-    void MovementManagement(float horizontal, float vertical)
+    public void MovementManagement(float horizontal, float vertical)
     {
         // If there is some axis input...
         if (horizontal != 0f || vertical != 0f)
@@ -698,7 +699,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     }
 
    
-    float Magnitude()
+    public float Magnitude()
     {
         return Mathf.Sqrt((velocity.x * velocity.x) + (velocity.z * velocity.z));
     }

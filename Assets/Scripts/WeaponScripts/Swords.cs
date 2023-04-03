@@ -21,7 +21,7 @@ public class Swords : Weapon
         canMove = false;
     }
     
-    public override bool SpecialAttack()
+    public override bool SpecialAttack(float h, float v)
     {
         //Debug.Log("special timer: " +specialTimer + " special duration: " + specialDuration);
         //player.GetComponent<Rigidbody>().velocity = player.transform.forward * 30f;

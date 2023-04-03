@@ -10,7 +10,7 @@ public class FryingPan : Weapon
     {
         name = "Sword";
         description = "Basic sword, pretty fast, with a dash slash to move around";
-        specialDuration = 60;
+        specialDuration = 30;
         specialTimer = 0;
         lightDamage = 15;
         lightSpeed = 0.35f;
@@ -19,14 +19,25 @@ public class FryingPan : Weapon
         canMove = true;
     }
     
-    public override bool SpecialAttack()
+    public override bool SpecialAttack(float h, float v)
     {
         //Debug.Log("special timer: " +specialTimer + " special duration: " + specialDuration);
         if(specialTimer == 0)
         {
-            Rigidbody rb = player.GetComponent<Rigidbody>();
-            rb.velocity = player.transform.forward * 30f;
-            rb.velocity = rb.velocity + new Vector3(0f, 20f, 0f);
+            JacksonCharacterMovement lazy = player.GetComponent<JacksonCharacterMovement>();
+            Vector3 tmp = lazy.GetVelocity();
+            if(tmp.y < 0)
+            {
+                lazy.SetVelocity(new Vector3(tmp.x, 0f, tmp.z));
+            }
+            if(lazy.Magnitude() < 10f)
+            {
+                lazy.SetVelocity(lazy.GetVelocity() + player.transform.forward * 25f + new Vector3(0f, 20f, 0f));
+            }
+            else
+            {
+                lazy.SetVelocity(lazy.GetVelocity() + player.transform.forward * 10f + new Vector3(0f, 20f, 0f));
+            }
             boomPos = player.transform.position;
         }
         
@@ -38,6 +49,9 @@ public class FryingPan : Weapon
         }
         else
         {
+            player.GetComponent<JacksonCharacterMovement>().MovementManagement(h, v);
+            player.GetComponent<JacksonCharacterMovement>().SetVelocity(player.GetComponent<JacksonCharacterMovement>().GetVelocity() + new Vector3(0f, -0.5f, 0f));
+            hitbox.transform.position = boomPos;
             specialTimer++;
             return true;
         }

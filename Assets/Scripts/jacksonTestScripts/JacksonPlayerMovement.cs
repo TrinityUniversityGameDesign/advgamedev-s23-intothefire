@@ -474,7 +474,7 @@ public class JacksonPlayerMovement : MonoBehaviour
                 {
                     weapon.AssignHitbox(currSword);
                     Debug.Log("currently in the special state");
-                    bool ahhh = weapon.SpecialAttack();
+                    bool ahhh = weapon.SpecialAttack(h,v);
                     if (ahhh)
                     {
 

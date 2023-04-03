@@ -28,7 +28,7 @@ public class Weapon
     {
 
     }
-    public virtual bool SpecialAttack() { return true; }
+    public virtual bool SpecialAttack(float h, float v) { return true; }
 
         public void AssignPlayer(GameObject g)
     {
