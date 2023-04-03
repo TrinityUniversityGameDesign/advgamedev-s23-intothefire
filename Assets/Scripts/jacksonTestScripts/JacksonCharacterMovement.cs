@@ -50,7 +50,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     float lerpTime = 0.2f;
     float stunTimer = 0f;
     float stunValue = 0f;
-    Weapon weapon = new FryingPan();
+    Weapon weapon = new Hammer();
     GameObject lastDam;
 
 
@@ -698,7 +698,10 @@ public class JacksonCharacterMovement : MonoBehaviour
         transform.rotation = newRotation;
     }
 
-   
+   public Camera GetCamera()
+    {
+        return cam;
+    }
     public float Magnitude()
     {
         return Mathf.Sqrt((velocity.x * velocity.x) + (velocity.z * velocity.z));
@@ -813,6 +816,11 @@ public class JacksonCharacterMovement : MonoBehaviour
     public Vector3 GetVelocity()
     {
         return velocity;
+    }
+
+    public bool GetSpecialHold()
+    {
+        return specialHold;
     }
 
     public void ChangeHealth(float f) { maxHealth += f; health += f; }
