@@ -21,18 +21,21 @@ public class MovingPlatformDisable : SpecialDisable
         if(player != null){
             //nullParent(player);
             player.parent = null;
-            Debug.Log(player);
+            //Debug.Log(player);
         }
 
-        StartCoroutine(TurnOff());
+        StartCoroutine(TurnOff(player));
         //Invoke("disablePlatform", 0f);
     }
 
-    IEnumerator TurnOff()
+    IEnumerator TurnOff(Transform t)
     {
         for (int i = 1000; i >= 0; i--)
         {
-           if(i == 1)
+            // if(t && !t.parent){
+            //     t.parent = null;
+            // }
+            if(i == 1)
             {
                 gameObject.SetActive(false);
             }
