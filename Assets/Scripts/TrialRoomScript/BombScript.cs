@@ -10,7 +10,7 @@ public class BombScript : MonoBehaviour
 
     void Start()
     {
-        gameObject.GetComponent<DamageScript>().SetDamage(5f);
+        //gameObject.GetComponent<DamageScript>().SetDamage(5f);
         explosion = GameObject.Find("Explosion");
         ExplosionScript explosionScript = explosion.GetComponent<ExplosionScript>();
         explosionScript.TriggerExplode();

@@ -7,29 +7,33 @@ public class SpikePlatformScript : MonoBehaviour
     private Collider trigger;
     private MeshRenderer mesh;
     private Material[] mats;
+
+    public float timeUntilFirstActive = 2f;
+    public float timeUntilActive = 2f;
+    public float timeUntilDeactive = 2f;
     // Start is called before the first frame update
     void Start()
     {
-        gameObject.GetComponent<DamageScript>().SetDamage(100f);
+        gameObject.GetComponent<DamageScript>().SetDamage(10f);
         trigger = GetComponent<Collider>();
         trigger.isTrigger = false;
         mesh = GetComponent<MeshRenderer>();
         mats = mesh.materials;
-        Invoke("Activate", 2f);
+        Invoke("Activate", timeUntilFirstActive);
     }
 
     private void Activate(){
         trigger.isTrigger = true;
         mesh.material = mats[1];
         gameObject.tag = "Damage";
-        Invoke("Deactivate", 2f);
+        Invoke("Deactivate", timeUntilDeactive);
     }
 
     private void Deactivate(){
         trigger.isTrigger = false;
         mesh.material = mats[0];
         gameObject.tag = "Untagged";
-        Invoke("Activate", 2f);
+        Invoke("Activate", timeUntilActive);
     }
 
     void OnTriggerEnter(Collider target){

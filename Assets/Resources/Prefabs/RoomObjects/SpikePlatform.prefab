@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8188164151963186011}
   - component: {fileID: 5148629979830487441}
   - component: {fileID: 5148629979830487447}
+  - component: {fileID: 8009413661172003070}
   m_Layer: 0
   m_Name: SpikePlatform
   m_TagString: Untagged
@@ -113,6 +114,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0d1fb600b8a74f469b2596a3e44dcf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeUntilFirstActive: 2
+  timeUntilActive: 2
+  timeUntilDeactive: 2
 --- !u!54 &5148629979830487441
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -141,3 +145,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfc98f4d60377f34b95e4ffc82ae074f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &8009413661172003070
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4463169810415431977}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}

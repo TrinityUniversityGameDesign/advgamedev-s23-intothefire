@@ -13,6 +13,7 @@ public class MovingPlatform : MonoBehaviour
 
     public float distanceCutoff = 0.5f;
     public float speed = 2f;
+    public float stepSize = 0.15f;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,13 +23,41 @@ public class MovingPlatform : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(Vector3.Distance(transform.position, nextNode.transform.position) >= distanceCutoff){
-            rb.velocity = (nextNode.transform.position - transform.position).normalized * speed;
+            //rb.velocity = (nextNode.transform.position - transform.position).normalized * speed;
+            transform.position = Vector3.MoveTowards(transform.position, nextNode.transform.position, stepSize);
         }
         else{
             nextNode = nextNode.GetComponent<MovingPlatformNode>().nextNode;
+        }
+    }
+
+    void OnTriggerEnter(Collider target){
+        if(target.transform.tag == "Player"){
+            target.transform.parent.transform.SetParent(transform);
+        }
+        else if(target.transform.tag == "Object"){
+            target.transform.SetParent(transform);
+        }
+    }
+
+    // void OnTriggerStay(Collider target){
+    //     if(target.transform.tag == "Player"){
+    //         target.transform.parent.transform.position = Vector3.MoveTowards(target.transform.parent.transform.position, nextNode.transform.position, stepSize);
+    //     }
+    //     else if(target.transform.tag == "Object"){
+    //         target.transform.position = Vector3.MoveTowards(target.transform.position, nextNode.transform.position, stepSize);
+    //     }
+    // }
+
+    void OnTriggerExit(Collider target){
+        if(target.transform.tag == "Player"){
+            target.transform.parent.transform.SetParent(null);
+        }
+        else if(target.transform.tag == "Object"){
+            target.transform.SetParent(null);
         }
     }
 }

@@ -61,7 +61,7 @@ public class OnCameraCameraController : MonoBehaviour
     }
     public void CameraInput(InputAction.CallbackContext ctx)
     {
-        Debug.Log("we moving");
+        //Debug.Log("we moving");
         inputs = ctx.ReadValue<Vector2>();
         //yaw -= lazy.x * cameraSensitivity;
         //pitch += lazy.y * cameraSensitivity;

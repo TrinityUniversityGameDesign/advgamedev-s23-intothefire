@@ -16,11 +16,11 @@ public class SwingingHammer : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(limitAngle){
             float angle = maxAngle * Mathf.Cos(Time.time * swingSpeed + startAngle);
-            transform.rotation = Quaternion.Euler(angle, 0, 0);
+            transform.localRotation = Quaternion.Euler(angle, 0, 0);
         }
         else{
             float angle = Time.deltaTime * anglePerSec;
