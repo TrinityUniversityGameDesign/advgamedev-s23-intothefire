@@ -846,6 +846,26 @@ public class JacksonCharacterMovement : MonoBehaviour
     public void ChangeMaxJumps(float f) { maxJumps += f; }
     public void ChangeJumpHeight(float f) { jumpHeight += f; }
 
+    public List<(string, float)> GetInventoryStats()
+    {
+        List<(string, float)> temp = new List<(string, float)>();
+        temp.Add(("Max Health", maxHealth));
+        temp.Add(("Current Health", health));
+        temp.Add(("Max Speed", maxSpeed));
+        temp.Add(("Damage", damage));
+        temp.Add(("Attack Speed", attackSpeed));
+        temp.Add(("Armor", armor));
+        temp.Add(("Crit Rate", critRate));
+        temp.Add(("Lifesteal", lifesteal));
+        temp.Add(("Lifegain", lifegain));
+        temp.Add(("Damage Over Time", damageOverTime));
+        temp.Add(("Knockback", knockback));
+        temp.Add(("Knockback Resistance", KnockbackResistance));
+        temp.Add(("Max Air Specials", maxSpecials));
+        temp.Add(("Max Jumps", maxJumps));
+        temp.Add(("Jump Height", jumpHeight));
+        return temp;
+    }
 
     public float GetMaxHealth() { return maxHealth; }
     public float GetHealth() { return health; }
