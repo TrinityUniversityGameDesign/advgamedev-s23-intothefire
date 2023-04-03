@@ -32,9 +32,9 @@ public class MovingPlatformDisable : SpecialDisable
     {
         for (int i = 1000; i >= 0; i--)
         {
-            // if(t && !t.parent){
-            //     t.parent = null;
-            // }
+            if(t && t.parent){
+                t.parent = null;
+            }
             if(i == 1)
             {
                 gameObject.SetActive(false);
