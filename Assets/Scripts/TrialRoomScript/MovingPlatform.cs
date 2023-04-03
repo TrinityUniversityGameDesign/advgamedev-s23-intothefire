@@ -35,10 +35,13 @@ public class MovingPlatform : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider target){
-        if(target.transform.tag == "Player"){
-            target.transform.parent.transform.SetParent(transform);
-        }
-        else if(target.transform.tag == "Object"){
+        // if(target.transform.tag == "Player"){
+        //     target.transform.parent.transform.SetParent(transform);
+        // }
+        // else if(target.transform.tag == "Object"){
+        //     target.transform.SetParent(transform);
+        // }
+        if(target.transform.tag == "Player" || target.transform.tag == "Object"){
             target.transform.SetParent(transform);
         }
     }
@@ -53,10 +56,13 @@ public class MovingPlatform : MonoBehaviour
     // }
 
     void OnTriggerExit(Collider target){
-        if(target.transform.tag == "Player"){
-            target.transform.parent.transform.SetParent(null);
-        }
-        else if(target.transform.tag == "Object"){
+        // if(target.transform.tag == "Player"){
+        //     target.transform.parent.transform.SetParent(null);
+        // }
+        // else if(target.transform.tag == "Object"){
+        //     target.transform.SetParent(null);
+        // }
+        if(target.transform.tag == "Player" || target.transform.tag == "Object"){
             target.transform.SetParent(null);
         }
     }

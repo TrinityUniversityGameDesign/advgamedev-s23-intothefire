@@ -7,13 +7,17 @@ public class MovingPlatformDisable : SpecialDisable
     // Start is called before the first frame update
 
     public override void disable(){
-        Transform plat = transform.Find("Platform");
+        Transform plat = transform.GetChild(0);
         plat.GetComponent<MovingPlatform>().enabled = false;
         plat.GetComponent<BoxCollider>().enabled = false;
         //Destroy(plat.GetComponent<BoxCollider>());
-
-        Transform player = plat.Find("PlayerAndCamera");
-        if(player){
+        Transform player = null;
+        foreach(Transform ch in plat){
+            if(ch.tag == "Player"){
+                player = ch;
+            }
+        }
+        if(player != null){
             //nullParent(player);
             player.parent = null;
             Debug.Log(player);
