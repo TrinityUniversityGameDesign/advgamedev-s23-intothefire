@@ -22,6 +22,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     GameObject currSword = null;
     Quaternion targetRot;
     bool grounded = true;
+    bool damnYouGabriel = false;
     float gravMult = 1f;
     private LineRenderer lr;
     GameObject enemy = null;
@@ -92,6 +93,15 @@ public class JacksonCharacterMovement : MonoBehaviour
     GameObject player;
     void Start()
     {
+        GameObject plsWork = GameObject.Find("GameLogicDriver");
+
+        if(plsWork == null)
+        {
+            GameObject.Find("HUD").SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(false);
+            damnYouGabriel = true;
+            transform.position = GameObject.Find("PlayerInputManager").transform.position;
+        }
         CapsuleCollider lazy = GetComponent<CapsuleCollider>();
         lazy.material.dynamicFriction = 0f;
         lazy.material.staticFriction = 0f;
@@ -211,15 +221,11 @@ public class JacksonCharacterMovement : MonoBehaviour
         // lightHold = inputs.LightAttack.ReadValue<float>() > 0.1f;
         //heavyHold = inputs.HeavyAttack.ReadValue<float>() > 0.1f;
         //dodgeHold = inputs.Dodgeroll.ReadValue<float>() > 0.1f;
-        if (lightHold)
-        {
-            //Debug.Log("butthonos wokr");
-        }
-        if (jumpHold)
-        {
-            //Debug.Log("jumpweeeeeee");
-        }
         
+        if (damnYouGabriel)
+        {
+            transform.GetChild(1).gameObject.SetActive(false);
+        }
         //if (inputs.Jump.WasPerformedThisFrame())
         //{
          //   jumpPress = 3;
