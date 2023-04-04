@@ -578,7 +578,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                 {
                     //rb.AddForce(new Vector3(0f, -1f, 0f) * gravity);
                     velocity = velocity + (new Vector3(0f, -1f, 0f) * gravity);
-                    if (grounded && stunTimer <= 0)
+                    if ((grounded && stunTimer <= 0) || stunTimer < -80)
                     {
                         //stunValue = 0;
                         stunTimer = 0;
