@@ -51,7 +51,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     float lerpTime = 0.2f;
     float stunTimer = 0f;
     float stunValue = 0f;
-    Weapon weapon = new Hammer();
+    Weapon weapon = new Swords();
     GameObject lastDam;
 
 
