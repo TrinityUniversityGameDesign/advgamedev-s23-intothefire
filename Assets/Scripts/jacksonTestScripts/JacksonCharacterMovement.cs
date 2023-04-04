@@ -57,7 +57,8 @@ public class JacksonCharacterMovement : MonoBehaviour
 
     //Here's a list of all the stats a player can obtain / items can modify:
     float maxHealth = 100f;
-    public float health { get; private set; } = 100f;
+    //public float health { get; private set; } = 100f;
+    float health = 100f;
     float maxSpeed = 20f;
     float damage = 0f;
     float attackSpeed = 0f;
@@ -604,13 +605,13 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         state = PlayerState.idle;
         _hud.enabled = true;
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        health -= 30f;
+        //AddItem(new DamageItem());
+        //AddItem(new DamageItem());
+        //AddItem(new DamageItem());
+        //AddItem(new DamageItem());
+        //AddItem(new DamageItem());
+        //AddItem(new DamageItem());
+        //health -= 30f;
         UpdateHealthbar();
     }
     public void MovementManagement(float horizontal, float vertical)
@@ -778,6 +779,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
         stunTimer = 10f;
         velocity = kb * transform.forward;
+        UpdateHealthbar();
     }
 
     public List<Item> GetInventory()
@@ -796,7 +798,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         if (i.ItemMove()) { Moveinventory.Add(i); }
         if (i.ItemCooldown()) { Cooldowninventory.Add(i); }
         if (i.ItemSpecial()) { Specialinventory.Add(i); }
-        UpdateInventoryUI();
+        //UpdateInventoryUI();
        }
     float CalculateDamage(float d)
     {

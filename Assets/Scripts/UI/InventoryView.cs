@@ -22,6 +22,7 @@ public class InventoryView : MonoBehaviour
         
         // Retrieve the player from the parent
         _player = transform.parent.GetComponentInChildren<JacksonCharacterMovement>();
+        //this.gameObject.SetActive(false);
     }
     public void UpdateUI()
     {
