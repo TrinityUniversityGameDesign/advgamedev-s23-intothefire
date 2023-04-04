@@ -52,6 +52,7 @@ public class ScavengeTrial : TrialRoomScript
     }
 
     public override void DespawnTrialGeometry(){
+        SetDoorPresence(false);
         foreach (GameObject thing in trialGeometry)
         {
             if(thing){
