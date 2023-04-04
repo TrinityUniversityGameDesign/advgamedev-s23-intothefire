@@ -56,8 +56,8 @@ public class JacksonCharacterMovement : MonoBehaviour
 
 
     //Here's a list of all the stats a player can obtain / items can modify:
-    float maxHealth = 100;
-    float health = 100;
+    float maxHealth = 100f;
+    public float health { get; private set; } = 100f;
     float maxSpeed = 20f;
     float damage = 0f;
     float attackSpeed = 0f;
@@ -91,6 +91,10 @@ public class JacksonCharacterMovement : MonoBehaviour
     
     float timer = 0;
     GameObject player;
+    private InventoryView _inventoryView;
+    private InventoryView _quickview;
+    private Healthbar _healthbar;
+    private Canvas _hud;
     void Start()
     {
         GameObject plsWork = GameObject.Find("GameLogicDriver");
@@ -118,6 +122,10 @@ public class JacksonCharacterMovement : MonoBehaviour
         //player = transform.GetChild(0).gameObject;
         //transform.GetChild(1).gameObject.GetComponent<CapsuleCollider>().enabled = false;
         cc = gameObject.GetComponent<CharacterController>();
+        _inventoryView = transform.GetChild(3).gameObject.GetComponent<InventoryView>();
+        _quickview = transform.GetChild(3).gameObject.GetComponent<InventoryView>();
+        _healthbar = GetComponentInChildren<Healthbar>();
+        _hud = GetComponentInChildren<Canvas>();
         //rb.useGravity = true;
         //rb.drag = 0;
         //rb.angularDrag = 0;
@@ -595,6 +603,15 @@ public class JacksonCharacterMovement : MonoBehaviour
     public void StartPlayer()
     {
         state = PlayerState.idle;
+        _hud.enabled = true;
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        health -= 30f;
+        UpdateHealthbar();
     }
     public void MovementManagement(float horizontal, float vertical)
     {
@@ -779,6 +796,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         if (i.ItemMove()) { Moveinventory.Add(i); }
         if (i.ItemCooldown()) { Cooldowninventory.Add(i); }
         if (i.ItemSpecial()) { Specialinventory.Add(i); }
+        UpdateInventoryUI();
        }
     float CalculateDamage(float d)
     {
@@ -882,4 +900,20 @@ public class JacksonCharacterMovement : MonoBehaviour
     public float GetMaxSpecials() {return  maxSpecials; }
     public float GetMaxJumps() { return maxJumps; }
     public float GetJumpHeight() { return jumpHeight; }
+    
+    private void UpdateHealthbar()
+    {
+        _healthbar.UpdateHealth(health/maxHealth);
+    }
+
+    private void ToggleInventoryUI()
+    {
+        _inventoryView.ToggleUI();
+    }
+
+    private void UpdateInventoryUI()
+    {
+        // _inventoryView.UpdateUI();
+        _quickview.UpdateUI();
+    }
 }

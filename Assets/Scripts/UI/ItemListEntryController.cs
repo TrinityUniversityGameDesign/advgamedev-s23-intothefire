@@ -24,8 +24,11 @@ public class ItemListEntryController
 
     public void SetItemData(Item item)
     {
-        if (item.icon != null && _itemIcon != null) _itemIcon.style.backgroundImage = new StyleBackground(item.icon);
-        if (item.name != null && _nameLabel != null) _nameLabel.text = item.name;
-        if (item.description != null && _descLabel != null) _descLabel.text = item.description;
+        // if (item.icon != null && _itemIcon != null)
+        _itemIcon.style.backgroundImage = new StyleBackground(item.icon);
+        // if (item.name != null && _nameLabel != null)
+        _nameLabel.text = item.name;
+        // if (item.description != null && _descLabel != null)
+        _descLabel.text = item.description;
     }
 }

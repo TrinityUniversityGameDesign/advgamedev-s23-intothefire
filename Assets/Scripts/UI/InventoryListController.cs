@@ -13,7 +13,7 @@ public class InventoryListController
     // List of items from inventory
     private List<Item> _items;
     
-    public void InitializeInventoryList(VisualElement root, VisualTreeAsset itemEntryTemplate, JacksonPlayerMovement player)
+    public void InitializeInventoryList(VisualElement root, VisualTreeAsset itemEntryTemplate, JacksonCharacterMovement player)
     {
         _items = player.GetInventory();
 

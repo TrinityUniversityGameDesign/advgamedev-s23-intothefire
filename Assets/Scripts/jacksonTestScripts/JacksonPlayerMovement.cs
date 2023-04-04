@@ -776,8 +776,7 @@ public class JacksonPlayerMovement : MonoBehaviour
         if (i.ItemSpecial()) { Specialinventory.Add(i); }
         UpdateInventoryUI();
     }
-
-       }
+    
     float CalculateDamage(float d)
     {
         float rand = Random.Range(0f, 1f);

@@ -7,7 +7,7 @@ public class InventoryView : MonoBehaviour
 {
     [SerializeField]
     private VisualTreeAsset listEntryTemplate;
-    private JacksonPlayerMovement _player;
+    private JacksonCharacterMovement _player;
     private UIDocument _uiDocument;
     private InventoryListController _inventoryListController;
 
@@ -21,7 +21,7 @@ public class InventoryView : MonoBehaviour
         _inventoryListController = new InventoryListController();
         
         // Retrieve the player from the parent
-        _player = transform.parent.GetComponentInChildren<JacksonPlayerMovement>();
+        _player = transform.parent.GetComponentInChildren<JacksonCharacterMovement>();
     }
     public void UpdateUI()
     {
