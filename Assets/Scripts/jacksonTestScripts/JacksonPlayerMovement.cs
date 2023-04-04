@@ -30,6 +30,7 @@ public class JacksonPlayerMovement : MonoBehaviour
     GameObject currSword = null;
     Quaternion targetRot;
     bool grounded = true;
+    float gravMult = 1f;
     private LineRenderer lr;
     GameObject enemy = null;
     List<Item> inventory = new List<Item>();
@@ -64,7 +65,7 @@ public class JacksonPlayerMovement : MonoBehaviour
     private float maxHealth = 100f;
     public float health { get; private set; } = 100f;
     float maxSpeed = 20f;
-    float damage = 10f;
+    float damage = 0f;
     float attackSpeed = 0f;
     float critRate = 0.1f;
     float armor = 0f;
@@ -108,23 +109,26 @@ public class JacksonPlayerMovement : MonoBehaviour
         //playerMovement.Enable();    
         cam = transform.parent.GetChild(1).gameObject.GetComponent<Camera>();
         //inputs = playerMovement.jacksonControls;
-        player = transform.GetChild(0).gameObject;
+        //player = transform.GetChild(0).gameObject;
         transform.GetChild(1).gameObject.GetComponent<CapsuleCollider>().enabled = false;
         _inventoryView = transform.parent.GetComponentInChildren<InventoryView>();
         _healthbar = transform.parent.GetComponentInChildren<Healthbar>();
         _hud = transform.parent.GetComponentInChildren<Canvas>();
         Debug.Log("Is heatlhbar retrieved?" + (_healthbar != null));
         rb = gameObject.GetComponent<Rigidbody>();
+        //rb.useGravity = true;
         rb.drag = 0;
         rb.angularDrag = 0;
         sword = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
         lr = GetComponent<LineRenderer>();
         GameManager.Instance?.StartupNewGameBegin.AddListener(StartPlayer);
+        /*
         if(GameManager.Instance == null)
         {
             state = PlayerState.idle;
             transform.position = FindObjectOfType<PlayerInputManager>().transform.position;
         }
+        */
         weapon.AssignPlayer(this.gameObject);
     }
 
@@ -318,14 +322,21 @@ public class JacksonPlayerMovement : MonoBehaviour
                 {
                     if (grounded)
                     {
+                        //rb.useGravity = true;
+                        gravMult = 3;
                         currSpecials = maxSpecials;
                         currJumps = maxJumps;
+                    }
+                    else
+                    {
+                        gravMult = 1;
+                        //rb.useGravity = false;
                     }
                     if(health < 0)
                     {
                         state = PlayerState.dead;
                     }
-                    rb.AddForce(new Vector3(0f, -1f, 0f) * gravity);
+                    rb.AddForce(new Vector3(0f, -1f, 0f) * (gravMult*gravity));
                     MovementManagement(h, v);
                     if (lightPress > 0)
                     {
@@ -336,21 +347,7 @@ public class JacksonPlayerMovement : MonoBehaviour
                         lightPress = 0f;
                         state = PlayerState.attack;
                         currSword = Instantiate(sword, transform.position, transform.rotation);
-                        float rand = Random.Range(0f, 1f);
-                        float dmg = damage;
-                        if (rand > critRate)
-                        {
-                            if (critRate > 1)
-                            {
-                                dmg = dmg * (1f + critRate);
-                            }
-                            else
-                            {
-                                dmg *= 2;
-                            }
-                        }
-                        dmg = Mathf.Ceil(dmg);
-                        currSword.GetComponent<DamageScript>().SetDamage(dmg);
+                        currSword.GetComponent<DamageScript>().SetDamage(CalculateDamage(weapon.lightDamage));
                         currSword.GetComponent<DamageScript>().SetKnockback(5f + knockback);
                         currSword.GetComponent<DamageScript>().SetDamageOverTime(damageOverTime);
                         if (lifesteal > 0)
@@ -363,7 +360,7 @@ public class JacksonPlayerMovement : MonoBehaviour
                         // currSword.transform.localRotation = transform.rotation * Quaternion.Euler(0f, 0f, 90f);
                         targetRot = currSword.transform.localRotation * Quaternion.AngleAxis(-45f, Vector3.up); //* currSword.transform.localRotation;
                         currSword.transform.localRotation = currSword.transform.localRotation * Quaternion.AngleAxis(45f, Vector3.up); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);
-                        lerpTime = 0.2f + attackSpeed;
+                        lerpTime = weapon.lightSpeed + attackSpeed;
                     }
                     if(heavyPress > 0)
                     {
@@ -376,21 +373,8 @@ public class JacksonPlayerMovement : MonoBehaviour
                         currSword = Instantiate(sword, transform.position, transform.rotation);
                         
                         currSword.transform.parent = transform;
-                        float rand = Random.Range(0f, 1f);
-                        float dmg = damage;
-                        if(rand > critRate)
-                        {
-                            if(critRate > 1)
-                            {
-                                dmg = dmg * (1f + critRate);
-                            }
-                            else
-                            {
-                                dmg *= 2;
-                            }
-                        }
-                        dmg = Mathf.Ceil(dmg);
-                        currSword.GetComponent<DamageScript>().SetDamage(dmg*2f);
+                        
+                        currSword.GetComponent<DamageScript>().SetDamage(CalculateDamage(weapon.heavyDamage));
                         currSword.GetComponent<DamageScript>().SetKnockback(10f + knockback);
                         currSword.GetComponent<DamageScript>().SetDamageOverTime(damageOverTime);
                         if(lifesteal > 0)
@@ -405,7 +389,7 @@ public class JacksonPlayerMovement : MonoBehaviour
                            // GameObject bullet = Instantiate(Resources.Load("Prefabs/IceBullet") as GameObject, transform.position + transform.forward * 2f, transform.rotation);
                             //bullet.GetComponent<Rigidbody>().velocity = transform.forward * 15f;
                        
-                        lerpTime = 0.1f + attackSpeed;
+                        lerpTime = weapon.heavySpeed + attackSpeed;
                     }
                     if(jumpPress > 0 && currJumps >0)
                     {
@@ -516,8 +500,9 @@ public class JacksonPlayerMovement : MonoBehaviour
                 break;
             case PlayerState.special:
                 {
+                    weapon.AssignHitbox(currSword);
                     Debug.Log("currently in the special state");
-                    bool ahhh = weapon.SpecialAttack();
+                    bool ahhh = weapon.SpecialAttack(h,v);
                     if (ahhh)
                     {
 
@@ -714,7 +699,9 @@ public class JacksonPlayerMovement : MonoBehaviour
         Quaternion newRotation = Quaternion.Lerp(GetComponent<Rigidbody>().rotation, targetRotation, 1);
 
         // Change the players rotation to t$$anonymous$$s new rotation.
+        
         rb.MoveRotation(newRotation);
+        //transform.rotation = newRotation;
     }
 
    
@@ -787,10 +774,28 @@ public class JacksonPlayerMovement : MonoBehaviour
         if (i.ItemMove()) { Moveinventory.Add(i); }
         if (i.ItemCooldown()) { Cooldowninventory.Add(i); }
         if (i.ItemSpecial()) { Specialinventory.Add(i); }
-
         UpdateInventoryUI();
     }
 
+       }
+    float CalculateDamage(float d)
+    {
+        float rand = Random.Range(0f, 1f);
+        float dmg = d + damage;
+        if (rand > critRate)
+        {
+            if (critRate > 1)
+            {
+                dmg = dmg * (1f + critRate);
+            }
+            else
+            {
+                dmg *= 2;
+            }
+        }
+        dmg = Mathf.Ceil(dmg);
+        return dmg;
+    }
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Damage")
