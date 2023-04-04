@@ -1,0 +1,43 @@
+.container {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.inventory {
+    flex-grow: 1;
+}
+
+.header {
+    font-size: 24px;
+    color: rgb(255, 197, 0);
+    margin-bottom: 10px;
+    border-bottom-color: rgb(64, 74, 82);
+    border-bottom-width: 1px;
+}
+
+.slotcontainer {
+    flex-grow: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.templatecontainer {
+    flex-grow:1;
+}
+
+#unity-slider {
+    color: aquamarine;
+}
+#unity-low-button {
+    color: aqua;
+}
+#unity-high-button {
+    color: blueviolet;
+}
+.unity-scroller .unity-scroller--vertical .unity-scroller__vertical-scroller {
+    
+}
+.unity-scroller--vertical {
+    width: 12px;
+}

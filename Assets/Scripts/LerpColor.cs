@@ -21,10 +21,9 @@ public class LerpColor : MonoBehaviour
     /// Updates color of image based on slider value?
     /// </summary>
     /// <param name="value">Should be a dynamic float pulled from slider...</param>
-    public void OnSliderValueChanged(float value)
+    public void OnSliderValueChange(float value)
     {
-        Debug.Log(value);
-        Color lerpColor = Color.Lerp(color1, color2, value);
-        _image.color = lerpColor;
+        // Color lerpColor = Color.Lerp(color1, color2, value);
+        // _image.color = lerpColor;
     }
 }
