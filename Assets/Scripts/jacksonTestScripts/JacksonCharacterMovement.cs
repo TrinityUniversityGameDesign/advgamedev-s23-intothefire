@@ -96,6 +96,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     private InventoryView _quickview;
     private Healthbar _healthbar;
     private Canvas _hud;
+    private Camera _minicam;
     void Start()
     {
         GameObject plsWork = GameObject.Find("GameLogicDriver");
@@ -129,6 +130,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         _quickview = transform.GetChild(3).gameObject.GetComponent<InventoryView>();
         _healthbar = GetComponentInChildren<Healthbar>();
         _hud = GetComponentInChildren<Canvas>();
+        _minicam = GetComponentInChildren<Camera>();
         //rb.useGravity = true;
         //rb.drag = 0;
         //rb.angularDrag = 0;
@@ -143,6 +145,13 @@ public class JacksonCharacterMovement : MonoBehaviour
         }
         */
         weapon.AssignPlayer(this.gameObject);
+    }
+
+    private void UpdateMinimap()
+    {
+        Transform camTransform = _minicam.transform;
+        camTransform.position = new Vector3(transform.position.x, camTransform.position.y, transform.position.z);
+        camTransform.eulerAngles = new Vector3(90f, 0f, 0f) ;
     }
 
     private void OnEnable()
@@ -258,7 +267,7 @@ public class JacksonCharacterMovement : MonoBehaviour
             dodgePress = 3;
         }
         */
-
+        UpdateMinimap();
 
     }
 
