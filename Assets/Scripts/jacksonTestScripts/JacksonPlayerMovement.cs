@@ -12,9 +12,10 @@ public class JacksonPlayerMovement : MonoBehaviour
         attack,
         special,
         invincible,
+        spawn,
         dead
     }
-    PlayerState state = PlayerState.idle;
+    PlayerState state = PlayerState.spawn;
     //JacksonPlayerControls playerMovement;
     GameObject sword;
     GameObject currSword = null;
@@ -59,6 +60,12 @@ public class JacksonPlayerMovement : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody>();
         sword = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
         lr = GetComponent<LineRenderer>();
+        GameManager.Instance?.FirstTimeStartup.AddListener(StartPlayer);
+        if(GameManager.Instance == null)
+        {
+            state = PlayerState.idle;
+            transform.position = FindObjectOfType<PlayerInputManager>().transform.position;
+        }
     }
 
     private void OnEnable()
@@ -393,11 +400,18 @@ public class JacksonPlayerMovement : MonoBehaviour
                     rb.AddForce(new Vector3(0f, -1f, 0f) * gravity);
                 }
                 break;
+            case PlayerState.spawn:
+                {
+                    rb.velocity = Vector3.zero;
+                }break;
 
         }
         
     }
-
+    public void StartPlayer()
+    {
+        state = PlayerState.idle;
+    }
     void MovementManagement(float horizontal, float vertical)
     {
         // If there is some axis input...
@@ -533,6 +547,14 @@ public class JacksonPlayerMovement : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Damage")
+        {
+            health -= other.gameObject.GetComponent<DamageScript>().GetDamage();
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Damage")
         {
             health -= other.gameObject.GetComponent<DamageScript>().GetDamage();
         }

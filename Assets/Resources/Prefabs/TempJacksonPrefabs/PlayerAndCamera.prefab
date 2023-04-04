@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8756842810097038519}
   - component: {fileID: 907459286308490896}
   - component: {fileID: 8446070316176624617}
-  - component: {fileID: 9107691648220311224}
+  - component: {fileID: 8210939078938412272}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -85,7 +85,7 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6539764313696403770}
   m_Enabled: 1
---- !u!114 &9107691648220311224
+--- !u!114 &8210939078938412272
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,8 +112,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7767908231291116222}
-  - component: {fileID: 4552512544761111616}
   - component: {fileID: 1174211344789034911}
+  - component: {fileID: 3744444619273705742}
   m_Layer: 0
   m_Name: PlayerAndCamera
   m_TagString: Untagged
@@ -138,18 +138,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4552512544761111616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7001510471671862647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb972a9f34848974eaa3d7770fb9505f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1174211344789034911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,7 +165,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3515803978536407346}
+      - m_Target: {fileID: 7974954030672114784}
         m_TargetAssemblyTypeName: JacksonPlayerMovement, Assembly-CSharp
         m_MethodName: JumpInput
         m_Mode: 0
@@ -193,7 +181,7 @@ MonoBehaviour:
     m_ActionName: jacksonControls/Jump[/Keyboard/space]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3515803978536407346}
+      - m_Target: {fileID: 7974954030672114784}
         m_TargetAssemblyTypeName: JacksonPlayerMovement, Assembly-CSharp
         m_MethodName: LightInput
         m_Mode: 0
@@ -209,7 +197,7 @@ MonoBehaviour:
     m_ActionName: jacksonControls/LightAttack[/Mouse/leftButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3515803978536407346}
+      - m_Target: {fileID: 7974954030672114784}
         m_TargetAssemblyTypeName: JacksonPlayerMovement, Assembly-CSharp
         m_MethodName: HeavyInput
         m_Mode: 0
@@ -225,7 +213,7 @@ MonoBehaviour:
     m_ActionName: jacksonControls/HeavyAttack[/Mouse/rightButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3515803978536407346}
+      - m_Target: {fileID: 7974954030672114784}
         m_TargetAssemblyTypeName: JacksonPlayerMovement, Assembly-CSharp
         m_MethodName: SpecialInput
         m_Mode: 0
@@ -245,7 +233,7 @@ MonoBehaviour:
     m_ActionName: jacksonControls/Interact[/Keyboard/f]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3515803978536407346}
+      - m_Target: {fileID: 7974954030672114784}
         m_TargetAssemblyTypeName: JacksonPlayerMovement, Assembly-CSharp
         m_MethodName: MoveInput
         m_Mode: 0
@@ -261,7 +249,7 @@ MonoBehaviour:
     m_ActionName: jacksonControls/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9107691648220311224}
+      - m_Target: {fileID: 8210939078938412272}
         m_TargetAssemblyTypeName: OnCameraCameraController, Assembly-CSharp
         m_MethodName: CameraInput
         m_Mode: 0
@@ -284,6 +272,18 @@ MonoBehaviour:
   m_DefaultActionMap: jacksonControls
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 907459286308490896}
+--- !u!114 &3744444619273705742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7001510471671862647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb78a8fdea3c42144b6ab93d8c2c1add, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &373691890364551091
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -339,16 +339,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: TempPlayer
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1296847179613517911, guid: febd0508a1576414cb5ec905f58cc70c, type: 3}
+    - {fileID: 3883576070092283521, guid: febd0508a1576414cb5ec905f58cc70c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: febd0508a1576414cb5ec905f58cc70c, type: 3}
 --- !u!4 &1123634092589770483 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 772487777157343552, guid: febd0508a1576414cb5ec905f58cc70c, type: 3}
   m_PrefabInstance: {fileID: 373691890364551091}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3515803978536407346 stripped
+--- !u!114 &7974954030672114784 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3883576070092283521, guid: febd0508a1576414cb5ec905f58cc70c, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7747076170907679699, guid: febd0508a1576414cb5ec905f58cc70c, type: 3}
   m_PrefabInstance: {fileID: 373691890364551091}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
