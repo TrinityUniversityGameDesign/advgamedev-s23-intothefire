@@ -439,10 +439,10 @@ public class GameManager : MonoBehaviour
     private void InputManagerPlayerJoinedEvent(PlayerInput newPlayer)
     {
         //Debug.Log("New Player Joined");
-        newPlayer.gameObject.name = "Player" + newPlayer.playerIndex;
+        newPlayer.gameObject.name = ("Player" + newPlayer.playerIndex);
         players.Add(newPlayer.gameObject);
 
-        GameObject newUI = Instantiate(lobbyUI, GameObject.Find("Player" + newPlayer.playerIndex).transform);
+        GameObject newUI = Instantiate(lobbyUI, GameObject.Find("Player" + newPlayer.playerIndex + "UI").transform);
         newUI.name = "Player" + newPlayer.playerIndex + "Canvas";
         newUI.transform.GetChild(1).GetComponent<Outline>().effectColor = colors[newPlayer.playerIndex];
         newUI.GetComponent<RotatingSelectScript>().playerIndex = newPlayer.playerIndex;

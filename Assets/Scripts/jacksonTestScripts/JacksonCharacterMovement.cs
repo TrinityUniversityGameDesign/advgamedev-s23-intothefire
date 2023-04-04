@@ -22,6 +22,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     GameObject currSword = null;
     Quaternion targetRot;
     bool grounded = true;
+    bool damnYouGabriel = false;
     float gravMult = 1f;
     private LineRenderer lr;
     GameObject enemy = null;
@@ -92,6 +93,17 @@ public class JacksonCharacterMovement : MonoBehaviour
     GameObject player;
     void Start()
     {
+        GameObject plsWork = GameObject.Find("GameLogicDriver");
+
+        if(plsWork == null)
+        {
+            Debug.Log("there's no game logic");
+            GameObject.Find("HUD").SetActive(false);
+            Debug.Log("yerr a wizard marry");
+            transform.GetChild(1).gameObject.SetActive(false);
+            damnYouGabriel = true;
+            transform.position = GameObject.Find("PlayerInputManager").transform.position;
+        }
         CapsuleCollider lazy = GetComponent<CapsuleCollider>();
         lazy.material.dynamicFriction = 0f;
         lazy.material.staticFriction = 0f;
@@ -211,15 +223,11 @@ public class JacksonCharacterMovement : MonoBehaviour
         // lightHold = inputs.LightAttack.ReadValue<float>() > 0.1f;
         //heavyHold = inputs.HeavyAttack.ReadValue<float>() > 0.1f;
         //dodgeHold = inputs.Dodgeroll.ReadValue<float>() > 0.1f;
-        if (lightHold)
-        {
-            //Debug.Log("butthonos wokr");
-        }
-        if (jumpHold)
-        {
-            //Debug.Log("jumpweeeeeee");
-        }
         
+        if (damnYouGabriel)
+        {
+            transform.GetChild(1).gameObject.SetActive(false);
+        }
         //if (inputs.Jump.WasPerformedThisFrame())
         //{
          //   jumpPress = 3;
@@ -837,4 +845,41 @@ public class JacksonCharacterMovement : MonoBehaviour
     public void ChangeMaxSpecials(float f) { maxSpecials += f; }
     public void ChangeMaxJumps(float f) { maxJumps += f; }
     public void ChangeJumpHeight(float f) { jumpHeight += f; }
+
+    public List<(string, float)> GetInventoryStats()
+    {
+        List<(string, float)> temp = new List<(string, float)>();
+        temp.Add(("Max Health", maxHealth));
+        temp.Add(("Current Health", health));
+        temp.Add(("Max Speed", maxSpeed));
+        temp.Add(("Damage", damage));
+        temp.Add(("Attack Speed", attackSpeed));
+        temp.Add(("Armor", armor));
+        temp.Add(("Crit Rate", critRate));
+        temp.Add(("Lifesteal", lifesteal));
+        temp.Add(("Lifegain", lifegain));
+        temp.Add(("Damage Over Time", damageOverTime));
+        temp.Add(("Knockback", knockback));
+        temp.Add(("Knockback Resistance", KnockbackResistance));
+        temp.Add(("Max Air Specials", maxSpecials));
+        temp.Add(("Max Jumps", maxJumps));
+        temp.Add(("Jump Height", jumpHeight));
+        return temp;
+    }
+
+    public float GetMaxHealth() { return maxHealth; }
+    public float GetHealth() { return health; }
+    public float GetSpeed() { return maxSpeed; }
+    public float GetDamage() { return damage; }
+    public float GetAttackSpeed() {return  attackSpeed; }
+    public float GetArmor() {return  armor; }
+    public float GetCrit() { return critRate; }
+    public float GetLifesteal() { return lifesteal; }
+    public float GetLifegain() { return lifegain; }
+    public float GetDamageOverTime() { return damageOverTime; }
+    public float GetKnockback() { return knockback; }
+    public float GetKockbackResistance() { return KnockbackResistance; }
+    public float GetMaxSpecials() {return  maxSpecials; }
+    public float GetMaxJumps() { return maxJumps; }
+    public float GetJumpHeight() { return jumpHeight; }
 }
