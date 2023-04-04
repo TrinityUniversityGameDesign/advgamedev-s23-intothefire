@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class FollowTarget : MonoBehaviour
 {
-    public GameObject target;
+    private Transform _target;
     public Camera cam;
+
+    void Start()
+    {
+        _target = transform.parent;
+    }
     // Update is called once per frame
     void Update()
     {
-        transform.position = new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z);
-        transform.eulerAngles = new Vector3(90f, cam.transform.eulerAngles.y, 0f) ;
+        transform.position = new Vector3(_target.position.x, transform.position.y, _target.position.z);
+        transform.eulerAngles = new Vector3(90f, 0f, 0f) ;
         
         
     }
