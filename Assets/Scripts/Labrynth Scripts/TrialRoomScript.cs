@@ -23,7 +23,7 @@ public class TrialRoomScript : MonoBehaviour
 	protected List<GameObject> enemyList = new List<GameObject>();
 	private int roomLength;  //used to determine where trial geometry can be placed & enemies can be spawned
 
-	private int enemyCount;
+	protected int enemyCount;
 
 	protected GameObject playerRef;
 
@@ -75,7 +75,7 @@ public class TrialRoomScript : MonoBehaviour
 				meshRenderer.enabled = doorsEnabled;
 			}
 
-			MeshCollider boxCollider = childObject.GetComponent<MeshCollider>();
+			BoxCollider boxCollider = childObject.GetComponent<BoxCollider>();
 			if (boxCollider != null)
 			{
 				boxCollider.enabled = doorsEnabled;
@@ -102,11 +102,11 @@ public class TrialRoomScript : MonoBehaviour
 		}
 	}
 
+	public int GetEnemyCount(){return enemyCount;}
+	
+	public void DecrementEnemyCount(){enemyCount--;}
 
-	public void Update()//is there a way to only call update once a combat room is started?
-	{
-		
-	}
+	public void IncrementEnemyCount(){enemyCount++;}
 
 //____________________________________________________________________________________________________________
 
