@@ -109,6 +109,8 @@ public class JacksonCharacterMovement : MonoBehaviour
             damnYouGabriel = true;
             transform.position = GameObject.Find("PlayerInputManager").transform.position;
         }
+        int rand = Random.Range(1, 3);
+        transform.GetChild(4 + rand).gameObject.SetActive(true);
         CapsuleCollider lazy = GetComponent<CapsuleCollider>();
         lazy.material.dynamicFriction = 0f;
         lazy.material.staticFriction = 0f;
