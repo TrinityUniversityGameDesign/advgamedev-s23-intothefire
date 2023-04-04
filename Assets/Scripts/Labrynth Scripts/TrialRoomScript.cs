@@ -75,7 +75,7 @@ public class TrialRoomScript : MonoBehaviour
 				meshRenderer.enabled = doorsEnabled;
 			}
 
-			BoxCollider boxCollider = childObject.GetComponent<BoxCollider>();
+			MeshCollider boxCollider = childObject.GetComponent<MeshCollider>();
 			if (boxCollider != null)
 			{
 				boxCollider.enabled = doorsEnabled;

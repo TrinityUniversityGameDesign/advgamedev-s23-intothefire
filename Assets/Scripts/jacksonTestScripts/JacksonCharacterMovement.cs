@@ -779,6 +779,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
         stunTimer = 10f;
         velocity = kb * transform.forward;
+        Destroy(currSword);
         UpdateHealthbar();
     }
 
