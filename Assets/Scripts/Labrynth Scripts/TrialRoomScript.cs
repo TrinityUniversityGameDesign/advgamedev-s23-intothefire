@@ -23,7 +23,7 @@ public class TrialRoomScript : MonoBehaviour
 	protected List<GameObject> enemyList = new List<GameObject>();
 	private int roomLength;  //used to determine where trial geometry can be placed & enemies can be spawned
 
-	private int enemyCount;
+	protected int enemyCount;
 
 	protected GameObject playerRef;
 
@@ -75,7 +75,7 @@ public class TrialRoomScript : MonoBehaviour
 				meshRenderer.enabled = doorsEnabled;
 			}
 
-			MeshCollider boxCollider = childObject.GetComponent<MeshCollider>();
+			BoxCollider boxCollider = childObject.GetComponent<BoxCollider>();
 			if (boxCollider != null)
 			{
 				boxCollider.enabled = doorsEnabled;
@@ -102,11 +102,30 @@ public class TrialRoomScript : MonoBehaviour
 		}
 	}
 
-
-	public void Update()//is there a way to only call update once a combat room is started?
+	private void GeneratePlatInside()//generate a platforming room
 	{
-		
+		//******************all locations for room geometry must be places in relation to room transform**************
+		//use room type and dungeonDepth to create a room layout with an appropriate difficulty
+		//add everything to List TrialGeometry
+
+		//^^Is what I would do if i had time ayoooo
+
+		//Create an endPad at the transform of the room w/ -10 in the z
+		Vector3 endPadPos = this.transform.position + new Vector3(0, 0, 10);
+		GameObject endPadReference = Instantiate(endPad, endPadPos, new Quaternion(0, 0, 0, 0), this.transform);
+		//GameObject endPadReference = transform.GetChild(5).gameObject;
+		//Set the host room of the endPad to this room
+		endPadReference.GetComponent<EndPadScript>().hostRoom = this;
+		//Add the endPad to our trial geometry so we can delete it once a room is cleared
+		trialGeometry.Add(endPadReference);
+
 	}
+
+	public int GetEnemyCount(){return enemyCount;}
+	
+	public void DecrementEnemyCount(){enemyCount--;}
+
+	public void IncrementEnemyCount(){enemyCount++;}
 
 //____________________________________________________________________________________________________________
 
