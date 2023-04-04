@@ -10,6 +10,12 @@ public class CombatTrialScript : TrialRoomScript
 
     void Start()
     {   
+        foreach (GameObject thing in trialGeometry)
+        {
+            if(thing){
+                thing.SetActive(false);
+            }
+        }
 		SetDoorPresence(false);
         currentWave = 0;
 		currRoomState = RoomState.empty;
@@ -67,6 +73,12 @@ public class CombatTrialScript : TrialRoomScript
     }
 
     public override void StartTrial(){
+        foreach (GameObject thing in trialGeometry)
+        {
+            if(thing){
+                thing.SetActive(true);
+            }
+        }
         if (currRoomState == RoomState.closed) {
             enemyCount = 0;
             currRoomState = RoomState.trialing;
