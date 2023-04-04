@@ -226,11 +226,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
       propertyPath: MaxSecondsBetweenSideEvents
-      value: 30
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
       propertyPath: MinSecondsBetweenSideEvents
-      value: 10
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: MaxSecondsBetweenMicroEvents
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: MinSecondsBetweenMicroEvents
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 3430062973120331862, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
       propertyPath: m_RootOrder
