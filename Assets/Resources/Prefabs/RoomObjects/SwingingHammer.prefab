@@ -30,12 +30,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 242572079360044644}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -11.5, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 6}
+  m_LocalPosition: {x: 0, y: -1.3000007, z: 0}
+  m_LocalScale: {x: 3, y: 0.59999996, z: 6}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7533130877053378366}
-  m_RootOrder: 2
+  m_Father: {fileID: 4415230042717505250}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4517210606755139425
 MeshFilter:
@@ -167,12 +167,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 923117089394474664}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -5, z: 0}
-  m_LocalScale: {x: 1, y: 5, z: 1}
+  m_LocalPosition: {x: 0, y: -3.333334, z: 0}
+  m_LocalScale: {x: 0.6666667, y: 3.3333335, z: 0.66666675}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7533130877053378366}
-  m_RootOrder: 1
+  m_Children:
+  - {fileID: 3615405694092619408}
+  m_Father: {fileID: 522262906825349684}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5287310091402919289
 MeshFilter:
@@ -247,7 +248,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7533130877053378366}
-  - component: {fileID: 3075851286953161130}
   m_Layer: 0
   m_Name: SwingingHammer
   m_TagString: Untagged
@@ -268,28 +268,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 522262906825349684}
-  - {fileID: 4415230042717505250}
-  - {fileID: 3615405694092619408}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3075851286953161130
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4204295404270526155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33772d0383021a3498c126035c0ed51a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxAngle: 60
-  swingSpeed: 6
-  startAngle: 45
-  limitAngle: 1
-  anglePerSec: 720
 --- !u!1 &6632233601573661442
 GameObject:
   m_ObjectHideFlags: 0
@@ -302,6 +283,7 @@ GameObject:
   - component: {fileID: 5719465482806542431}
   - component: {fileID: 5445907811562295985}
   - component: {fileID: 4080903090927804622}
+  - component: {fileID: 3675781024794532255}
   m_Layer: 0
   m_Name: Pivot
   m_TagString: Untagged
@@ -320,7 +302,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4415230042717505250}
   m_Father: {fileID: 7533130877053378366}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -387,3 +370,23 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3675781024794532255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6632233601573661442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33772d0383021a3498c126035c0ed51a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentXRot: 0
+  parentYRot: 0
+  parentZRot: 0
+  maxAngle: 45
+  swingSpeed: 6
+  startAngle: 45
+  limitAngle: 0
+  anglePerSec: 360

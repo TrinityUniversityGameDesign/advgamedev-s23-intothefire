@@ -16,7 +16,12 @@ public class ScavengeTrial : TrialRoomScript
     {
 		SetDoorPresence(false);
 		currRoomState = RoomState.empty;
-
+        foreach (GameObject thing in trialGeometry)
+        {
+            if(thing){
+                thing.SetActive(false);
+            }
+        }
         foreach (GameObject thing in scavengeEntities)
         {
             thing.GetComponent<ScavengeEntity>().hostRoom = this;
@@ -35,6 +40,12 @@ public class ScavengeTrial : TrialRoomScript
     }
 
     public override void StartTrial(){
+        foreach (GameObject thing in trialGeometry)
+        {
+            if(thing){
+                thing.SetActive(true);
+            }
+        }
         foreach(GameObject thing in scavengeEntities){
             thing.SetActive(true);
         }
@@ -44,7 +55,13 @@ public class ScavengeTrial : TrialRoomScript
         foreach (GameObject thing in trialGeometry)
         {
             if(thing){
-                thing.SetActive(false);
+                SpecialDisable disable = thing.GetComponent<SpecialDisable>();
+                if(disable){
+                    disable.disable();
+                }
+                else{
+                    thing.SetActive(false);
+                }
             }
         }
         foreach (GameObject thing in enemyList)
@@ -63,7 +80,7 @@ public class ScavengeTrial : TrialRoomScript
 
     new public void OnTriggerEnter(Collider other)
 	{
-		Debug.Log(currRoomState);
+		//Debug.Log(currRoomState);
 		//Debug.Log("Collided with: " + other);
 		if(other.transform.tag == "Player" && currRoomState == RoomState.empty)
 		{
@@ -71,7 +88,7 @@ public class ScavengeTrial : TrialRoomScript
 			RoomClose();
 			playerRef = other.gameObject;
 		}
-		Debug.Log(doors);
+		//Debug.Log(doors);
 	}
 
     private void SpawnBoxes(){

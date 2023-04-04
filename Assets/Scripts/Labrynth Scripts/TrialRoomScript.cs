@@ -16,12 +16,7 @@ public class TrialRoomScript : MonoBehaviour
 	protected Transform[] doors;
 
 	[SerializeField]
-	private GameObject enemyPrefab;
-
-	[SerializeField]
 	protected GameObject startPad; // for startpad prefab
-	[SerializeField]
-	protected GameObject endPad;
 	[SerializeField]
 	protected List<GameObject> trialGeometry = new List<GameObject>();
 	[SerializeField]
@@ -147,12 +142,12 @@ public class TrialRoomScript : MonoBehaviour
 	public virtual void DespawnTrialGeometry()
 	{
 		//go through trial geometry list and set to Active(false)
-		foreach(GameObject thing in trialGeometry)
-		{
-			if(thing){
-				thing.SetActive(false);
-			}
-		}
+		// foreach(GameObject thing in trialGeometry)
+		// {
+		// 	if(thing){
+		// 		thing.SetActive(false);
+		// 	}
+		// }
 	}
 	private void GivePlayerLoot()
 	{

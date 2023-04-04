@@ -21,5 +21,9 @@ public class groundedCheck : MonoBehaviour
     {
         parent.SetGrounded(true); 
     }
+    private void OnTriggerExit(Collider other)
+    {
+        parent.SetGrounded(false);
+    }
 
 }
