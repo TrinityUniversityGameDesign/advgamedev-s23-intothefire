@@ -9,7 +9,7 @@ public class DamageItem : Item
     
     public DamageItem()
     {
-        value = 10;
+        value = 5;
         icon = Resources.Load("Textures/grud") as Sprite;
         name = "spikeyBall";
         description = "putting this spikey ball on your weapon should make it hurt some more. It does +" + value as string + "more damage now";

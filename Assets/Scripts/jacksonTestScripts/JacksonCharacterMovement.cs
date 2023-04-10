@@ -873,7 +873,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     public void ChangeLifegain(float f) { lifegain += f; }
     public void ChangeDamageOverTime(float f) { damageOverTime += f; }
     public void ChangeKnockback(float f) { knockback += f; }
-    public void ChangeKockbackResistance(float f) { KnockbackResistance += f; }
+    public void ChangeKnockbackResistance(float f) { KnockbackResistance += f; }
     public void ChangeMaxSpecials(float f) { maxSpecials += f; }
     public void ChangeMaxJumps(float f) { maxJumps += f; }
     public void ChangeJumpHeight(float f) { jumpHeight += f; }
