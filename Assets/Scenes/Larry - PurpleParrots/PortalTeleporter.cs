@@ -16,9 +16,10 @@ public class PortalTeleporter : MonoBehaviour
 			Vector3 portalToPlayer = player.position - transform.position;
 			float dotProduct = Vector3.Dot(transform.up, portalToPlayer);
             Debug.Log("Overlap!");
+			Debug.Log("Dot Product: " + dotProduct);
 
 			// If this is true: The player has moved across the portal
-			if (dotProduct < 0f)
+			if (dotProduct < 9f)
 			{
 				// Teleport him!
 				float rotationDiff = -Quaternion.Angle(transform.rotation, reciever.rotation);
@@ -29,6 +30,7 @@ public class PortalTeleporter : MonoBehaviour
 				player.position = reciever.position + positionOffset;
 
 				playerIsOverlapping = false;
+				 Debug.Log("Transport!");
 			}
 		}
 	}
