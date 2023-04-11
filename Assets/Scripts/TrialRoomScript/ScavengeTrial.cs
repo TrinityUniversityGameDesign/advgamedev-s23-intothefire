@@ -6,12 +6,22 @@ public class ScavengeTrial : TrialRoomScript
 {
     [SerializeField]
     private List<GameObject> scavengeEntities = new List<GameObject>();
+
+    [SerializeField]
+    private GameObject boxPrefab;
+    [SerializeField]
+    private GameObject scavengeEnemyPrefab;
     // Start is called before the first frame update
     void Start()
     {
 		SetDoorPresence(false);
 		currRoomState = RoomState.empty;
-
+        foreach (GameObject thing in trialGeometry)
+        {
+            if(thing){
+                thing.SetActive(false);
+            }
+        }
         foreach (GameObject thing in scavengeEntities)
         {
             thing.GetComponent<ScavengeEntity>().hostRoom = this;
@@ -19,12 +29,6 @@ public class ScavengeTrial : TrialRoomScript
         }
 
         scavengeEntities[Random.Range(0, scavengeEntities.Count - 1)].GetComponent<ScavengeEntity>().hasTreasure = true;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public override void PlaceStartPad(){
@@ -36,16 +40,29 @@ public class ScavengeTrial : TrialRoomScript
     }
 
     public override void StartTrial(){
+        foreach (GameObject thing in trialGeometry)
+        {
+            if(thing){
+                thing.SetActive(true);
+            }
+        }
         foreach(GameObject thing in scavengeEntities){
             thing.SetActive(true);
         }
     }
 
     public override void DespawnTrialGeometry(){
+        SetDoorPresence(false);
         foreach (GameObject thing in trialGeometry)
         {
             if(thing){
-                thing.SetActive(false);
+                SpecialDisable disable = thing.GetComponent<SpecialDisable>();
+                if(disable){
+                    disable.disable();
+                }
+                else{
+                    thing.SetActive(false);
+                }
             }
         }
         foreach (GameObject thing in enemyList)
@@ -62,10 +79,9 @@ public class ScavengeTrial : TrialRoomScript
         }
     }
 
-    public void OnTriggerEnter(Collider other)
+    new public void OnTriggerEnter(Collider other)
 	{
-		Debug.Log(currRoomState);
-		Debug.Log(trialType);
+		//Debug.Log(currRoomState);
 		//Debug.Log("Collided with: " + other);
 		if(other.transform.tag == "Player" && currRoomState == RoomState.empty)
 		{
@@ -73,7 +89,33 @@ public class ScavengeTrial : TrialRoomScript
 			RoomClose();
 			playerRef = other.gameObject;
 		}
-		Debug.Log(doors);
+		//Debug.Log(doors);
+	}
+
+    private void SpawnBoxes(){
+		List<GameObject> boxes = new List<GameObject>();
+		int numOfBoxes = 3;
+		for(int i = 0; i < numOfBoxes; i++){
+			Vector3 spawnLocation = new Vector3(transform.position.x + Random.Range(-20, 20), 2f, transform.position.z + Random.Range(-20, 20));
+			GameObject box = Instantiate(boxPrefab, spawnLocation, new Quaternion(0, 0, 0, 0), this.transform);
+			box.GetComponent<Box>().hostRoom = this;
+			boxes.Add(box);
+			trialGeometry.Add(box);
+		}
+		boxes[Random.Range(0, boxes.Count - 1)].GetComponent<Box>().hasTreasure = true;
+		//Debug.Log(boxes.Count);
+	}
+
+	private void SpawnScavengeEnemies(){
+		List<GameObject> scavengeEnemies = new List<GameObject>();
+		int numOfEnemies = 5;
+		for(int i = 0; i < numOfEnemies; i++){
+			Vector3 spawnLocation = new Vector3(transform.position.x + Random.Range(-20, 20), 2f, transform.position.z + Random.Range(-20, 20));
+			GameObject enemy = Instantiate(scavengeEnemyPrefab, spawnLocation, new Quaternion(0, 0, 0, 0), this.transform);
+			enemy.GetComponent<ScavengeEnemy>().hostRoom = this;
+			scavengeEnemies.Add(enemy);
+		}
+		scavengeEnemies[Random.Range(0, scavengeEnemies.Count - 1)].GetComponent<ScavengeEnemy>().hasTreasure = true;
 	}
 
 }
