@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class ChaserEnemyAI : EnemyUpdate
+public class ShooterEnemyAI : EnemyUpdate
 {   
     NavMeshAgent navMesh;
     float attackStartRange = 3;
@@ -13,35 +13,40 @@ public class ChaserEnemyAI : EnemyUpdate
     int attackCooldown = 60;
     float damage = 20;
     float knockback = 1f;
-    Vector3 attackAngle;
+    float projSpeed = 0.5f;
 
     protected override void EnemyInit() { 
-        state = "Chase";  
+        state = "Idle";  
         stateTimer = attackCooldown;
         navMesh = GetComponent<NavMeshAgent>();
     }
 
     void FixedUpdate() {
         Vector3 targetPos = GetTargetPosition();
-        if (state == "Chase") {
-            navMesh.destination = targetPos;
-            --stateTimer;
-            if (stateTimer <= 0 && Vector3.Distance(targetPos, transform.position) <= attackStartRange) {
-                state = "Attack";
-                stateTimer = attackTimer;
+        Vector3 trajectory = targetPos - transform.position;
+        if (state == "Idle") {
+            if (!Physics.Raycast(transform.position, trajectory, trajectory.magnitude, LayerMask.GetMask("Ground"))) {
+                --stateTimer;
                 navMesh.enabled = false;
-                Vector3 span = targetPos - transform.position;
-                attackAngle = new Vector3(span.x, 0, span.z).normalized * attackDistance;
+                ModifyVelocity(0.5f);
+                if (stateTimer <= 0) {
+                    state = "Attack";
+                    stateTimer = attackTimer;
+                }
+            } else {
+                navMesh.enabled = true;
+                navMesh.destination = targetPos;
             }
         } else if (state == "Attack") {
             --stateTimer;
+            navMesh.enabled = false;
             ModifyVelocity(0.5f);
             if (stateTimer <= 0) {
-                state = "Chase";
+                state = "Idle";
                 stateTimer = attackCooldown;
                 navMesh.enabled = true;
             } else if (stateTimer == attackFrame) {
-                MakeHitbox(attackAngle, damage, knockback);
+                MakeProjectile(trajectory.normalized * projSpeed, damage, knockback);
             }
         }
     }
