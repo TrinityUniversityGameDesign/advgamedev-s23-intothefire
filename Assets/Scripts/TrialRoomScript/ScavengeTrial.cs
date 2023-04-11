@@ -40,6 +40,7 @@ public class ScavengeTrial : TrialRoomScript
     }
 
     public override void StartTrial(){
+        currRoomState = RoomState.trialing;
         foreach (GameObject thing in trialGeometry)
         {
             if(thing){
