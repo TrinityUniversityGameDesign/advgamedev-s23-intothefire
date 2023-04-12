@@ -44,3 +44,81 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 625640ce35736de468df7715a27627c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Minutes: 20
+  LabyrinthSize: 5
+  DistanceApart: 120
+  players: []
+  playableMeshes:
+  - {fileID: 2273891282570982229, guid: cdbdaa167151061459c76cc0171cbd8c, type: 3}
+  - {fileID: 1403424317386795578, guid: 8403d5f69b9b5204e9e7db1a907f5837, type: 3}
+  lobbyUI: {fileID: 8162475761223437536, guid: 4ad96f3806669784eab41ddaa7e1a34f, type: 3}
+  MaxSecondsBetweenSideEvents: 600
+  MinSecondsBetweenSideEvents: 300
+  MaxSecondsBetweenMicroEvents: 20
+  MinSecondsBetweenMicroEvents: 5
+  MaxSecondsDurationMicroEvents: 20
+  MinSecondsDurationMicroEvents: 10
+  SecondsDurationSideEvent: 60
+  MicroEventBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  MicroEventEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  SideEventBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  SideEventEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  LabyrinthExploreBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  LabyrinthExploreEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  ShowdownBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  ShowdownEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  LobbyBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  LobbyEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  PausedBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  PausedEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  GameOverBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  GameOverEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  EndScreenBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  EndScreenEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  StartupNewGameBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  StartupNewGameEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  MajorEventBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  MajorEventEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  PlayerJoined:
+    m_PersistentCalls:
+      m_Calls: []

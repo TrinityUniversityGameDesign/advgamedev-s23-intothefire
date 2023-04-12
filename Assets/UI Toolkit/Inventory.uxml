@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Inventory.uss?fileID=7433441132597879392&amp;guid=7e925dea81e9f4fefb174f493851c6a7&amp;type=3#Inventory" />
+    <ui:VisualElement name="Container" class="container">
+        <ui:VisualElement name="Inventory" class="inventory" style="width: 60%; height: 75%; max-width: 60%; max-height: 75%; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; background-color: rgb(28, 32, 36); border-top-color: rgb(255, 197, 0); border-top-width: 5px; flex-direction: row;">
+            <ui:VisualElement name="PlayerContainer" class="slotcontainer" style="flex-direction: column; width: 40%; height: 100%; max-width: 40%; max-height: 100%;">
+                <ui:VisualElement name="Stat-List" style="width: auto; flex-grow: 1; flex-direction: column; height: 75%; justify-content: flex-start; align-items: flex-start; color: rgb(255, 255, 255);">
+                    <ui:Label text="Health" display-tooltip-when-elided="true" name="Health" />
+                    <ui:Label text="Attack Damage" display-tooltip-when-elided="true" name="Damage" style="color: rgb(231, 231, 231);" />
+                    <ui:Label text="Move Speed" display-tooltip-when-elided="true" name="Move" />
+                    <ui:Label text="Attack Speed" display-tooltip-when-elided="true" name="Speed" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:ListView focusable="true" name="Inventory-List" style="flex-grow: 1; width: 60%; max-width: 60%; height: 100%; max-height: 100%;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
