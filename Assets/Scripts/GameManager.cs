@@ -43,10 +43,15 @@ public class GameManager : MonoBehaviour
     static Color player4color = new Color(0.6f,  0.2f,  0.46f, 1); //Purple
     public static Color[] colors = new Color[4] { player1color, player2color, player3color, player4color };
 
-    List<GameObject> playableMeshes = new List<GameObject>();
-    List<GameObject> pickableWeapons = new List<GameObject>();
+    public List<GameObject> playableCharacters;
+    public List<GameObject> playableWeapons;
 
-    Dictionary<int, int> playerMeshes = new Dictionary<int, int>() { {0, 0}, { 1, 0 }, { 2, 0 }, { 3, 0 } };
+    Dictionary<int, int> playerCharacters = new Dictionary<int, int>() { {0, 0}, { 1, 0 }, { 2, 0 }, { 3, 0 } };
+    Dictionary<int, int> playerWeapons = new Dictionary<int, int>() { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 } };
+    public int LastJoinedPlayer = 0;
+
+    [SerializeField]
+    private int minPlayerCount = 1;
 
     public GameObject lobbyUI;
     #endregion
@@ -381,71 +386,92 @@ public class GameManager : MonoBehaviour
 
     #region Event Calls
 
-    void TestLabyrinthBegin() { Debug.Log("Labyrinth Begin"); }
+    void TestLabyrinthBegin() { }//Debug.Log("Labyrinth Begin"); }
 
-    void TestLabyrinthEnd() { Debug.Log("Labyrinth Ends"); }
+    void TestLabyrinthEnd() { }//Debug.Log("Labyrinth Ends"); }
 
-    void TestShowdownBegin() { Debug.Log("Showdown Begins"); }
+    void TestShowdownBegin() { }//Debug.Log("Showdown Begins"); }
 
-    void TestShowdownEnd() { Debug.Log("Showdown Ends"); }
+    void TestShowdownEnd() { }//Debug.Log("Showdown Ends"); }
 
-    void TestLobbyBegin() { Debug.Log("Lobby Begins"); }
-    void TestLobbyEnd() { Debug.Log("Lobby Ends"); }
+    void TestLobbyBegin() { PlayerInputManager.instance.EnableJoining(); }//Debug.Log("Lobby Begins"); }
+    void TestLobbyEnd() {
+        //Debug.Log("Lobby Ends");
 
-    void TestPausedBegin() { Debug.Log("Paused Begins"); }
-    void TestPausedEnd() { Debug.Log("Paused Ends"); }
+        PlayerInputManager.instance.DisableJoining();
 
-    void TestGameOverBegin() { Debug.Log("GameOver Begins"); }
-    void TestGameOverEnd() { Debug.Log("GameOver Ends"); }
+    }
 
-    void TestEndScreenBegin() { Debug.Log("EndScreen Begins"); }
-    void TestEndScreenEnd() { Debug.Log("EndScreen Ends"); }
+    void TestPausedBegin() { } //Debug.Log("Paused Begins"); }
+    void TestPausedEnd() { } //Debug.Log("Paused Ends"); }
 
-    void TestStartupNewGameBegin() { Debug.Log("StartupNewGame Begins"); }
+    void TestGameOverBegin() { } //Debug.Log("GameOver Begins"); }
+    void TestGameOverEnd() { } //Debug.Log("GameOver Ends"); }
 
-    void TestStartupNewGameEnd() { Debug.Log("StartupNewGame Ends"); }
+    void TestEndScreenBegin() { } // Debug.Log("EndScreen Begins"); }
+    void TestEndScreenEnd() { } //Debug.Log("EndScreen Ends"); }
 
-    void TestBeginMajorEvent() { Debug.Log("MajorEvent Begins"); }
+    void TestStartupNewGameBegin() { 
+        foreach(KeyValuePair<int, int> pair in Instance.playerCharacters)
+        {
+            if (pair.Key < Instance.players.Count)
+            {
+                Instantiate(Instance.playableCharacters[pair.Value], Instance.players[pair.Key].transform);
+            }
+        }
 
-    void TestEndMajorEvent() { Debug.Log("MajorEvent Ends"); }
+        foreach(KeyValuePair<int, int> pair in Instance.playerWeapons)
+        {
+            if(pair.Key < Instance.players.Count)
+            {
+                //player.gameObject.GetComponent<JacksonCharacterMovement>().WeaponAssignFunction;
+                //Call the weapon function in the player @Jackson TODO
+            }
+        }
+    }
+    void TestStartupNewGameEnd() { } //Debug.Log("StartupNewGame Ends"); }
+
+    void TestBeginMajorEvent() { } //Debug.Log("MajorEvent Begins"); }
+
+    void TestEndMajorEvent() { } //Debug.Log("MajorEvent Ends"); }
 
     void BeginSideEvent()
     {
-        Debug.Log("Beginning SideEvent as " + Timer + " game seconds.");
-        Debug.Log("Side Event Duration: " + SecondsDurationSideEvent + " s");
+        //Debug.Log("Beginning SideEvent as " + Timer + " game seconds.");
+        //Debug.Log("Side Event Duration: " + SecondsDurationSideEvent + " s");
         timeLeftInSideEvent = SecondsDurationSideEvent;
     }
 
-    void EndSideEvent() { Debug.Log("Ending Side event at " + Timer + " game seconds."); }
+    void EndSideEvent() { } //Debug.Log("Ending Side event at " + Timer + " game seconds."); }
 
     void BeginMicroEvent()
     {
         microEventInProgress = true;
-        Debug.Log("Beginning Microevent at " + Timer + " game seconds.");
+        //Debug.Log("Beginning Microevent at " + Timer + " game seconds.");
 
         timeLeftInMicroEvent = Random.Range(MinSecondsDurationMicroEvents, MaxSecondsDurationMicroEvents);
-        Debug.Log("Microevent Duration: " + timeLeftInMicroEvent + " s");
+        //Debug.Log("Microevent Duration: " + timeLeftInMicroEvent + " s");
     }
 
     void EndMicroEvent()
     {
         microEventInProgress = false;
-        Debug.Log("Ending Microevent at " + Timer + " game seconds.");
+        //Debug.Log("Ending Microevent at " + Timer + " game seconds.");
 
         timeUntilNextMicroEvent = Random.Range(MinSecondsBetweenMicroEvents, MaxSecondsBetweenMicroEvents);
-        Debug.Log("Time until next Micro Event: " + timeUntilNextMicroEvent + " s");
+        //Debug.Log("Time until next Micro Event: " + timeUntilNextMicroEvent + " s");
     }
 
     private void InputManagerPlayerJoinedEvent(PlayerInput newPlayer)
     {
         //Debug.Log("New Player Joined");
+        LastJoinedPlayer = newPlayer.playerIndex;
         newPlayer.gameObject.name = ("Player" + newPlayer.playerIndex);
         players.Add(newPlayer.gameObject);
 
-        GameObject newUI = Instantiate(lobbyUI, GameObject.Find("Player" + newPlayer.playerIndex + "UI").transform);
+        GameObject newUI = Instantiate(lobbyUI, GameObject.Find("PlayerLobby" + newPlayer.playerIndex + "UI").transform);
         newUI.name = "Player" + newPlayer.playerIndex + "Canvas";
         newUI.transform.GetChild(1).GetComponent<Outline>().effectColor = colors[newPlayer.playerIndex];
-        newUI.GetComponent<RotatingSelectScript>().playerIndex = newPlayer.playerIndex;
 
         newPlayer.GetComponent<PlayerInput>().uiInputModule = newUI.transform.GetChild(0).GetComponent<InputSystemUIInputModule>();
 
@@ -453,29 +479,19 @@ public class GameManager : MonoBehaviour
         //newPlayer.gameObject.SetActive(false);
     }
 
-    public int ChangePlayerMesh(int playerIndex)
+    public void UpdatePlayerWeapon(int player, int index)
     {
-        int currentPlayerMesh = playerMeshes[playerIndex];
-        if(currentPlayerMesh < playerMeshes.Count - 1)
-        {
-            playerMeshes[playerIndex]++;
-        } else if(currentPlayerMesh == playerMeshes.Count - 1)
-        {
-            playerMeshes[playerIndex] = 0;
-        }
-
-        Debug.Log(playerMeshes[playerIndex]);
-        return 1;
+        Instance.playerWeapons[player] = index;
     }
 
-    public int ChangeWeaponMesh(int playerIndex, int currentPosition)
+    public void UpdatePlayerCharacter(int player, int index)
     {
-        return 1;
+        Instance.playerCharacters[player] = index;
     }
 
     public void ContinueInput(InputAction.CallbackContext ctx)
     {
-        if (Instance._state == GameState.Lobby)
+        if (Instance._state == GameState.Lobby && Instance.players.Count >= Instance.minPlayerCount)
         {
             Instance.OnStateEnter(GameState.Startup_New_Game);
         }

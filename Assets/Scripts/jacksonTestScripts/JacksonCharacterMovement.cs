@@ -97,6 +97,10 @@ public class JacksonCharacterMovement : MonoBehaviour
     private Healthbar _healthbar;
     private Canvas _hud;
     private Camera _minicam;
+    private void Awake()
+    {
+        GameManager.Instance?.StartupNewGameBegin.AddListener(StartPlayer);
+    }
     void Start()
     {
         GameObject plsWork = GameObject.Find("GameLogicDriver");
@@ -110,8 +114,6 @@ public class JacksonCharacterMovement : MonoBehaviour
             damnYouGabriel = true;
             transform.position = GameObject.Find("PlayerInputManager").transform.position;
         }
-        int rand = Random.Range(1, 3);
-        transform.GetChild(4 + rand).gameObject.SetActive(true);
         CapsuleCollider lazy = GetComponent<CapsuleCollider>();
         lazy.material.dynamicFriction = 0f;
         lazy.material.staticFriction = 0f;
@@ -136,7 +138,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         //rb.angularDrag = 0;
         sword = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
         lr = GetComponent<LineRenderer>();
-        GameManager.Instance?.StartupNewGameBegin.AddListener(StartPlayer);
+        
         /*
         if(GameManager.Instance == null)
         {
