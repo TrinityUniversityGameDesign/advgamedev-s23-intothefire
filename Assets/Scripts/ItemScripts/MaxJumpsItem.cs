@@ -2,31 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MaxSpecialsItem : Item
+public class MaxJumpsItem : Item
 {
     // Start is called before the first frame update
     
     
-    public MaxSpecialsItem()
+    public MaxJumpsItem()
     {
         value = 1;
-        icon = Resources.Load("Textures/grud") as Sprite;
-        name = "Dragon Sphere";
-        description = "You find a non tv show specific sphere which lets you use your special " + value as string + "more times";
+        icon = Resources.Load("Textures/ItemIcons/floor") as Sprite;
+        name = "Invisible Floor";
+        description = "you find another invisible floor so you can jump " + value as string + "more times";
     }
-    public MaxSpecialsItem(float val)
+    public MaxJumpsItem(float val)
     {
         value = val;
-        icon = Resources.Load("Textures/grud") as Sprite;
-        name = "Dragon Sphere";
-        description = "You find a non tv show specific sphere which lets you use your special " + value as string + "more times";
+        icon = Resources.Load("Textures/ItemIcons/floor") as Sprite;
+        name = "Invisible Floor";
+        description = "you find another invisible floor so you can jump " + value as string + "more times";
     }
     
 
     // Update is called once per frame
    public override bool ItemPickup()
     {
-        player.GetComponent<JacksonCharacterMovement>().ChangeMaxSpecials(value);
+        player.GetComponent<JacksonCharacterMovement>().ChangeMaxJumps(value);
         return true;
     }
 }

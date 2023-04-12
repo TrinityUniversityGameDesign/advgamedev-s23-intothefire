@@ -10,14 +10,14 @@ public class JumpHeightItem : Item
     public JumpHeightItem()
     {
         value = 0.3f;
-        icon = Resources.Load("Textures/grud") as Sprite;
+        icon = Resources.Load("Textures/ItemIcons/spring") as Sprite;
         name = "Spring";
         description = "You take appart a pen and put the spring on your foot, letting you jump " + value as string + "higher";
     }
     public JumpHeightItem(float val)
     {
         value = val;
-        icon = Resources.Load("Textures/grud") as Sprite;
+        icon = Resources.Load("Textures/ItemIcons/spring") as Sprite;
         name = "Spring";
         description = "You take appart a pen and put the spring on your foot, letting you jump " + value as string + "higher";
     }

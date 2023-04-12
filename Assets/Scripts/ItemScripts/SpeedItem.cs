@@ -10,14 +10,14 @@ public class SpeedItem : Item
     public SpeedItem()
     {
         value = 10;
-        icon = Resources.Load("Textures/grud") as Sprite;
+        icon = Resources.Load("Textures/ItemIcons/foot") as Sprite;
         name = "Feet";
         description = "you put these feet on your feet and now you have more feet per feet. you move " + value as string + "faster";
     }
     public SpeedItem(float val)
     {
         value = val;
-        icon = Resources.Load("Textures/grud") as Sprite;
+        icon = Resources.Load("Textures/ItemIcons/foot") as Sprite;
         name = "Feet";
         description = "you put these feet on your feet and now you have more feet per feet. you move " + value as string + "faster";
     }

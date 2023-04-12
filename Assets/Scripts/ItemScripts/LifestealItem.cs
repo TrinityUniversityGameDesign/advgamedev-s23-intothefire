@@ -9,15 +9,15 @@ public class LifestealItem : Item
     
     public LifestealItem()
     {
-        value = 10;
-        icon = Resources.Load("Textures/grud") as Sprite;
+        value = 0.1f;
+        icon = Resources.Load("Textures/ItemIcons/bath_sponges") as Sprite;
         name = "Sponge";
         description = "You put sponges all over your weapon to soak up the opponents life???? heal  " + value as string + " percent on hit";
     }
     public LifestealItem(float val)
     {
         value = val;
-        icon = Resources.Load("Textures/grud") as Sprite;
+        icon = Resources.Load("Textures/ItemIcons/bath_sponges") as Sprite;
         name = "Sponge";
         description = "You put sponges all over your weapon to soak up the opponents life???? heal  " + value as string + " percent on hit";
     }

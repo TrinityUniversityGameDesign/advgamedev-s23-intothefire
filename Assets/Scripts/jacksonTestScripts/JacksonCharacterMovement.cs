@@ -878,6 +878,8 @@ public class JacksonCharacterMovement : MonoBehaviour
     public void ChangeMaxJumps(float f) { maxJumps += f; }
     public void ChangeJumpHeight(float f) { jumpHeight += f; }
 
+    public void ChangeRange(float f) { }
+
     public List<(string, float)> GetInventoryStats()
     {
         List<(string, float)> temp = new List<(string, float)>();

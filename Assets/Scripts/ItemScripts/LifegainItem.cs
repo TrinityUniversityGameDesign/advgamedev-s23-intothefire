@@ -10,14 +10,14 @@ public class LifegainItem : Item
     public LifegainItem()
     {
         value = 0.02f;
-        icon = Resources.Load("Textures/grud") as Sprite;
+        icon = Resources.Load("Textures/ItemIcons/milk") as Sprite;
         name = "Milk";
         description = "You have more milk now! don't drink it just look at it and heal  " + value as string + " more per second";
     }
     public LifegainItem(float val)
     {
         value = val;
-        icon = Resources.Load("Textures/grud") as Sprite;
+        icon = Resources.Load("Textures/ItemIcons/milk") as Sprite;
         name = "Milk";
         description = "You have more milk now! don't drink it just look at it and heal  " + value as string + " more per second";
     }

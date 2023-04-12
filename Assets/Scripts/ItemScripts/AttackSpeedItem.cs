@@ -10,14 +10,14 @@ public class AttackSpeedItem : Item
     public AttackSpeedItem()
     {
         value = .02f;
-        icon = Resources.Load("Textures/grud") as Sprite;
+        icon = Resources.Load("Textures/ItemIcons/energySword") as Sprite;
         name = "Energy Drink";
         description = "you pour this over your weapon?????? and you attack " + value as string + "faster";
     }
     public AttackSpeedItem(float val)
     {
         value = val;
-        icon = Resources.Load("Textures/grud") as Sprite;
+        icon = Resources.Load("Textures/ItemIcons/energySword") as Sprite;
         name = "Energy Drink";
         description = "you pour this over your weapon?????? and you attack " + value as string + "faster";
     }
