@@ -426,6 +426,18 @@ public class GameManager : MonoBehaviour
             {
                 //player.gameObject.GetComponent<JacksonCharacterMovement>().WeaponAssignFunction;
                 //Call the weapon function in the player @Jackson TODO
+                if(pair.Value == 0)
+                {
+                    Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Hammer());
+                }
+                else if(pair.Value == 1)
+                {
+                    Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Swords());
+                }
+                else if (pair.Value == 2)
+                {
+                    Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new FryingPan());
+                }
             }
         }
     }
