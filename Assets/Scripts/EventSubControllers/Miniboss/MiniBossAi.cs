@@ -16,6 +16,8 @@ public class MiniBossAi : MonoBehaviour
     GameObject _damager;
     GameObject _navSphere;
 
+    List<float> damageTracker;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +31,7 @@ public class MiniBossAi : MonoBehaviour
 
         _anim = GetComponentInChildren<Animator>();
         _damager = transform.GetChild(1).gameObject;
+        damageTracker = new List<float>(GameManager.Instance.players.Count);
     }
 
     // Update is called once per frame
@@ -63,7 +66,11 @@ public class MiniBossAi : MonoBehaviour
 
         if (other.gameObject.tag == "Damage")
         {
-            Debug.Log("ow damage");
+            int damageDealer = GameManager.Instance.players.IndexOf(other.gameObject.transform.parent.gameObject);
+            
+            if(damageDealer != -1) { 
+            
+            }
         }
     }
 }
