@@ -7,21 +7,26 @@ using UnityEngine;
 public enum SideEvents
 {
   NoEvent,
-  Spleef
+  Spleef,
+  Miniboss
 }
 
 public class SideEventController : MonoBehaviour
 {
 
-  SideEvents _currentEvent;
+    SideEvents _currentEvent;
 
-  public GameObject spleefControllerPrefab;
-  GameObject spawnedSpleefController;
-  public List<Vector3> preSideEventPlayerPositions = new List<Vector3>();
+    public GameObject spleefControllerPrefab;
+    GameObject spawnedSpleefController;
+
+    public GameObject miniBossControllerPrefab;
+    GameObject spawnedMinibossController;
+
+    public List<Vector3> preSideEventPlayerPositions = new List<Vector3>();
 
 
-  // Start is called before the first frame update
-  void Start()
+    // Start is called before the first frame update
+    void Start()
     {
         GameManager.Instance.SideEventBegin.AddListener(StartNewSideEvent);
         GameManager.Instance.SideEventEnd.AddListener(EndCurrentSideEvent);
@@ -45,23 +50,26 @@ public class SideEventController : MonoBehaviour
         //save copies of player position components before players are sent to side event
         for (int i = 0; i < 4; i++)
         {
-          if (i+1 <= GameManager.Instance.players.Count)
-          {
-            preSideEventPlayerPositions.Add(GameManager.Instance.players[i].transform.position);
-          }
+            if (i+1 <= GameManager.Instance.players.Count)
+            {
+                preSideEventPlayerPositions.Add(GameManager.Instance.players[i].transform.position);
+            }
         }
 
+        GameManager.Instance.EnablePlayerInvincibility.Invoke();
 
-
-    switch (_currentEvent)
+        switch (_currentEvent)
         {
-          case SideEvents.Spleef:
-            spawnedSpleefController = Instantiate(spleefControllerPrefab, this.transform);
-            break;
-          default:
-            break;
+            case SideEvents.Spleef:
+                spawnedSpleefController = Instantiate(spleefControllerPrefab, this.transform);
+                break;
+            case SideEvents.Miniboss:
+                spawnedMinibossController = Instantiate(spawnedMinibossController);
+                break;
+            default:
+                break;
         }
-  }
+    }
 
     void EndCurrentSideEvent()
     {
@@ -70,22 +78,26 @@ public class SideEventController : MonoBehaviour
         //teleport players back to where they were before side event
         for (int i = 0; i < 4; i++)
         {
-          if (i + 1 <= GameManager.Instance.players.Count)
-          {
-            GameManager.Instance.players[i].transform.position = preSideEventPlayerPositions[i];
-          }
+            if (i + 1 <= GameManager.Instance.players.Count)
+            {
+                GameManager.Instance.players[i].transform.position = preSideEventPlayerPositions[i];
+            }
         }
+
+        GameManager.Instance.DisablePlayerInvincibility.Invoke();
 
         switch (_currentEvent)
         {
-          case SideEvents.Spleef:
-            Destroy(spawnedSpleefController);
-            break;
-          default:
-            break;
+            case SideEvents.Spleef:
+                Destroy(spawnedSpleefController);
+                break;
+            case SideEvents.Miniboss:
+                Destroy(spawnedMinibossController);
+                break;
+            default:
+                break;
         }
-    
         _currentEvent = SideEvents.NoEvent;
 
-  }
+    }
 }

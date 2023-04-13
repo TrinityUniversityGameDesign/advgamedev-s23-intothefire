@@ -146,6 +146,11 @@ public class GameManager : MonoBehaviour
     [Tooltip("Event called when the Major event ends")]
     public UnityEvent MajorEventEnd;
 
+    [Tooltip("Event to toggle player invincibility status on")]
+    public UnityEvent EnablePlayerInvincibility;
+    [Tooltip("Event to toggle player invincibility status off")]
+    public UnityEvent DisablePlayerInvincibility;
+
     [Tooltip("Event called when a player joined.")]
     public UnityEvent PlayerJoined;
     #endregion
@@ -476,7 +481,6 @@ public class GameManager : MonoBehaviour
         newPlayer.GetComponent<PlayerInput>().uiInputModule = newUI.transform.GetChild(0).GetComponent<InputSystemUIInputModule>();
 
         Instance.PlayerJoined.Invoke();
-        //newPlayer.gameObject.SetActive(false);
     }
 
     public void UpdatePlayerWeapon(int player, int index)
