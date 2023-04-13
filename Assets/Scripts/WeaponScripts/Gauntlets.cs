@@ -2,20 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FryingPan : Weapon
+public class Gauntlets : Weapon
 {
     // Start is called before the first frame update
     Vector3 boomPos;
-    public FryingPan()
+    public Gauntlets()
     {
-        name = "Frying Pan";
-        description = "Tangled is better than Frozen";
+        name = "Gauntlets";
+        description = "Punchy, Punchy, Go, Pow - Karate Joe";
         specialDuration = 30;
         specialTimer = 0;
-        lightDamage = 15;
-        lightSpeed = 0.35f;
-        heavyDamage = 30;
-        heavySpeed = 0.2f;
+        lightDamage = 10;
+        lightSpeed = 0.5f;
+        heavyDamage = 20;
+        heavySpeed = 0.35f;
         canMove = true;
     }
     

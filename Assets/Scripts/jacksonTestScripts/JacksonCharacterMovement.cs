@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Animations;
 
 public class JacksonCharacterMovement : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     List<Item> Specialinventory = new List<Item>();
     List<Item> Cooldowninventory = new List<Item>();
 
-
+    Animation anim;
     float gravity = 1f;
     float jumpPress = 0f;
     bool jumpHold = false;
@@ -51,6 +52,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     float lerpTime = 0.2f;
     float stunTimer = 0f;
     float stunValue = 0f;
+    float burnTime = 0f;
     Weapon weapon = new FryingPan();
     GameObject lastDam;
 
@@ -59,6 +61,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     float maxHealth = 100f;
     //public float health { get; private set; } = 100f;
     float health = 100f;
+    int damTime = 0;
     float maxSpeed = 20f;
     float damage = 0f;
     float attackSpeed = 0f;
@@ -124,28 +127,16 @@ public class JacksonCharacterMovement : MonoBehaviour
         cam = transform.GetChild(0).gameObject.GetComponent<Camera>();
 
         cam.transform.parent = null;
-        //inputs = playerMovement.jacksonControls;
-        //player = transform.GetChild(0).gameObject;
-        //transform.GetChild(1).gameObject.GetComponent<CapsuleCollider>().enabled = false;
         cc = gameObject.GetComponent<CharacterController>();
         _inventoryView = transform.GetChild(3).gameObject.GetComponent<InventoryView>();
         _quickview = transform.GetChild(3).gameObject.GetComponent<InventoryView>();
         _healthbar = GetComponentInChildren<Healthbar>();
         _hud = GetComponentInChildren<Canvas>();
         _minicam = GetComponentInChildren<Camera>();
-        //rb.useGravity = true;
-        //rb.drag = 0;
-        //rb.angularDrag = 0;
         sword = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
+        //anim = GetComponent<Animation>();
         lr = GetComponent<LineRenderer>();
         
-        /*
-        if(GameManager.Instance == null)
-        {
-            state = PlayerState.idle;
-            transform.position = FindObjectOfType<PlayerInputManager>().transform.position;
-        }
-        */
         weapon.AssignPlayer(this.gameObject);
     }
 
@@ -281,6 +272,32 @@ public class JacksonCharacterMovement : MonoBehaviour
         grounded = cc.isGrounded;
         h = ul.x;
         v = ul.y;
+        if(damTime == 0)
+        {
+            damTime--;
+            lastDam = null;
+        }
+        else if(damTime > 0)
+        {
+            damTime--;
+        }
+
+        if(Magnitude() < 1f)
+        {
+            //anim.Play("idle");
+        }
+        else
+        {
+            //anim.Play("run");
+        }
+        if(velocity.y > 0)
+        {
+            //anim.Play("jumpUp");
+        }
+        else if(velocity.y < 0 && !grounded)
+        {
+            //anim.Play("jumpDown");
+        }
         if(jumpPress > 0)
         {
             jumpPress--;
@@ -298,16 +315,18 @@ public class JacksonCharacterMovement : MonoBehaviour
             specialPress--;
         }
 
-        if(repeatTimer >= 0)
+        if(repeatTimer >= 50)
         {
             repeatTimer = 0;
             if (currBurn > 0)
             {
                 health -= Mathf.Ceil(currBurn / 10f);
+                //burnTime--;
                 currBurn -= Mathf.Ceil(currBurn / 10f);
                 if (currBurn <= 0)
                 {
                     currBurn = 0;
+                    burnTime = 0;
                 }
             }
             health += lifegain;
@@ -358,6 +377,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                         }
                         lightPress = 0f;
                         state = PlayerState.attack;
+                        //anim.Play("lightAttack");
                         currSword = Instantiate(sword, transform.position, transform.rotation);
                         currSword.transform.parent = transform;
                         currSword.GetComponent<DamageScript>().SetParent(this.gameObject);
@@ -384,6 +404,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                         }
                         heavyPress = 0f;
                         state = PlayerState.attack;
+                        //anim.Play("heavyAttack");
                         currSword = Instantiate(sword, transform.position, transform.rotation);
                         
                         currSword.transform.parent = transform;
@@ -442,6 +463,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                         currSpecials--;
                         //isDodging = true;
                         state = PlayerState.special;
+                        //anim.Play("specialAttack");
                         if (h != 0 || v != 0)
                         {
                             Rotating(h, v);
@@ -779,9 +801,10 @@ public class JacksonCharacterMovement : MonoBehaviour
         health -= hurts;
         float kb = temp.GetKnockback() - KnockbackResistance;
         currBurn = temp.GetDamageOverTime();
+        burnTime = 10;
         if (temp.GetLifesteal())
         {
-            other.GetComponentInParent<JacksonPlayerMovement>().StealLife(hurts);
+            other.GetComponentInParent<JacksonCharacterMovement>().StealLife(hurts);
         }
         if (kb < 1) { kb = 1f; }
         state = PlayerState.hitstun;
@@ -819,7 +842,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         weapon = w;
         weapon.AssignPlayer(gameObject);
     }
-    float CalculateDamage(float d)
+    public float CalculateDamage(float d)
     {
         float rand = Random.Range(0f, 1f);
         float dmg = d + damage;
@@ -843,6 +866,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         {
             Debug.Log("ow damage");
             lastDam = other.gameObject;
+            damTime = 60;
             HurtPlayer(other.gameObject);
 
         }
@@ -850,9 +874,13 @@ public class JacksonCharacterMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "Damage")
+        if (other.gameObject.tag == "Damage" && other.gameObject != lastDam && this.gameObject != other.gameObject.GetComponent<DamageScript>().GetParent())
         {
+            Debug.Log("ow damage");
+            lastDam = other.gameObject;
+            damTime = 60;
             HurtPlayer(other.gameObject);
+
         }
     }
 

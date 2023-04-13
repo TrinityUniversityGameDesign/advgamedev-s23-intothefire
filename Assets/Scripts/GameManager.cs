@@ -438,6 +438,10 @@ public class GameManager : MonoBehaviour
                 {
                     Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new FryingPan());
                 }
+                else if(pair.Value == 3)
+                {
+                    Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Scythe());
+                }
             }
         }
     }
