@@ -5,9 +5,17 @@ using UnityEngine;
 public class DamageScript : MonoBehaviour
 {
     // Start is called before the first frame update
+
+    [SerializeField]
     float damage = 0f;
+
+    [SerializeField]
     float dot = 0f;
+
+    [SerializeField]
     float knockback = 5f;
+
+    [SerializeField]
     bool lifesteal = false;
     GameObject parent;
     GameObject player;
