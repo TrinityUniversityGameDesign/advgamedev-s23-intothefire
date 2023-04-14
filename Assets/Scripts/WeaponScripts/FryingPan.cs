@@ -8,8 +8,8 @@ public class FryingPan : Weapon
     Vector3 boomPos;
     public FryingPan()
     {
-        name = "Sword";
-        description = "Basic sword, pretty fast, with a dash slash to move around";
+        name = "Frying Pan";
+        description = "Tangled is better than Frozen";
         specialDuration = 30;
         specialTimer = 0;
         lightDamage = 15;

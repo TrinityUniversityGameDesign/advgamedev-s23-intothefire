@@ -7,22 +7,32 @@ using UnityEngine.Events;
 public class RotatingSelectScript : MonoBehaviour
 {
 
-    public int playerIndex = 0;
+    int index = 0;
+    int childCount;
+    int player;
 
+    public bool isCharacter;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        childCount = gameObject.transform.childCount;
+        gameObject.transform.GetChild(0)?.gameObject.SetActive(true);
+        player = GameManager.Instance.LastJoinedPlayer;
     }
 
-    public void PlayerMeshRotator()
+    public void Rotator()
     {
-        GameManager.Instance.ChangePlayerMesh(playerIndex);
-    }
+        gameObject.transform.GetChild(index)?.gameObject.SetActive(false);
+        if(index + 1 >= childCount)
+        {
+            index = 0;
+        } else
+        {
+            index++;
+        }
+        gameObject.transform.GetChild(index)?.gameObject.SetActive(true);
 
-    public void PlayerWeaponRotator()
-    {
-        
+        if(isCharacter) { GameManager.Instance.UpdatePlayerCharacter(player, index); } else { GameManager.Instance.UpdatePlayerWeapon(player, index); }
     }
 }
