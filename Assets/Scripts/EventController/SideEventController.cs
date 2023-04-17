@@ -83,7 +83,7 @@ public class SideEventController : MonoBehaviour
         int victor = svc.ComputeVictor();
         AwardPlayer(victor);
 
-        Debug.Log("Ending SideEvent from SideEventController");
+        //Debug.Log("Ending SideEvent from SideEventController");
 
         //teleport players back to where they were before side event
         for (int i = 0; i < GameManager.Instance.players.Count; i++)
@@ -110,6 +110,6 @@ public class SideEventController : MonoBehaviour
 
     void AwardPlayer(int victor)
     {
-        Debug.Log("Awarding player " + victor);
+        //Debug.Log("Awarding player " + victor);
     }
 }
