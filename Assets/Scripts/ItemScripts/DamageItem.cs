@@ -9,15 +9,15 @@ public class DamageItem : Item
     
     public DamageItem()
     {
-        value = 10;
-        icon = Resources.Load("Textures/grud") as Sprite;
+        value = 5;
+        icon = Resources.Load("Textures/ItemIcons/ball") as Sprite;
         name = "spikeyBall";
         description = "putting this spikey ball on your weapon should make it hurt some more. It does +" + value as string + "more damage now";
     }
     public DamageItem(float val)
     {
         value = val;
-        icon = Resources.Load("Prefabs/Textures/grud") as Sprite;
+        icon = Resources.Load("Textures/ItemIcons/ball") as Sprite;
         name = "spikeyBall";
         description = "putting this spikey ball on your weapon should make it hurt some more. It does +" + value as string + "more damage now";
     }

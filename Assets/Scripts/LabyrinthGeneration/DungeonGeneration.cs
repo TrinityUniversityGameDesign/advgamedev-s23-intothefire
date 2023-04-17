@@ -67,7 +67,7 @@ public class DungeonGeneration : MonoBehaviour
     }
 
     public void GenerateLabyrinth() {
-        Debug.Log("Generating Labyrinth");
+        //Debug.Log("Generating Labyrinth");
         //spawn rooms
         GenerateRooms();
 
