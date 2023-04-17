@@ -17,7 +17,7 @@ public class DungeonGeneration : MonoBehaviour
 
     //prefab references
     [Header("Labyrinth Prefabs")]
-    public GameObject placeholderRoom;
+    public List<GameObject> placeholderRoom;
     public GameObject placeholderCenterRoom;
     public GameObject sorryPurpleTeam;
     public GameObject intersectionHallway;
@@ -62,7 +62,7 @@ public class DungeonGeneration : MonoBehaviour
         }
 
         //Call Labyrinth generation on first time startup rather than when the comonent starts. This might want to be bound to LabyrinthExplore, I am not sure, or a loading state in between
-        GameManager.Instance?.LabyrinthExploreBegin.AddListener(GenerateLabyrinth);
+        GameManager.Instance?.StartupNewGameBegin.AddListener(GenerateLabyrinth);
         //GenerateLabyrinth();
     }
 
@@ -96,22 +96,14 @@ public class DungeonGeneration : MonoBehaviour
             else
             {
                 //spawn prefabs at set intervals
-                int rand = Random.Range(0, 2);
+                int rand = Random.Range(0, placeholderRoom.Count);
                 GameObject newRoom;
-                if (rand == 0)
-                {
-                    newRoom = Instantiate(placeholderRoom,
+                
+                    newRoom = Instantiate(placeholderRoom[rand],
                     new Vector3(i * distanceApart, 0, j * distanceApart),
                     Quaternion.Euler(0, 0, 0),
                     GeometryHolder.transform);
-                }
-                else
-                {
-                    newRoom = Instantiate(sorryPurpleTeam,
-                    new Vector3(i * distanceApart, 0, j * distanceApart),
-                    Quaternion.Euler(0, 0, 0),
-                    GeometryHolder.transform);
-                }
+               
 
                 //this is where we would tell the new thing to have a variant based on if it's on the edge of the labyrinth
 

@@ -51,13 +51,14 @@ public class JacksonCharacterMovement : MonoBehaviour
     float lerpTime = 0.2f;
     float stunTimer = 0f;
     float stunValue = 0f;
-    Weapon weapon = new Hammer();
+    Weapon weapon = new FryingPan();
     GameObject lastDam;
 
 
     //Here's a list of all the stats a player can obtain / items can modify:
-    float maxHealth = 100;
-    float health = 100;
+    float maxHealth = 100f;
+    //public float health { get; private set; } = 100f;
+    float health = 100f;
     float maxSpeed = 20f;
     float damage = 0f;
     float attackSpeed = 0f;
@@ -91,17 +92,26 @@ public class JacksonCharacterMovement : MonoBehaviour
     
     float timer = 0;
     GameObject player;
+    private InventoryView _inventoryView;
+    private InventoryView _quickview;
+    private Healthbar _healthbar;
+    private Canvas _hud;
+    private Camera _minicam;
     void Start()
     {
         GameObject plsWork = GameObject.Find("GameLogicDriver");
 
         if(plsWork == null)
         {
+            Debug.Log("there's no game logic");
             GameObject.Find("HUD").SetActive(false);
+            Debug.Log("yerr a wizard marry");
             transform.GetChild(1).gameObject.SetActive(false);
             damnYouGabriel = true;
             transform.position = GameObject.Find("PlayerInputManager").transform.position;
         }
+        int rand = Random.Range(1, 3);
+        transform.GetChild(4 + rand).gameObject.SetActive(true);
         CapsuleCollider lazy = GetComponent<CapsuleCollider>();
         lazy.material.dynamicFriction = 0f;
         lazy.material.staticFriction = 0f;
@@ -116,6 +126,11 @@ public class JacksonCharacterMovement : MonoBehaviour
         //player = transform.GetChild(0).gameObject;
         //transform.GetChild(1).gameObject.GetComponent<CapsuleCollider>().enabled = false;
         cc = gameObject.GetComponent<CharacterController>();
+        _inventoryView = transform.GetChild(3).gameObject.GetComponent<InventoryView>();
+        _quickview = transform.GetChild(3).gameObject.GetComponent<InventoryView>();
+        _healthbar = GetComponentInChildren<Healthbar>();
+        _hud = GetComponentInChildren<Canvas>();
+        _minicam = GetComponentInChildren<Camera>();
         //rb.useGravity = true;
         //rb.drag = 0;
         //rb.angularDrag = 0;
@@ -130,6 +145,13 @@ public class JacksonCharacterMovement : MonoBehaviour
         }
         */
         weapon.AssignPlayer(this.gameObject);
+    }
+
+    private void UpdateMinimap()
+    {
+        Transform camTransform = _minicam.transform;
+        camTransform.position = new Vector3(transform.position.x, camTransform.position.y, transform.position.z);
+        camTransform.eulerAngles = new Vector3(90f, 0f, 0f) ;
     }
 
     private void OnEnable()
@@ -245,7 +267,7 @@ public class JacksonCharacterMovement : MonoBehaviour
             dodgePress = 3;
         }
         */
-
+        UpdateMinimap();
 
     }
 
@@ -567,7 +589,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                 {
                     //rb.AddForce(new Vector3(0f, -1f, 0f) * gravity);
                     velocity = velocity + (new Vector3(0f, -1f, 0f) * gravity);
-                    if (grounded && stunTimer <= 0)
+                    if ((grounded && stunTimer <= 0) || stunTimer < -80)
                     {
                         //stunValue = 0;
                         stunTimer = 0;
@@ -593,6 +615,15 @@ public class JacksonCharacterMovement : MonoBehaviour
     public void StartPlayer()
     {
         state = PlayerState.idle;
+        _hud.enabled = true;
+        //AddItem(new DamageItem());
+        //AddItem(new DamageItem());
+        //AddItem(new DamageItem());
+        //AddItem(new DamageItem());
+        //AddItem(new DamageItem());
+        //AddItem(new DamageItem());
+        //health -= 30f;
+        UpdateHealthbar();
     }
     public void MovementManagement(float horizontal, float vertical)
     {
@@ -759,6 +790,8 @@ public class JacksonCharacterMovement : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
         stunTimer = 10f;
         velocity = kb * transform.forward;
+        Destroy(currSword);
+        UpdateHealthbar();
     }
 
     public List<Item> GetInventory()
@@ -777,6 +810,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         if (i.ItemMove()) { Moveinventory.Add(i); }
         if (i.ItemCooldown()) { Cooldowninventory.Add(i); }
         if (i.ItemSpecial()) { Specialinventory.Add(i); }
+        //UpdateInventoryUI();
        }
     float CalculateDamage(float d)
     {
@@ -843,4 +877,57 @@ public class JacksonCharacterMovement : MonoBehaviour
     public void ChangeMaxSpecials(float f) { maxSpecials += f; }
     public void ChangeMaxJumps(float f) { maxJumps += f; }
     public void ChangeJumpHeight(float f) { jumpHeight += f; }
+
+    public List<(string, float)> GetInventoryStats()
+    {
+        List<(string, float)> temp = new List<(string, float)>();
+        temp.Add(("Max Health", maxHealth));
+        temp.Add(("Current Health", health));
+        temp.Add(("Max Speed", maxSpeed));
+        temp.Add(("Damage", damage));
+        temp.Add(("Attack Speed", attackSpeed));
+        temp.Add(("Armor", armor));
+        temp.Add(("Crit Rate", critRate));
+        temp.Add(("Lifesteal", lifesteal));
+        temp.Add(("Lifegain", lifegain));
+        temp.Add(("Damage Over Time", damageOverTime));
+        temp.Add(("Knockback", knockback));
+        temp.Add(("Knockback Resistance", KnockbackResistance));
+        temp.Add(("Max Air Specials", maxSpecials));
+        temp.Add(("Max Jumps", maxJumps));
+        temp.Add(("Jump Height", jumpHeight));
+        return temp;
+    }
+
+    public float GetMaxHealth() { return maxHealth; }
+    public float GetHealth() { return health; }
+    public float GetSpeed() { return maxSpeed; }
+    public float GetDamage() { return damage; }
+    public float GetAttackSpeed() {return  attackSpeed; }
+    public float GetArmor() {return  armor; }
+    public float GetCrit() { return critRate; }
+    public float GetLifesteal() { return lifesteal; }
+    public float GetLifegain() { return lifegain; }
+    public float GetDamageOverTime() { return damageOverTime; }
+    public float GetKnockback() { return knockback; }
+    public float GetKockbackResistance() { return KnockbackResistance; }
+    public float GetMaxSpecials() {return  maxSpecials; }
+    public float GetMaxJumps() { return maxJumps; }
+    public float GetJumpHeight() { return jumpHeight; }
+    
+    private void UpdateHealthbar()
+    {
+        _healthbar.UpdateHealth(health/maxHealth);
+    }
+
+    private void ToggleInventoryUI()
+    {
+        _inventoryView.ToggleUI();
+    }
+
+    private void UpdateInventoryUI()
+    {
+        // _inventoryView.UpdateUI();
+        _quickview.UpdateUI();
+    }
 }

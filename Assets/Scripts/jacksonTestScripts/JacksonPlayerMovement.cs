@@ -16,7 +16,15 @@ public class JacksonPlayerMovement : MonoBehaviour
         spawn,
         dead
     }
+
+    private enum InventoryState
+    {
+        quickview,
+        inventory
+    }
     PlayerState state = PlayerState.spawn;
+
+    private InventoryState _inventoryState = InventoryState.quickview;
     //JacksonPlayerControls playerMovement;
     GameObject sword;
     GameObject currSword = null;
@@ -54,8 +62,8 @@ public class JacksonPlayerMovement : MonoBehaviour
 
 
     //Here's a list of all the stats a player can obtain / items can modify:
-    float maxHealth = 100;
-    float health = 100;
+    private float maxHealth = 100f;
+    public float health { get; private set; } = 100f;
     float maxSpeed = 20f;
     float damage = 0f;
     float attackSpeed = 0f;
@@ -87,6 +95,9 @@ public class JacksonPlayerMovement : MonoBehaviour
     
     float timer = 0;
     GameObject player;
+    private InventoryView _inventoryView;
+    private Healthbar _healthbar;
+    private Canvas _hud;
     void Start()
     {
         CapsuleCollider lazy = GetComponent<CapsuleCollider>();
@@ -100,6 +111,10 @@ public class JacksonPlayerMovement : MonoBehaviour
         //inputs = playerMovement.jacksonControls;
         //player = transform.GetChild(0).gameObject;
         transform.GetChild(1).gameObject.GetComponent<CapsuleCollider>().enabled = false;
+        _inventoryView = transform.parent.GetComponentInChildren<InventoryView>();
+        _healthbar = transform.parent.GetComponentInChildren<Healthbar>();
+        _hud = transform.parent.GetComponentInChildren<Canvas>();
+        Debug.Log("Is heatlhbar retrieved?" + (_healthbar != null));
         rb = gameObject.GetComponent<Rigidbody>();
         //rb.useGravity = true;
         rb.drag = 0;
@@ -198,6 +213,21 @@ public class JacksonPlayerMovement : MonoBehaviour
         //Debug.Log("we moving");
         ul = ctx.ReadValue<Vector2>();
     }
+
+    public void ToggleInventory(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            _inventoryState = InventoryState.inventory;
+            ToggleInventoryUI();
+        }
+        else if (ctx.canceled)
+        {
+            _inventoryState = InventoryState.quickview;
+            ToggleInventoryUI();
+        }
+        Debug.Log(_inventoryState);
+    }
     // Update is called once per frame
     void Update()
     {
@@ -232,10 +262,8 @@ public class JacksonPlayerMovement : MonoBehaviour
             dodgePress = 3;
         }
         */
-
-
     }
-
+    
     private void FixedUpdate()
     {
         //Vector2 ul = inputs.Move.ReadValue<Vector2>();
@@ -554,11 +582,21 @@ public class JacksonPlayerMovement : MonoBehaviour
                 }break;
 
         }
+        Debug.Log(GetInventory());
         
     }
     public void StartPlayer()
     {
         state = PlayerState.idle;
+        _hud.enabled = true;
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        health -= 30f;
+        UpdateHealthbar();
     }
     void MovementManagement(float horizontal, float vertical)
     {
@@ -717,6 +755,7 @@ public class JacksonPlayerMovement : MonoBehaviour
         kb *= -2;
         grounded = false;
         rb.velocity = kb * transform.forward;
+        UpdateHealthbar();
     }
 
     public List<Item> GetInventory()
@@ -735,7 +774,9 @@ public class JacksonPlayerMovement : MonoBehaviour
         if (i.ItemMove()) { Moveinventory.Add(i); }
         if (i.ItemCooldown()) { Cooldowninventory.Add(i); }
         if (i.ItemSpecial()) { Specialinventory.Add(i); }
-       }
+        UpdateInventoryUI();
+    }
+    
     float CalculateDamage(float d)
     {
         float rand = Random.Range(0f, 1f);
@@ -770,9 +811,9 @@ public class JacksonPlayerMovement : MonoBehaviour
             HurtPlayer(other.gameObject);
         }
     }
-
-
-    public void ChangeHealth(float f) { maxHealth += f; health += f; }
+    
+    public void ChangeHealth(float f) { maxHealth += f; health += f; UpdateHealthbar();
+    }
     public void ChangeSpeed(float f) { maxSpeed += f; }
     public void ChangeDamage(float f) { damage += f; }
     public void ChangeAttackSpeed(float f) { attackSpeed += f; }
@@ -786,4 +827,19 @@ public class JacksonPlayerMovement : MonoBehaviour
     public void ChangeMaxSpecials(float f) { maxSpecials += f; }
     public void ChangeMaxJumps(float f) { maxJumps += f; }
     public void ChangeJumpHeight(float f) { jumpHeight += f; }
+
+    private void UpdateHealthbar()
+    {
+        _healthbar.UpdateHealth(health/maxHealth);
+    }
+
+    private void ToggleInventoryUI()
+    {
+        _inventoryView.ToggleUI();
+    }
+
+    private void UpdateInventoryUI()
+    {
+        _inventoryView.UpdateUI();
+    }
 }

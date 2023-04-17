@@ -6,6 +6,7 @@ public class TrialRoomScript : MonoBehaviour
 {
 	// public enum RoomSize
 	// { onextwo, twoxtwo };
+	public EmptyRoom hostEmpty;
 
 	public enum RoomState
 	{ empty, closed, trialing, completed};
@@ -75,7 +76,7 @@ public class TrialRoomScript : MonoBehaviour
 				meshRenderer.enabled = doorsEnabled;
 			}
 
-			BoxCollider boxCollider = childObject.GetComponent<BoxCollider>();
+			MeshCollider boxCollider = childObject.GetComponent<MeshCollider>();
 			if (boxCollider != null)
 			{
 				boxCollider.enabled = doorsEnabled;
@@ -118,6 +119,9 @@ public class TrialRoomScript : MonoBehaviour
 		currRoomState = RoomState.completed;
 		Debug.Log("Room Completed");
 		SetDoorPresence(false);
+		if(hostEmpty){
+			hostEmpty.depsawnRoom();
+		}
 	}
 	
 	public virtual void DespawnTrialGeometry()

@@ -24,8 +24,11 @@ public class ScavengeTrial : TrialRoomScript
         }
         foreach (GameObject thing in scavengeEntities)
         {
-            thing.GetComponent<ScavengeEntity>().hostRoom = this;
-            thing.SetActive(false);
+            if(thing){
+                thing.GetComponent<ScavengeEntity>().hostRoom = this;
+                thing.SetActive(false);
+            }
+            
         }
 
         scavengeEntities[Random.Range(0, scavengeEntities.Count - 1)].GetComponent<ScavengeEntity>().hasTreasure = true;
@@ -40,6 +43,7 @@ public class ScavengeTrial : TrialRoomScript
     }
 
     public override void StartTrial(){
+        currRoomState = RoomState.trialing;
         foreach (GameObject thing in trialGeometry)
         {
             if(thing){
@@ -52,6 +56,7 @@ public class ScavengeTrial : TrialRoomScript
     }
 
     public override void DespawnTrialGeometry(){
+        SetDoorPresence(false);
         foreach (GameObject thing in trialGeometry)
         {
             if(thing){

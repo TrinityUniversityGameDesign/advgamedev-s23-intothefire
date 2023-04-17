@@ -32,7 +32,7 @@ public class DamageScript : MonoBehaviour
 
     public void SetKnockback(float f)
     {
-        knockback = 0f;
+        knockback = f;
     }
     public float GetKnockback()
     {

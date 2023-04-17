@@ -31,15 +31,11 @@ public class Hammer : Weapon
             {
                 lazy.SetVelocity(new Vector3(tmp.x, 0f, tmp.z));
             }
-            if(lazy.Magnitude() < 10f)
-            {
-                lazy.SetVelocity(lazy.GetVelocity() + player.transform.forward * 30f + new Vector3(0f, 1f, 0f));
-            }
-            else
-            {
-                lazy.SetVelocity(lazy.GetVelocity() + player.transform.forward * 15f + new Vector3(0f, 1f, 0f));
-            }
-            boomPos = player.transform.position;
+            
+                lazy.SetVelocity( player.transform.forward * 35f + new Vector3(0f, 1f, 0f));
+               
+            
+            //boomPos = player.transform.position;
         }
         
         if (specialTimer > specialDuration)
@@ -61,9 +57,9 @@ public class Hammer : Weapon
             Quaternion newRotation = Quaternion.Lerp(player.transform.rotation, targetRotation, 0.03f);
 
             player.transform.rotation = newRotation;
-            lazy.SetVelocity((lazy.Magnitude() * player.transform.forward) + new Vector3 (0f, lazy.GetVelocity().y, 0f) + new Vector3(0f, -0.25f, 0f));
+            lazy.SetVelocity((lazy.Magnitude() * player.transform.forward) + new Vector3 (0f, lazy.GetVelocity().y, 0f) + new Vector3(0f, -0.33f, 0f));
             
-            hitbox.transform.position = boomPos;
+            //hitbox.transform.position = boomPos;
             specialTimer++;
             if(!lazy.GetSpecialHold())
             {
