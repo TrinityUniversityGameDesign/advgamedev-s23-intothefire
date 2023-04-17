@@ -92,11 +92,9 @@ public class JacksonCharacterMovement : MonoBehaviour
     
     float timer = 0;
     GameObject player;
-    
     private QuickView _quickview;
     private InventoryView _inventoryView;
     public Sprite Icon { get; private set; }
-    private Canvas _hud;
     private Camera _minicam;
     void Start()
     {
@@ -111,7 +109,7 @@ public class JacksonCharacterMovement : MonoBehaviour
             damnYouGabriel = true;
             transform.position = GameObject.Find("PlayerInputManager").transform.position;
         }
-        int rand = Random.Range(1, 3);
+        int rand = Random.Range(0, 1);
         transform.GetChild(4 + rand).gameObject.SetActive(true);
         CapsuleCollider lazy = GetComponent<CapsuleCollider>();
         lazy.material.dynamicFriction = 0f;
@@ -129,7 +127,6 @@ public class JacksonCharacterMovement : MonoBehaviour
         cc = gameObject.GetComponent<CharacterController>();
         _quickview = transform.GetComponentInChildren<QuickView>();
         _inventoryView = transform.GetComponentInChildren<InventoryView>();
-        _hud = GetComponentInChildren<Canvas>();
         _minicam = GetComponentInChildren<Camera>();
         Icon = Resources.Load<Sprite>("Sprites/test-icon");
         //rb.useGravity = true;
@@ -150,6 +147,7 @@ public class JacksonCharacterMovement : MonoBehaviour
 
     private void UpdateMinimap()
     {
+        Debug.Log("player z: " + transform.rotation.z);
         Transform camTransform = _minicam.transform;
         camTransform.position = new Vector3(transform.position.x, camTransform.position.y, transform.position.z);
         camTransform.eulerAngles = new Vector3(90f, 0f, 0f) ;
@@ -238,7 +236,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     }
     public void ToggleInventory(InputAction.CallbackContext ctx)
     {
-        if (ctx.started) ToggleInventoryUI();
+        if (ctx.started) _inventoryView.ToggleUI();
     }
     // Update is called once per frame
     void Update()
@@ -620,15 +618,14 @@ public class JacksonCharacterMovement : MonoBehaviour
     public void StartPlayer()
     {
         state = PlayerState.idle;
-        _hud.enabled = true;
         AddItem(new DamageItem());
         AddItem(new DamageItem());
         AddItem(new DamageItem());
         AddItem(new DamageItem());
         AddItem(new DamageItem());
         AddItem(new DamageItem());
+        _quickview.ToggleUI();
         _quickview.LoadUI();
-        UpdateHealthBar();
     }
     public void MovementManagement(float horizontal, float vertical)
     {
@@ -921,11 +918,6 @@ public class JacksonCharacterMovement : MonoBehaviour
     public float GetMaxSpecials() {return  maxSpecials; }
     public float GetMaxJumps() { return maxJumps; }
     public float GetJumpHeight() { return jumpHeight; }
-
-    private void ToggleInventoryUI()
-    {
-        _inventoryView.ToggleUI();
-    }
 
     private void UpdateInventoryUI()
     {

@@ -13,7 +13,6 @@ public class QuickView : MonoBehaviour
     private UIDocument _uiDocument;
     private VisualElement _root;
     private VisualElement _inventoryContainer;
-    private List<VisualElement> _inventoryCells;
     private ProgressBar _progressBar;
     private Coroutine _drainHealthBarCoroutine;
     private Color _newHealthColor;
@@ -28,7 +27,6 @@ public class QuickView : MonoBehaviour
         _uiDocument = GetComponent<UIDocument>();
         _root = _uiDocument.rootVisualElement;
         _inventoryContainer = _root.Q<VisualElement>("Quick-View");
-        _inventoryCells = _inventoryContainer.Children().ToList();
         _progressBar = _root.Q<ProgressBar>("Health-Bar");
 
         // Retrieve the player from the parent
@@ -50,17 +48,20 @@ public class QuickView : MonoBehaviour
         gak[2].alpha = 1f;
         gak[2].time = 1f;
         _healthBarGradient.SetKeys(gck, gak);
+        ToggleUI();
     }
     // Called in Player to load the elements in after the player loads because multiplayer
     public void LoadUI()
     {
         // Set the player icon
         _root.Q<VisualElement>("Player-Icon").style.backgroundImage = new StyleBackground(_player.Icon);
+        // Set the minimap
+        // _root.Q<VisualElement>("Minimap").style.backgroundImage = new StyleBackground(Resources.Load<Texture2D>("Textures/Minimap Render Texture"));
         // Set the player healthbar
         SetHealthColor(_healthBarGradient.Evaluate(_player.GetHealth() / _player.GetMaxHealth()));
         _progressBar.value = _player.GetHealth();
-        _progressBar.title = $"{Mathf.Round(_player.GetHealth()/_player.GetMaxHealth()*100)}%";
-        UpdateHealth();
+        _progressBar.highValue = _player.GetMaxHealth();
+        _progressBar.title = $"{_player.GetHealth()}/{_player.GetMaxHealth()}";
     }
     // Call when inventory items or stats change
     public void UpdateUI()
@@ -77,18 +78,23 @@ public class QuickView : MonoBehaviour
     // Fill the inventory with items
     void FillInventoryList()
     {
-        for (int i = 0; i < _inventoryCells.Count & i < _items.Count; i++)
+        _inventoryContainer.Clear();
+        for (int i = 0; i < _items.Count; i++)
         {
             Sprite icon = _items[i].icon;
-            _inventoryCells[i].style.backgroundImage = new StyleBackground(icon);
+            VisualElement itemCell = new VisualElement();
+            itemCell.AddToClassList("item-icon");
+            itemCell.style.backgroundImage = new StyleBackground(icon);
+            _inventoryContainer.Add(itemCell);
         }
     }
 
     public void UpdateHealth()
     {
         // Set player health
-        _drainHealthBarCoroutine = StartCoroutine(DrainHealthBar());
-        CheckHealthBarGradientAmount();
+        
+        StartCoroutine(DrainHealthBar());
+        //CheckHealthBarGradientAmount();
     }
 
     public void UpdateMaxHealth()
@@ -109,16 +115,19 @@ public class QuickView : MonoBehaviour
             elapsedTime += Time.deltaTime;
 
             float drainRatio = elapsedTime / _healthDrainTime;
-            _progressBar.value = Mathf.Lerp(currentHealth, newHealth, drainRatio);
-            SetHealthColor(Color.Lerp(currentColor, _newHealthColor, drainRatio));
+            float updatedHealth = Mathf.Lerp(currentHealth, newHealth, drainRatio);
+            _progressBar.value = updatedHealth;
+            _progressBar.title = $"{Mathf.Round(updatedHealth)}/{_player.GetMaxHealth()}";
+            SetHealthColor(_healthBarGradient.Evaluate(_progressBar.value/_progressBar.highValue));
             
             yield return null;
         }
+        // _progressBar.title = $"{_player.GetHealth()}/{_player.GetMaxHealth()}";
     }
 
     private void CheckHealthBarGradientAmount()
     {
-        _newHealthColor = _healthBarGradient.Evaluate(_progressBar.value / _progressBar.highValue);
+        _newHealthColor = _healthBarGradient.Evaluate(_player.GetHealth() / _player.GetMaxHealth());
     }
 
     private void SetHealthColor(Color color)
