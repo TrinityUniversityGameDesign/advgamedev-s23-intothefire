@@ -24,8 +24,11 @@ public class ScavengeTrial : TrialRoomScript
         }
         foreach (GameObject thing in scavengeEntities)
         {
-            thing.GetComponent<ScavengeEntity>().hostRoom = this;
-            thing.SetActive(false);
+            if(thing){
+                thing.GetComponent<ScavengeEntity>().hostRoom = this;
+                thing.SetActive(false);
+            }
+            
         }
 
         scavengeEntities[Random.Range(0, scavengeEntities.Count - 1)].GetComponent<ScavengeEntity>().hasTreasure = true;
