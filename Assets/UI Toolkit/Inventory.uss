@@ -22,22 +22,75 @@
     flex-wrap: wrap;
     justify-content: center;
 }
+
 .templatecontainer {
-    flex-grow:1;
+    flex-grow: 1;
 }
 
 #unity-slider {
     color: aquamarine;
 }
+
 #unity-low-button {
     color: aqua;
 }
+
 #unity-high-button {
     color: blueviolet;
 }
+
 .unity-scroller .unity-scroller--vertical .unity-scroller__vertical-scroller {
-    
 }
+
 .unity-scroller--vertical {
     width: 12px;
+}
+
+.unity-base-slider__dragger {
+    width: 12px;
+    border-radius: 10px;
+    background-color: rgba(53, 85, 118, 0.5);
+}
+
+.unity-base-slider__tracker {
+    background-color: rgba(0, 0, 0, 0);
+    border-color: rgba(0, 0, 0, 0);
+}
+
+.unity-scroller {
+    width: 12px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.unity-scroller__low-button {
+    display: none;
+}
+
+.unity-scroller__high-button {
+    display: none;
+}
+
+.unity-scroller--vertical > .unity-scroller__slider {
+    margin: 0;
+    width: 12px;
+}
+
+.container {
+}
+
+.unity-list-view__item:hover {
+    background-color: rgba(53, 85, 118, 0.5);
+}
+
+.item-icon {
+    width: 50px;
+    height: 50px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.unity-progress-bar__background {
+    background-color: #1C2024;
+    border-color: black;
 }

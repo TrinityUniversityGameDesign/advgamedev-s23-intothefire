@@ -1,6 +1,27 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/Inventory.uss?fileID=7433441132597879392&amp;guid=7e925dea81e9f4fefb174f493851c6a7&amp;type=3#Inventory" />
-    <ui:VisualElement name="Container" class="container" style="align-items: center; justify-content: flex-start;">
-        <ui:ListView focusable="true" name="Inventory-List" style="flex-grow: 1; width: 60%; max-width: 60%; height: 100%; max-height: 30%; flex-wrap: wrap; flex-direction: row;" />
+    <ui:VisualElement name="Container" class="container" style="align-items: flex-start; justify-content: flex-start; flex-direction: row;">
+        <ui:VisualElement name="Player-Icon" style="flex-grow: 1; justify-content: flex-start; min-width: 100px; min-height: 100px; border-top-left-radius: 100%; border-bottom-left-radius: 100%; border-top-right-radius: 100%; border-bottom-right-radius: 100%; -unity-background-scale-mode: scale-to-fit; max-width: 20%; margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" />
+        <ui:VisualElement style="flex-grow: 1;">
+            <ui:ProgressBar value="22" name="Health-Bar" style="margin-top: 10px; margin-left: 0; margin-right: 0; margin-bottom: 0; padding-bottom: 0; max-width: 80%;" />
+            <ui:VisualElement name="Quick-View" style="justify-content: flex-start; flex-direction: row; flex-wrap: wrap; margin-top: 10px; flex-grow: 1; align-items: stretch;">
+                <ui:VisualElement name="Icon" class="item-icon" />
+                <ui:VisualElement name="Icon" class="item-icon" style="width: 50px; height: 50px;" />
+                <ui:VisualElement name="Icon" class="item-icon" style="width: 50px; height: 50px;" />
+                <ui:VisualElement name="Icon" class="item-icon" style="width: 50px; height: 50px;" />
+                <ui:VisualElement name="Icon" class="item-icon" style="width: 50px; height: 50px;" />
+                <ui:VisualElement name="Icon" class="item-icon" style="width: 50px; height: 50px;" />
+                <ui:VisualElement name="Icon" class="item-icon" style="width: 50px; height: 50px;" />
+                <ui:VisualElement name="Icon" class="item-icon" style="width: 50px; height: 50px;" />
+                <ui:VisualElement name="Icon" class="item-icon" style="width: 50px; height: 50px;" />
+                <ui:VisualElement name="Icon" class="item-icon" style="width: 50px; height: 50px;" />
+                <ui:VisualElement name="Icon" class="item-icon" style="width: 50px; height: 50px;" />
+                <ui:VisualElement name="Icon" class="item-icon" style="width: 50px; height: 50px;" />
+                <ui:VisualElement name="Icon" class="item-icon" style="width: 50px; height: 50px;" />
+                <ui:VisualElement name="Icon" class="item-icon" style="width: 50px; height: 50px;" />
+                <ui:VisualElement name="Icon" class="item-icon" style="width: 50px; height: 50px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="Minimap-Placeholder" style="min-width: 25%;" />
     </ui:VisualElement>
 </ui:UXML>

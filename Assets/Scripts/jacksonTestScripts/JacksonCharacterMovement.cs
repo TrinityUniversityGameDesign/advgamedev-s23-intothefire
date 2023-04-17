@@ -92,9 +92,10 @@ public class JacksonCharacterMovement : MonoBehaviour
     
     float timer = 0;
     GameObject player;
+    
+    private QuickView _quickview;
     private InventoryView _inventoryView;
-    private InventoryView _quickview;
-    private Healthbar _healthbar;
+    public Sprite Icon { get; private set; }
     private Canvas _hud;
     private Camera _minicam;
     void Start()
@@ -126,11 +127,11 @@ public class JacksonCharacterMovement : MonoBehaviour
         //player = transform.GetChild(0).gameObject;
         //transform.GetChild(1).gameObject.GetComponent<CapsuleCollider>().enabled = false;
         cc = gameObject.GetComponent<CharacterController>();
-        _inventoryView = transform.GetChild(3).gameObject.GetComponent<InventoryView>();
-        _quickview = transform.GetChild(3).gameObject.GetComponent<InventoryView>();
-        _healthbar = GetComponentInChildren<Healthbar>();
+        _quickview = transform.GetComponentInChildren<QuickView>();
+        _inventoryView = transform.GetComponentInChildren<InventoryView>();
         _hud = GetComponentInChildren<Canvas>();
         _minicam = GetComponentInChildren<Camera>();
+        Icon = Resources.Load<Sprite>("Sprites/test-icon");
         //rb.useGravity = true;
         //rb.drag = 0;
         //rb.angularDrag = 0;
@@ -235,10 +236,14 @@ public class JacksonCharacterMovement : MonoBehaviour
         //Debug.Log("we moving");
         ul = ctx.ReadValue<Vector2>();
     }
+    public void ToggleInventory(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started) ToggleInventoryUI();
+    }
     // Update is called once per frame
     void Update()
     {
-        
+        UpdateHealthBar();
         //jumpHold = inputs.Jump.ReadValue<float>() > 0.1f;
         // lightHold = inputs.LightAttack.ReadValue<float>() > 0.1f;
         //heavyHold = inputs.HeavyAttack.ReadValue<float>() > 0.1f;
@@ -616,14 +621,14 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         state = PlayerState.idle;
         _hud.enabled = true;
-        //AddItem(new DamageItem());
-        //AddItem(new DamageItem());
-        //AddItem(new DamageItem());
-        //AddItem(new DamageItem());
-        //AddItem(new DamageItem());
-        //AddItem(new DamageItem());
-        //health -= 30f;
-        UpdateHealthbar();
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        _quickview.LoadUI();
+        UpdateHealthBar();
     }
     public void MovementManagement(float horizontal, float vertical)
     {
@@ -791,7 +796,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         stunTimer = 10f;
         velocity = kb * transform.forward;
         Destroy(currSword);
-        UpdateHealthbar();
+        UpdateInventoryUI();
     }
 
     public List<Item> GetInventory()
@@ -810,8 +815,8 @@ public class JacksonCharacterMovement : MonoBehaviour
         if (i.ItemMove()) { Moveinventory.Add(i); }
         if (i.ItemCooldown()) { Cooldowninventory.Add(i); }
         if (i.ItemSpecial()) { Specialinventory.Add(i); }
-        //UpdateInventoryUI();
-       }
+        UpdateInventoryUI();
+    }
     float CalculateDamage(float d)
     {
         float rand = Random.Range(0f, 1f);
@@ -916,11 +921,6 @@ public class JacksonCharacterMovement : MonoBehaviour
     public float GetMaxSpecials() {return  maxSpecials; }
     public float GetMaxJumps() { return maxJumps; }
     public float GetJumpHeight() { return jumpHeight; }
-    
-    private void UpdateHealthbar()
-    {
-        _healthbar.UpdateHealth(health/maxHealth);
-    }
 
     private void ToggleInventoryUI()
     {
@@ -929,7 +929,13 @@ public class JacksonCharacterMovement : MonoBehaviour
 
     private void UpdateInventoryUI()
     {
-        // _inventoryView.UpdateUI();
         _quickview.UpdateUI();
+        _inventoryView.UpdateUI();
     }
+
+    private void UpdateHealthBar()
+    {
+        _quickview.UpdateHealth();
+    }
+    
 }
