@@ -15,13 +15,15 @@ public class AxSwing : MonoBehaviour
     {
         // calculate the new angle based on the current time and sway speed
         float newAngle = isSwayingRight ? swayAngle : -swayAngle;
-        newAngle *= Mathf.Sin(Time.time * swaySpeed);
+        newAngle *= Mathf.Sin(Time.time * swaySpeed * Mathf.Deg2Rad) * Time.deltaTime;
 
-        // rotate the axe around the axis by the new angle
-        axe.transform.RotateAround(axis.transform.position, axis.transform.up, newAngle);
+        // rotate the axe towards the new angle
+        Quaternion targetRotation = Quaternion.Euler(0, newAngle, 0);
+        axe.transform.rotation = Quaternion.RotateTowards(axe.transform.rotation, targetRotation, swaySpeed * Time.deltaTime);
 
         // flip the sway direction if the angle reaches the maximum
-        if (Mathf.Abs(newAngle) >= swayAngle) {
+        if (Mathf.Abs(newAngle) >= swayAngle)
+        {
             isSwayingRight = !isSwayingRight;
         }
     }

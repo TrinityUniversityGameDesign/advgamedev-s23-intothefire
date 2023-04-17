@@ -5,8 +5,8 @@ using UnityEngine;
 public class SpikeTrapScript : MonoBehaviour
 {
     public GameObject objectToMove;
-    private float speed = 10f;
-    private float distance = 10f;
+    private float speed = 15f;
+    private float distance = 8f;
 
     private float startY;
 
