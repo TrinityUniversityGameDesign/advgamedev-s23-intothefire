@@ -32,6 +32,15 @@ public class MiniBossAi : MonoBehaviour
         _anim = GetComponentInChildren<Animator>();
         _damager = transform.GetChild(1).gameObject;
         damageTracker = new List<float>(GameManager.Instance.players.Count);
+
+
+        SetupSelfDamage();
+    }
+
+    void SetupSelfDamage()
+    {
+        DamageScript dmg = GetComponent<DamageScript>();
+        dmg.SetParent(gameObject);
     }
 
     // Update is called once per frame
