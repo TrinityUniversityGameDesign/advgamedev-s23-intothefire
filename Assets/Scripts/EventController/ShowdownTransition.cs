@@ -45,9 +45,9 @@ public class ShowdownTransition : MonoBehaviour
   }
 
   //For choosing between different arenas (if there are multiple)
-  private int ChooseArena()
+  private string ChooseArena()
 	{
-    return 1;
+    return "ShowdownArena1";
 	}
 
 
