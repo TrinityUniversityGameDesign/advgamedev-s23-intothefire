@@ -739,7 +739,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         
     }
 
-    void Rotating(float horizontal, float vertical)
+    public void Rotating(float horizontal, float vertical)
     {
         // Create a new vector of the horizontal and vertical inputs.
         Vector3 targetDirection = new Vector3(horizontal, 0f, vertical);

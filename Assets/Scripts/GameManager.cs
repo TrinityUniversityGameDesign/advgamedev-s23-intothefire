@@ -454,6 +454,10 @@ public class GameManager : MonoBehaviour
                 {
                     Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Whip());
                 }
+                else if (pair.Value == 7)
+                {
+                    Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Jetpack());
+                }
             }
         }
     }

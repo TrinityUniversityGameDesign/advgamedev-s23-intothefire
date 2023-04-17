@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hammer : Weapon
+public class Jetpack : Weapon
 {
     // Start is called before the first frame update
     Vector3 boomPos;
-    public Hammer()
+    float zoomVal;
+    public Jetpack()
     {
         name = "Hammer";
         description = "Heavy slow big hammer, with a very powerful charge";
-        specialDuration = 10000;
+        specialDuration = 60;
         specialTimer = 0;
         lightDamage = 15;
         lightSpeed = 0.35f;
@@ -24,17 +25,26 @@ public class Hammer : Weapon
         //Debug.Log("special timer: " +specialTimer + " special duration: " + specialDuration);
         if(specialTimer == 0)
         {
-            
+            zoomVal = 35;
             JacksonCharacterMovement lazy = player.GetComponent<JacksonCharacterMovement>();
+            hitbox.transform.localRotation = hitbox.transform.localRotation * Quaternion.AngleAxis(90f, Vector3.right);
             Vector3 tmp = lazy.GetVelocity();
             if(tmp.y < 0)
             {
                 lazy.SetVelocity(new Vector3(tmp.x, 0f, tmp.z));
             }
-            
-                lazy.SetVelocity( player.transform.forward * 35f + new Vector3(0f, 1f, 0f));
-               
-            
+            if(lazy.Magnitude() < 35)
+            {
+                zoomVal = 35;
+                lazy.SetVelocity(player.transform.forward * 35f);
+            }
+            else
+            {
+                zoomVal = lazy.Magnitude();
+            }
+
+            lazy.SetVelocity(player.transform.forward * zoomVal);
+
             //boomPos = player.transform.position;
         }
         
@@ -49,17 +59,18 @@ public class Hammer : Weapon
             JacksonCharacterMovement lazy = player.GetComponent<JacksonCharacterMovement>();
             if (h != 0 || v != 0)
             {
+                
                 Vector3 targetDirection = new Vector3(h, 0f, v);
                 targetDirection = lazy.GetCamera().transform.TransformDirection(targetDirection);
                 targetDirection.y = 0.0f;
 
                 Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
 
-                Quaternion newRotation = Quaternion.Lerp(player.transform.rotation, targetRotation, 0.03f);
+                Quaternion newRotation = Quaternion.Lerp(player.transform.rotation, targetRotation, 1);
 
                 player.transform.rotation = newRotation;
             }
-            lazy.SetVelocity((lazy.Magnitude() * player.transform.forward) + new Vector3 (0f, lazy.GetVelocity().y, 0f) + new Vector3(0f, -0.33f, 0f));
+            lazy.SetVelocity(player.transform.forward * zoomVal);
             
             //hitbox.transform.position = boomPos;
             specialTimer++;
