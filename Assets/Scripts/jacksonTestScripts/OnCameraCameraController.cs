@@ -21,7 +21,8 @@ public class OnCameraCameraController : MonoBehaviour
     private void Start()
     {
         GameManager.Instance?.LobbyBegin.AddListener(DisableInput);
-        GameManager.Instance?.LabyrinthExploreBegin.AddListener(EnableInput);
+        GameManager.Instance?.LabyrinthExploreBegin.AddListener(EnablePlaying);
+        gameObject.GetComponent<Camera>().enabled = false;
     }
 
     void DisableInput()
@@ -29,9 +30,10 @@ public class OnCameraCameraController : MonoBehaviour
         shouldProcessInput = false;
     }
 
-    void EnableInput()
+    void EnablePlaying()
     {
         shouldProcessInput = true;
+        gameObject.GetComponent<Camera>().enabled = true;
     }
 
 

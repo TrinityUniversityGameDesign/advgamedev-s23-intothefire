@@ -23,12 +23,12 @@ public class UI_Controller : MonoBehaviour
 
         GameManager.Instance.LobbyBegin.AddListener(ActivateLobbyUI);
         GameManager.Instance.LobbyEnd.AddListener(DeactivateLobbyUI);
-        Debug.Log("Awake UI Controller");
+        //Debug.Log("Awake UI Controller");
     }
     // Start is called before the first frame update
     void Start()
     { 
-        Debug.Log("Start UI Controller");
+        //Debug.Log("Start UI Controller");
         //DeactivateLabyrinthUI();
     }
 
@@ -45,7 +45,7 @@ public class UI_Controller : MonoBehaviour
 
     void ActivateLobbyUI()
     {
-        Debug.LogError("Beginning Lobby from UI");
+        //Debug.LogError("Beginning Lobby from UI");
         lobbyUI.SetActive(true);
         labyrinthUI.SetActive(false);
     }

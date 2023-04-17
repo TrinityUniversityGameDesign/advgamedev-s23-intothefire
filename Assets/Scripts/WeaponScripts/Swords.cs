@@ -9,7 +9,7 @@ public class Swords : Weapon
     {
         name = "Sword";
         description = "Basic sword, pretty fast, with a dash slash to move around";
-        specialDuration = 15;
+        specialDuration = 20;
         specialTimer = 0;
         specialKnockback = 60;
         lightDamage = 10;
@@ -35,6 +35,7 @@ public class Swords : Weapon
         }
         else
         {
+            hitbox.transform.localRotation = hitbox.transform.localRotation * Quaternion.AngleAxis(60f, Vector3.up);
             specialTimer++;
             return true;
         }
