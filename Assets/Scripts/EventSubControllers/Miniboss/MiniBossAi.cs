@@ -28,19 +28,11 @@ public class MiniBossAi : MonoBehaviour
         _navSphere.transform.parent = null;
         SetRandomDestination(); // set initial random destination
 
-
         _anim = GetComponentInChildren<Animator>();
         _damager = transform.GetChild(1).gameObject;
-        damageTracker = new List<float>(GameManager.Instance.players.Count);
+        damageTracker = new List<float>(4);//GameManager.Instance.players.Count);
+        damageTracker.Add(0);
 
-
-        SetupSelfDamage();
-    }
-
-    void SetupSelfDamage()
-    {
-        DamageScript dmg = GetComponent<DamageScript>();
-        dmg.SetParent(gameObject);
     }
 
     // Update is called once per frame
@@ -51,7 +43,6 @@ public class MiniBossAi : MonoBehaviour
         {
             SetRandomDestination();
         }
-        //anim.speed = speed;
     }
 
     // sets a random destination within the range
@@ -76,10 +67,42 @@ public class MiniBossAi : MonoBehaviour
         if (other.gameObject.tag == "Damage")
         {
             int damageDealer = GameManager.Instance.players.IndexOf(other.gameObject.transform.parent.gameObject);
+            DamageScript otherScript = other.gameObject.GetComponent<DamageScript>();
             
-            if(damageDealer != -1) { 
-            
+            if(damageDealer != -1) {
+                //Get the damage total
+                damageTracker[damageDealer] += otherScript.GetDamage();
+
+                //Compute the DOT
+                float dotAmt = otherScript.GetDamageOverTime();
+                if(dotAmt > 0) StartCoroutine(TickDOT(damageDealer, dotAmt));
+
             }
         }
+    }
+
+    IEnumerator TickDOT(int player, float dotAmt)
+    {
+        for(int i = 1; i <= 10; i++)
+        {
+            yield return new WaitForSeconds(1);
+            damageTracker[player] += dotAmt;
+        }
+    }
+
+    public int GetWinner()
+    {
+        float maxVal = 0;
+        int player = 0;
+        for(int i = 0; i < damageTracker.Count; i++)
+        {
+            if(damageTracker[i] > maxVal)
+            {
+                maxVal = damageTracker[i];
+                player = i;
+            }
+        }
+
+        return player;
     }
 }

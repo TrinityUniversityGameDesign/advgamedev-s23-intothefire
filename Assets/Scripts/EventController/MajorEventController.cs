@@ -13,11 +13,11 @@ public class MajorEventController : MonoBehaviour
 
     void StartNewMajorEvent()
     {
-        Debug.Log("Beginning MajorEvent from MajorEventController");
+        //Debug.Log("Beginning MajorEvent from MajorEventController");
     }
 
     void EndCurrentMajorEvent()
     {
-        Debug.Log("Ending MajorEvent from MajorEventController");
+        //Debug.Log("Ending MajorEvent from MajorEventController");
     }
 }

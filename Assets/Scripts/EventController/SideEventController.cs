@@ -22,6 +22,8 @@ public class SideEventController : MonoBehaviour
     public GameObject miniBossControllerPrefab;
     GameObject spawnedMinibossController;
 
+    SideEventController_General svc;
+
     public List<Vector3> preSideEventPlayerPositions = new List<Vector3>();
 
 
@@ -34,7 +36,8 @@ public class SideEventController : MonoBehaviour
 
     void StartNewSideEvent()
     {
-        Debug.Log("Beginning SideEvent from SideEventController");
+        //Debug.Log("Beginning SideEvent from SideEventController");
+        
 
         // Get the number of options in the enum
         int numOptions = System.Enum.GetNames(typeof(SideEvents)).Length;
@@ -45,15 +48,11 @@ public class SideEventController : MonoBehaviour
         // Get the corresponding option from the enum
         _currentEvent = (SideEvents)randomIndex;
     
-        Debug.Log("Chosen option: " + _currentEvent);
 
         //save copies of player position components before players are sent to side event
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < GameManager.Instance.players.Count; i++)
         {
-            if (i+1 <= GameManager.Instance.players.Count)
-            {
-                preSideEventPlayerPositions.Add(GameManager.Instance.players[i].transform.position);
-            }
+            preSideEventPlayerPositions.Add(GameManager.Instance.players[i].transform.position);
         }
 
         GameManager.Instance.EnablePlayerInvincibility.Invoke();
@@ -64,24 +63,32 @@ public class SideEventController : MonoBehaviour
                 spawnedSpleefController = Instantiate(spleefControllerPrefab, this.transform);
                 break;
             case SideEvents.Miniboss:
-                spawnedMinibossController = Instantiate(spawnedMinibossController);
+                spawnedMinibossController = Instantiate(miniBossControllerPrefab, transform);
                 break;
             default:
                 break;
         }
+        svc = GetComponentInChildren<SideEventController_General>();
+
+        for (int i = 0; i < GameManager.Instance.players.Count; i++)
+        {
+            GameManager.Instance.players[i].transform.position = svc.spawnPoints[i].position;
+        }
+
+        Debug.Log(3);
     }
 
     void EndCurrentSideEvent()
     {
+        int victor = svc.ComputeVictor();
+        AwardPlayer(victor);
+
         Debug.Log("Ending SideEvent from SideEventController");
 
         //teleport players back to where they were before side event
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < GameManager.Instance.players.Count; i++)
         {
-            if (i + 1 <= GameManager.Instance.players.Count)
-            {
-                GameManager.Instance.players[i].transform.position = preSideEventPlayerPositions[i];
-            }
+            GameManager.Instance.players[i].transform.position = preSideEventPlayerPositions[i];
         }
 
         GameManager.Instance.DisablePlayerInvincibility.Invoke();
@@ -99,5 +106,10 @@ public class SideEventController : MonoBehaviour
         }
         _currentEvent = SideEvents.NoEvent;
 
+    }
+
+    void AwardPlayer(int victor)
+    {
+        Debug.Log("Awarding player " + victor);
     }
 }

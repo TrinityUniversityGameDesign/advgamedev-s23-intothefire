@@ -114,9 +114,9 @@ public class JacksonCharacterMovement : MonoBehaviour
 
         if(plsWork == null)
         {
-            Debug.Log("there's no game logic");
+            //Debug.Log("there's no game logic");
             GameObject.Find("HUD").SetActive(false);
-            Debug.Log("yerr a wizard marry");
+            //Debug.Log("yerr a wizard marry");
             transform.GetChild(1).gameObject.SetActive(false);
             damnYouGabriel = true;
             transform.position = GameObject.Find("PlayerInputManager").transform.position;
@@ -872,7 +872,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         if(other.gameObject.tag == "Damage" && other.gameObject != lastDam && this.gameObject != other.gameObject.GetComponent<DamageScript>().GetParent())
         {
-            Debug.Log("ow damage");
+            //Debug.Log("ow damage");
             lastDam = other.gameObject;
             damTime = 60;
             HurtPlayer(other.gameObject);
@@ -884,7 +884,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         if (other.gameObject.tag == "Damage" && other.gameObject != lastDam && this.gameObject != other.gameObject.GetComponent<DamageScript>().GetParent())
         {
-            Debug.Log("ow damage");
+            //Debug.Log("ow damage");
             lastDam = other.gameObject;
             damTime = 60;
             HurtPlayer(other.gameObject);

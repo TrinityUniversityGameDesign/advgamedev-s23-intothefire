@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3570398b0d29b96489c0206fa52cf03f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 50
+  speed: 25
   range: 50
   angularSpeed: 3600
 --- !u!136 &9005872389670858027
@@ -182,7 +182,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2381000845682810882}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 3.1837833
   m_Height: 10.664284
@@ -200,8 +200,8 @@ GameObject:
   - component: {fileID: 5381516099161740931}
   - component: {fileID: 8033916576483936244}
   m_Layer: 0
-  m_Name: AttackTrigger
-  m_TagString: Untagged
+  m_Name: Dash
+  m_TagString: Damage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -229,7 +229,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9046634012106172505}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 3.2037306
   m_Height: 11.123932
@@ -249,7 +249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 0
   dot: 0
-  knockback: 20
+  knockback: 3
   lifesteal: 0
 --- !u!1001 &2381000844744973345
 PrefabInstance:
