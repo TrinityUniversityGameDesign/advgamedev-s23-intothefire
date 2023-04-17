@@ -215,7 +215,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1001 &1121182613979484107
 PrefabInstance:
@@ -224,9 +224,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: MaxSecondsBetweenSideEvents
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: MinSecondsBetweenSideEvents
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: MaxSecondsBetweenMicroEvents
+      value: 9000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: MinSecondsBetweenMicroEvents
+      value: 8000
+      objectReference: {fileID: 0}
     - target: {fileID: 3430062973120331862, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3430062973120331862, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
       propertyPath: m_LocalPosition.x

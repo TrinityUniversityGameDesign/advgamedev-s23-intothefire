@@ -80,6 +80,8 @@ public class JacksonCharacterMovement : MonoBehaviour
     float jumpHeight = 20f;
     float repeatTimer = 0f;
 
+    bool invincible = false;
+
 
     Vector3 oldSpeed = Vector3.zero;
     Vector3 velocity = Vector3.zero;
@@ -103,6 +105,8 @@ public class JacksonCharacterMovement : MonoBehaviour
     private void Awake()
     {
         GameManager.Instance?.StartupNewGameBegin.AddListener(StartPlayer);
+        GameManager.Instance?.EnablePlayerInvincibility.AddListener(EnableInvincible);
+        GameManager.Instance?.DisablePlayerInvincibility.AddListener(DisableInvincible);
     }
     void Start()
     {
@@ -110,9 +114,9 @@ public class JacksonCharacterMovement : MonoBehaviour
 
         if(plsWork == null)
         {
-            Debug.Log("there's no game logic");
+            //Debug.Log("there's no game logic");
             GameObject.Find("HUD").SetActive(false);
-            Debug.Log("yerr a wizard marry");
+            //Debug.Log("yerr a wizard marry");
             transform.GetChild(1).gameObject.SetActive(false);
             damnYouGabriel = true;
             transform.position = GameObject.Find("PlayerInputManager").transform.position;
@@ -798,14 +802,18 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         DamageScript temp = other.GetComponent<DamageScript>();
         float hurts = Mathf.Max(0f, (temp.GetDamage() - armor));
-        health -= hurts;
-        float kb = temp.GetKnockback() - KnockbackResistance;
-        currBurn = temp.GetDamageOverTime();
-        burnTime = 10;
-        if (temp.GetLifesteal())
+
+        if (!invincible)
         {
-            other.GetComponentInParent<JacksonCharacterMovement>().StealLife(hurts);
+            health -= hurts;
+            currBurn = temp.GetDamageOverTime();
+            if (temp.GetLifesteal())
+            {
+                other.GetComponentInParent<JacksonPlayerMovement>().StealLife(hurts);
+            }
         }
+
+        float kb = temp.GetKnockback() - KnockbackResistance;
         if (kb < 1) { kb = 1f; }
         state = PlayerState.hitstun;
         transform.LookAt(new Vector3(other.transform.position.x, transform.position.y - 1f, other.transform.position.z));
@@ -864,7 +872,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         if(other.gameObject.tag == "Damage" && other.gameObject != lastDam && this.gameObject != other.gameObject.GetComponent<DamageScript>().GetParent())
         {
-            Debug.Log("ow damage");
+            //Debug.Log("ow damage");
             lastDam = other.gameObject;
             damTime = 60;
             HurtPlayer(other.gameObject);
@@ -876,7 +884,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         if (other.gameObject.tag == "Damage" && other.gameObject != lastDam && this.gameObject != other.gameObject.GetComponent<DamageScript>().GetParent())
         {
-            Debug.Log("ow damage");
+            //Debug.Log("ow damage");
             lastDam = other.gameObject;
             damTime = 60;
             HurtPlayer(other.gameObject);
@@ -966,5 +974,14 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         // _inventoryView.UpdateUI();
         _quickview.UpdateUI();
+    }
+
+    private void DisableInvincible()
+    {
+        invincible = false;
+    }
+    private void EnableInvincible()
+    {
+        invincible = true;
     }
 }
