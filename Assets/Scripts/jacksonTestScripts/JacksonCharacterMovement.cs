@@ -786,6 +786,11 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         grounded = g;
     }
+
+    public bool GetGrounded()
+    {
+        return grounded;
+    }
     public void StealLife(float steal)
     {
         health += Mathf.Ceil(steal*lifesteal);
