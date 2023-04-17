@@ -118,7 +118,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1397990435000799533
 Transform:
   m_ObjectHideFlags: 0
@@ -157,12 +157,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1335266889284292928}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 500cfc45ffa144225bc110b10dd9e662, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listEntryTemplate: {fileID: 9197481963319205126, guid: 50988e2d8d2a64bdca3ac8bff03580c5, type: 3}
+  invListEntryTemplate: {fileID: 9197481963319205126, guid: c49257b255d1149729f775940aa1ebbf, type: 3}
+  statListEntryTemplate: {fileID: 9197481963319205126, guid: 50988e2d8d2a64bdca3ac8bff03580c5, type: 3}
 --- !u!1 &1563837049534341416
 GameObject:
   m_ObjectHideFlags: 0
@@ -634,7 +635,19 @@ MonoBehaviour:
     m_ActionId: b6842b1e-51da-4d05-a8be-27012508db8e
     m_ActionName: UI/Cancel[/Keyboard/escape]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7008380676879816094}
+        m_TargetAssemblyTypeName: JacksonCharacterMovement, Assembly-CSharp
+        m_MethodName: ToggleInventory
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 51316645-c2db-4d3b-bbbe-f9f28c2e1ad5
     m_ActionName: jacksonControls/ToggleInventory[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
@@ -756,14 +769,14 @@ GameObject:
   m_Component:
   - component: {fileID: 6942225059584622065}
   - component: {fileID: 5929081030615630942}
-  - component: {fileID: 9166887962646502058}
+  - component: {fileID: 650259087343077638}
   m_Layer: 5
-  m_Name: Quickview
+  m_Name: QuickView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6942225059584622065
 Transform:
   m_ObjectHideFlags: 0
@@ -795,7 +808,7 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 95b062d0081e341ef9b37234e25c7e8e, type: 3}
   m_SortingOrder: 0
---- !u!114 &9166887962646502058
+--- !u!114 &650259087343077638
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -804,10 +817,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 8873600889430847472}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 500cfc45ffa144225bc110b10dd9e662, type: 3}
+  m_Script: {fileID: 11500000, guid: be22893952148462cadab7d1891fce4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listEntryTemplate: {fileID: 9197481963319205126, guid: 307653f6fa73c49199317e9a298edbe9, type: 3}
+  _healthBarGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  _healthDrainTime: 0.5
 --- !u!1 &9133687961696741547
 GameObject:
   m_ObjectHideFlags: 0
@@ -1061,9 +1103,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3537597249339985103, guid: cc6fd911286cc4519acc1081d47de0e2, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5346559007249603289, guid: cc6fd911286cc4519acc1081d47de0e2, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6240587285556404344, guid: cc6fd911286cc4519acc1081d47de0e2, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -79.200226
+      objectReference: {fileID: 0}
+    - target: {fileID: 6477413316413633424, guid: cc6fd911286cc4519acc1081d47de0e2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6734423430519346591, guid: cc6fd911286cc4519acc1081d47de0e2, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1096,6 +1150,10 @@ PrefabInstance:
     - target: {fileID: 8262490577749456538, guid: cc6fd911286cc4519acc1081d47de0e2, type: 3}
       propertyPath: m_PlaneDistance
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8649576138398165673, guid: cc6fd911286cc4519acc1081d47de0e2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc6fd911286cc4519acc1081d47de0e2, type: 3}
