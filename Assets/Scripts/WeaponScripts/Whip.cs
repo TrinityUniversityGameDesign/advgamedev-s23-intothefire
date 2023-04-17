@@ -5,7 +5,7 @@ using UnityEngine;
 public class Whip : Weapon
 {
     // Start is called before the first frame update
-    Vector3 boomPos;
+    Vector3 startPos;
     Vector3 anchor;
     Vector3 orgin;
     public Whip()
@@ -27,8 +27,9 @@ public class Whip : Weapon
         //Debug.Log("special timer: " +specialTimer + " special duration: " + specialDuration);
         if(specialTimer == 0)
         {
-            anchor = player.transform.position + (player.transform.forward * 35f);
-            orgin = player.transform.position + ((player.transform.forward * 35f) / 2f);
+            startPos = player.transform.position;
+            anchor = player.transform.position + (player.transform.forward * 40f);
+            orgin = player.transform.position + ((player.transform.forward * 40f) / 2f) + new Vector3(0, 1, 0);
             JacksonCharacterMovement lazy = player.GetComponent<JacksonCharacterMovement>();
             lazy.SetVelocity(Vector3.zero);
 
@@ -38,6 +39,8 @@ public class Whip : Weapon
             hitbox.transform.localScale = new Vector3(3f, 3f, 3f);
             //hitbox.transform.position = new Vector3(hitbox.transform.position.x, hitbox.transform.position.y - 2f, hitbox.transform.position.z);
             //boomPos = player.transform.position;
+            anchor = anchor - orgin;
+            startPos = startPos - orgin;
         }
         
         if (specialTimer > specialDuration)
@@ -49,12 +52,21 @@ public class Whip : Weapon
         else
         {
             JacksonCharacterMovement lazy = player.GetComponent<JacksonCharacterMovement>();
-            
-            Vector3 trans = Vector3.Slerp(player.transform.position, anchor, 0.1f);
-            trans = (orgin- trans).normalized * 15;
-            //lazy.SetVelocity((trans - player.transform.position) * 1f /*+ new Vector3 (0f, -1f, 0f)*/);
-            lazy.SetVelocity(trans);
+            /*
+            Vector3 trans = Vector3.Slerp(player.transform.position, anchor, 0.07f);
+            //trans = (orgin- trans).normalized * 15;
+            lazy.SetVelocity((trans - player.transform.position) / Time.deltaTime + new Vector3 (0f, -1f, 0f));
+            //lazy.SetVelocity(trans);
             //hitbox.transform.position = boomPos;
+            */
+            //player.transform.RotateAround(anchor, player.transform.right, -70 * Time.deltaTime);
+
+            //player.transform.position = Vector3.Slerp(player.transform.position - orgin, anchor, 0.1f);
+            Vector3 trans = Vector3.Slerp(player.transform.position - orgin, anchor, 0.07f);
+
+            //player.transform.position += orgin;
+            trans += orgin;
+            lazy.SetVelocity((trans - player.transform.position) / Time.deltaTime);
             specialTimer++;
             if(!lazy.GetSpecialHold())
             {
