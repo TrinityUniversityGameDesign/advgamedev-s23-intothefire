@@ -5,19 +5,19 @@ using UnityEngine;
 public class DamageItem : Item
 {
     // Start is called before the first frame update
-    
-    
     public DamageItem()
     {
         value = 5;
-        icon = Resources.Load("Textures/ItemIcons/ball") as Sprite;
+        Texture2D texture = Resources.Load("Textures/ItemIcons/ball") as Texture2D;
+        Debug.Log("");
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "spikeyBall";
         description = "putting this spikey ball on your weapon should make it hurt some more. It does +" + value as string + "more damage now";
     }
     public DamageItem(float val)
     {
         value = val;
-        icon = Resources.Load("Textures/ItemIcons/ball") as Sprite;
+        icon = Resources.Load("Sprites/test-icon") as Sprite;
         name = "spikeyBall";
         description = "putting this spikey ball on your weapon should make it hurt some more. It does +" + value as string + "more damage now";
     }

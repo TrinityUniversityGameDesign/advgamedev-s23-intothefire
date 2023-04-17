@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -224,22 +224,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 841344935257735975, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1121182613394760745, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
       propertyPath: MaxSecondsBetweenSideEvents
-      value: 500
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
       propertyPath: MinSecondsBetweenSideEvents
-      value: 300
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
-      propertyPath: MaxSecondsBetweenMicroEvents
-      value: 120
+    - target: {fileID: 1831125836570860741, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: m_JoinBehavior
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
-      propertyPath: MinSecondsBetweenMicroEvents
-      value: 60
-      objectReference: {fileID: 0}
+    - target: {fileID: 1831125836570860741, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: m_PlayerPrefab
+      value: 
+      objectReference: {fileID: 8629840565660342266, guid: 3ef60ba90caac4508b8102e94f66c290, type: 3}
     - target: {fileID: 3430062973120331862, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -283,10 +291,6 @@ PrefabInstance:
     - target: {fileID: 3430062973120331862, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5147701913855847209, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7466906755869850125, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
       propertyPath: m_Name
