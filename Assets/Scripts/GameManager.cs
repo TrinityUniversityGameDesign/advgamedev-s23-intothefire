@@ -247,12 +247,13 @@ public class GameManager : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.L))
             {
-                Instance.SideEventBegin.Invoke();
+                AwardRandomItem(0);
+                //Instance.SideEventBegin.Invoke();
             }
 
             if (Input.GetKeyUp(KeyCode.L))
             {
-                Instance.SideEventEnd.Invoke();
+                //Instance.SideEventEnd.Invoke();
             }
         }
     }
@@ -512,7 +513,7 @@ public class GameManager : MonoBehaviour
     private void InputManagerPlayerJoinedEvent(PlayerInput newPlayer)
     {
         //Debug.Log("New Player Joined");
-        LastJoinedPlayer = newPlayer.playerIndex;
+        Instance.LastJoinedPlayer = newPlayer.playerIndex;
         newPlayer.gameObject.name = ("Player" + newPlayer.playerIndex);
         Instance.players.Add(newPlayer.gameObject);
 
@@ -542,6 +543,13 @@ public class GameManager : MonoBehaviour
             Instance.OnStateEnter(GameState.Startup_New_Game);
         }
     }
+
+    public void AwardRandomItem(int victor)
+    {
+        Item newItem = Item.GrantNewRandomItem();
+        if(newItem != null || victor < 0 || victor >= Instance.players.Count) players[victor].GetComponent<JacksonCharacterMovement>().AddItem(newItem);
+    }
+
     #endregion
     #endregion
 }
