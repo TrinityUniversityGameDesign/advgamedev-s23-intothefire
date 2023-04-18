@@ -97,10 +97,12 @@ public class JacksonCharacterMovement : MonoBehaviour
     
     float timer = 0;
     GameObject player;
-    //private QuickView ////_quickView;
-    //private InventoryView _inventoryView;
-    public Sprite Icon { get; private set; }
+    
+    // UI Variables
+    public Sprite icon;
     private Camera _minicam;
+    private HUDController _hud;
+    
     private void Awake()
     {
         GameManager.Instance?.StartupNewGameBegin.AddListener(StartPlayer);
@@ -131,15 +133,21 @@ public class JacksonCharacterMovement : MonoBehaviour
 
         cam.transform.parent = null;
         cc = gameObject.GetComponent<CharacterController>();
-        ////_quickView = transform.GetComponentInChildren<QuickView>();
-        //_inventoryView = transform.GetComponentInChildren<InventoryView>();
-        _minicam = GetComponentInChildren<Camera>();
-        Icon = Resources.Load<Sprite>("Sprites/test-icon");
+
+        // Other variables
         sword = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
+        
         //anim = GetComponent<Animation>();
         lr = GetComponent<LineRenderer>();
         
         weapon.AssignPlayer(this.gameObject);
+        
+        // UI Controllers
+        _hud = GetComponentInChildren<HUDController>();
+        _minicam = GetComponentInChildren<Camera>();
+        
+        // UI Variables
+        icon = Resources.Load<Sprite>("Sprites/test-icon");
     }
 
     private void UpdateMinimap()
@@ -237,7 +245,6 @@ public class JacksonCharacterMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateHealthBar();
         //jumpHold = inputs.Jump.ReadValue<float>() > 0.1f;
         // lightHold = inputs.LightAttack.ReadValue<float>() > 0.1f;
         //heavyHold = inputs.HeavyAttack.ReadValue<float>() > 0.1f;
@@ -651,8 +658,8 @@ public class JacksonCharacterMovement : MonoBehaviour
         AddItem(new DamageOverTimeItem());
         AddItem(new AttackSpeedItem());
         AddItem(new ArmorItem());
-        //_quickView.ToggleUI();
-        //_quickView.LoadUI();
+        
+        _hud.InstantiatePlayerHUD(icon, health, maxHealth);
     }
     public void MovementManagement(float horizontal, float vertical)
     {
@@ -830,7 +837,6 @@ public class JacksonCharacterMovement : MonoBehaviour
         stunTimer = 10f;
         velocity = kb * transform.forward;
         Destroy(currSword);
-        UpdateInventoryUI();
     }
 
     public List<Item> GetInventory()
@@ -849,7 +855,6 @@ public class JacksonCharacterMovement : MonoBehaviour
         if (i.ItemMove()) { Moveinventory.Add(i); }
         if (i.ItemCooldown()) { Cooldowninventory.Add(i); }
         if (i.ItemSpecial()) { Specialinventory.Add(i); }
-        UpdateInventoryUI();
     }
     public void AssignWeapon(Weapon w)
     {
@@ -965,17 +970,6 @@ public class JacksonCharacterMovement : MonoBehaviour
     public float GetMaxSpecials() {return  maxSpecials; }
     public float GetMaxJumps() { return maxJumps; }
     public float GetJumpHeight() { return jumpHeight; }
-
-    private void UpdateInventoryUI()
-    {
-        //_quickView.UpdateUI();
-        //_inventoryView.UpdateUI();
-    }
-
-    private void UpdateHealthBar()
-    {
-        //_quickView.UpdateHealth();
-    }
 
     private void DisableInvincible()
     {
