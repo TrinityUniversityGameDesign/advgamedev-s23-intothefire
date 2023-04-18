@@ -6,6 +6,11 @@ public class DamageScript : MonoBehaviour
 {
     // Start is called before the first frame update
     float damage = 0f;
+    float dot = 0f;
+    float knockback = 5f;
+    bool lifesteal = false;
+    GameObject parent;
+    GameObject player;
     void Start()
     {
         
@@ -23,5 +28,43 @@ public class DamageScript : MonoBehaviour
     public float GetDamage()
     {
         return damage;
+    }
+
+    public void SetKnockback(float f)
+    {
+        knockback = 0f;
+    }
+    public float GetKnockback()
+    {
+        return knockback;
+    }
+
+    public void SetDamageOverTime(float f)
+    {
+        dot = f;
+    }
+
+    public float GetDamageOverTime()
+    {
+        return dot;
+    }
+
+    public void DoLifesteal(GameObject play)
+    {
+        player = play;
+        lifesteal = true;
+    }
+
+    public bool GetLifesteal()
+    {
+        return lifesteal;
+    }
+    public void SetParent(GameObject g)
+    {
+        parent = g;
+    }
+    public GameObject GetParent()
+    {
+        return parent;
     }
 }

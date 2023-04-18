@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 public class OnCameraCameraController : MonoBehaviour
 {
@@ -15,10 +16,30 @@ public class OnCameraCameraController : MonoBehaviour
     private float pitch = 0f;
     Vector2 inputs;
     public bool lostFocus = true;
+    public bool shouldProcessInput = false;
+
+    private void Start()
+    {
+        GameManager.Instance?.LobbyBegin.AddListener(DisableInput);
+        GameManager.Instance?.LabyrinthExploreBegin.AddListener(EnablePlaying);
+        gameObject.GetComponent<Camera>().enabled = false;
+    }
+
+    void DisableInput()
+    {
+        shouldProcessInput = false;
+    }
+
+    void EnablePlaying()
+    {
+        shouldProcessInput = true;
+        gameObject.GetComponent<Camera>().enabled = true;
+    }
+
 
     private void LateUpdate()
     {
-        if (target != null)
+        if (target != null && shouldProcessInput)
         {
             /*
             Gamepad gamepad = Gamepad.current;
