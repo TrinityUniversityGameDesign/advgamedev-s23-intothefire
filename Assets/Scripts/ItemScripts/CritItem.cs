@@ -10,14 +10,17 @@ public class CritItem : Item
     public CritItem()
     {
         value = .05f;
-        icon = Resources.Load("Textures/ItemIcons/crit-strike-banner") as Sprite;
+
+        Texture2D texture = Resources.Load("Textures/ItemIcons/crit-strike-banner") as Texture2D;
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "League Crit Effect";
         description = "Huh I didn't know that would transfer between games. Gain " + value as string + " crit chance";
     }
     public CritItem(float val)
     {
         value = val;
-        icon = Resources.Load("Textures/ItemIcons/crit-strike-banner") as Sprite;
+        Texture2D texture = Resources.Load("Textures/ItemIcons/crit-strike-banner") as Texture2D;
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "League Crit Effect";
         description = "Huh I didn't know that would transfer between games. Gain " + value as string + " crit chance";
     }

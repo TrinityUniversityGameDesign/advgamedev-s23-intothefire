@@ -10,14 +10,17 @@ public class KnockbackResistanceItem : Item
     public KnockbackResistanceItem()
     {
         value = 10;
-        icon = Resources.Load("Textures/ItemIcons/weight") as Sprite;
+        
+        Texture2D texture = Resources.Load("Textures/ItemIcons/weight") as Texture2D;
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "5 Pound Weight";
         description = "You finnally find a use for all those 5 pound weights you bought, you take " + value as string + "less knockback";
     }
     public KnockbackResistanceItem(float val)
     {
         value = val;
-        icon = Resources.Load("Textures/ItemIcons/weight") as Sprite;
+        Texture2D texture = Resources.Load("Textures/ItemIcons/weight") as Texture2D;
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "5 Pound Weight";
         description = "You finnally find a use for all those 5 pound weights you bought, you take " + value as string + "less knockback";
     }

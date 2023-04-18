@@ -646,11 +646,11 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         state = PlayerState.idle;
         AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
+        AddItem(new KnockbackResistanceItem());
+        AddItem(new KnockbackItem());
+        AddItem(new DamageOverTimeItem());
+        AddItem(new AttackSpeedItem());
+        AddItem(new ArmorItem());
         _quickview.ToggleUI();
         _quickview.LoadUI();
     }
