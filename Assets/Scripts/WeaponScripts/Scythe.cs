@@ -32,8 +32,15 @@ public class Scythe : Weapon
 
         if(specialTimer == 0)
         {
+            RaycastHit hit;
             lazyLook = player.transform.position;
-            
+            if (Physics.SphereCast(player.transform.position, 1f, player.transform.forward, out hit, 750f))
+            {
+                if (hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "Enemy")
+                {
+                    lazyLook = hit.transform.position;
+                }
+            }
             player.GetComponent<JacksonCharacterMovement>().SetVelocity(player.transform.forward * 750f);
             targetRot = hitbox.transform.localRotation * Quaternion.AngleAxis(-45f, Vector3.up); //* currSword.transform.localRotation;
             hitbox.transform.localRotation = hitbox.transform.localRotation * Quaternion.AngleAxis(45f, Vector3.up); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);

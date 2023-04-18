@@ -97,10 +97,9 @@ public class JacksonCharacterMovement : MonoBehaviour
     
     float timer = 0;
     GameObject player;
+    private QuickView _quickview;
     private InventoryView _inventoryView;
-    private InventoryView _quickview;
-    private Healthbar _healthbar;
-    private Canvas _hud;
+    public Sprite Icon { get; private set; }
     private Camera _minicam;
     private void Awake()
     {
@@ -132,11 +131,10 @@ public class JacksonCharacterMovement : MonoBehaviour
 
         cam.transform.parent = null;
         cc = gameObject.GetComponent<CharacterController>();
-        _inventoryView = transform.GetChild(3).gameObject.GetComponent<InventoryView>();
-        _quickview = transform.GetChild(3).gameObject.GetComponent<InventoryView>();
-        _healthbar = GetComponentInChildren<Healthbar>();
-        _hud = GetComponentInChildren<Canvas>();
+        _quickview = transform.GetComponentInChildren<QuickView>();
+        _inventoryView = transform.GetComponentInChildren<InventoryView>();
         _minicam = GetComponentInChildren<Camera>();
+        Icon = Resources.Load<Sprite>("Sprites/test-icon");
         sword = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
         //anim = GetComponent<Animation>();
         lr = GetComponent<LineRenderer>();
@@ -232,10 +230,14 @@ public class JacksonCharacterMovement : MonoBehaviour
         //Debug.Log("we moving");
         ul = ctx.ReadValue<Vector2>();
     }
+    public void ToggleInventory(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started) _inventoryView.ToggleUI();
+    }
     // Update is called once per frame
     void Update()
     {
-        
+        UpdateHealthBar();
         //jumpHold = inputs.Jump.ReadValue<float>() > 0.1f;
         // lightHold = inputs.LightAttack.ReadValue<float>() > 0.1f;
         //heavyHold = inputs.HeavyAttack.ReadValue<float>() > 0.1f;
@@ -643,15 +645,14 @@ public class JacksonCharacterMovement : MonoBehaviour
     public void StartPlayer()
     {
         state = PlayerState.idle;
-        _hud.enabled = true;
-        //AddItem(new DamageItem());
-        //AddItem(new DamageItem());
-        //AddItem(new DamageItem());
-        //AddItem(new DamageItem());
-        //AddItem(new DamageItem());
-        //AddItem(new DamageItem());
-        //health -= 30f;
-        UpdateHealthbar();
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        AddItem(new DamageItem());
+        _quickview.ToggleUI();
+        _quickview.LoadUI();
     }
     public void MovementManagement(float horizontal, float vertical)
     {
@@ -743,7 +744,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         
     }
 
-    void Rotating(float horizontal, float vertical)
+    public void Rotating(float horizontal, float vertical)
     {
         // Create a new vector of the horizontal and vertical inputs.
         Vector3 targetDirection = new Vector3(horizontal, 0f, vertical);
@@ -790,6 +791,11 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         grounded = g;
     }
+
+    public bool GetGrounded()
+    {
+        return grounded;
+    }
     public void StealLife(float steal)
     {
         health += Mathf.Ceil(steal*lifesteal);
@@ -824,7 +830,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         stunTimer = 10f;
         velocity = kb * transform.forward;
         Destroy(currSword);
-        UpdateHealthbar();
+        UpdateInventoryUI();
     }
 
     public List<Item> GetInventory()
@@ -843,8 +849,8 @@ public class JacksonCharacterMovement : MonoBehaviour
         if (i.ItemMove()) { Moveinventory.Add(i); }
         if (i.ItemCooldown()) { Cooldowninventory.Add(i); }
         if (i.ItemSpecial()) { Specialinventory.Add(i); }
-        //UpdateInventoryUI();
-       }
+        UpdateInventoryUI();
+    }
     public void AssignWeapon(Weapon w)
     {
         weapon = w;
@@ -959,21 +965,16 @@ public class JacksonCharacterMovement : MonoBehaviour
     public float GetMaxSpecials() {return  maxSpecials; }
     public float GetMaxJumps() { return maxJumps; }
     public float GetJumpHeight() { return jumpHeight; }
-    
-    private void UpdateHealthbar()
-    {
-        _healthbar.UpdateHealth(health/maxHealth);
-    }
-
-    private void ToggleInventoryUI()
-    {
-        _inventoryView.ToggleUI();
-    }
 
     private void UpdateInventoryUI()
     {
-        // _inventoryView.UpdateUI();
         _quickview.UpdateUI();
+        _inventoryView.UpdateUI();
+    }
+
+    private void UpdateHealthBar()
+    {
+        _quickview.UpdateHealth();
     }
 
     private void DisableInvincible()
