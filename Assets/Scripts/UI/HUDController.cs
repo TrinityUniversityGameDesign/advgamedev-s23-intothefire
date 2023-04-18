@@ -32,6 +32,7 @@ public class HUDController : MonoBehaviour
         _canvas.enabled = true;
         _healthBar.InitializeHealthBar(health, maxHealth);
         _imageController.SetRawImageToSprite(playerIcon);
-        _healthBar.UpdateHealth(health, 150f);
+        _healthBar.UpdateMaxHealth(150);
+        _healthBar.UpdateHealth(80);
     }
 }
