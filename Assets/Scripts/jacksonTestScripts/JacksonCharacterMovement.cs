@@ -144,7 +144,6 @@ public class JacksonCharacterMovement : MonoBehaviour
 
     private void UpdateMinimap()
     {
-        //Debug.Log("player z: " + transform.rotation.z);
         Transform camTransform = _minicam.transform;
         camTransform.position = new Vector3(transform.position.x, camTransform.position.y, transform.position.z);
         camTransform.eulerAngles = new Vector3(90f, 0f, 0f) ;
@@ -647,11 +646,11 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         state = PlayerState.idle;
         AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
+        AddItem(new KnockbackResistanceItem());
+        AddItem(new KnockbackItem());
+        AddItem(new DamageOverTimeItem());
+        AddItem(new AttackSpeedItem());
+        AddItem(new ArmorItem());
         _quickview.ToggleUI();
         _quickview.LoadUI();
     }

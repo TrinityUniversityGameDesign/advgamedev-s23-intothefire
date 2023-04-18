@@ -10,14 +10,17 @@ public class DamageOverTimeItem : Item
     public DamageOverTimeItem()
     {
         value = 2;
-        icon = Resources.Load("Textures/ItemIcons/garlic") as Sprite;
+        Texture2D texture = Resources.Load("Textures/ItemIcons/garlic") as Texture2D;
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+        
         name = "Garlic";
         description = "You put garlic all over your weapon and it stings for " + value as string + "damage over 10 seconds";
     }
     public DamageOverTimeItem(float val)
     {
         value = val;
-        icon = Resources.Load("Textures/ItemIcons/garlic") as Sprite;
+        Texture2D texture = Resources.Load("Textures/ItemIcons/garlic") as Texture2D;
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "Garlic";
         description = "You put garlic all over your weapon and it stings for " + value as string + "damage over 10 seconds";
     }
