@@ -10,14 +10,17 @@ public class KnockbackItem : Item
     public KnockbackItem()
     {
         value = 0.5f;
-        icon = Resources.Load("Textures/ItemIcons/bassball") as Sprite;
+        
+        Texture2D texture = Resources.Load("Textures/ItemIcons/bassball") as Texture2D;
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "Bassball bat";
         description = "you put a bass guitar duct taped to a baseball bat on your weapon, letting you slap homers and giving your attacks " + value as string + "more knockback";
     }
     public KnockbackItem(float val)
     {
         value = val;
-        icon = Resources.Load("Textures/ItemIcons/bassball") as Sprite;
+        Texture2D texture = Resources.Load("Textures/ItemIcons/bassball") as Texture2D;
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "Bassball bat";
         description = "you put a bass guitar duct taped to a baseball bat on your weapon, letting you slap homers and giving your attacks " + value as string + "more knockback";
     }

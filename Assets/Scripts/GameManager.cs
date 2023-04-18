@@ -146,6 +146,11 @@ public class GameManager : MonoBehaviour
     [Tooltip("Event called when the Major event ends")]
     public UnityEvent MajorEventEnd;
 
+    [Tooltip("Event to toggle player invincibility status on")]
+    public UnityEvent EnablePlayerInvincibility;
+    [Tooltip("Event to toggle player invincibility status off")]
+    public UnityEvent DisablePlayerInvincibility;
+
     [Tooltip("Event called when a player joined.")]
     public UnityEvent PlayerJoined;
     #endregion
@@ -190,7 +195,7 @@ public class GameManager : MonoBehaviour
 
         if (!GameObject.Find("MainCanvas"))
         {
-            Debug.LogError("Could not find UI Prefab named MainCanvas");
+            //Debug.LogError("Could not find UI Prefab named MainCanvas");
         }
 
         timerTextObj = GameObject.Find("Timer");
@@ -198,19 +203,19 @@ public class GameManager : MonoBehaviour
 
         if (!timer)
         {
-            Debug.LogError("Could not find a TMP_Text component on a GameObject named Timer. Are you missing the UI?");
+            //Debug.LogError("Could not find a TMP_Text component on a GameObject named Timer. Are you missing the UI?");
         }
 
         if (!GameObject.Find("DungeonGenerator"))
         {
-            Debug.LogError("Could not find Dungeon Generator. Are you missing it in the scene?");
+            //Debug.LogError("Could not find Dungeon Generator. Are you missing it in the scene?");
         }
 
         GameObject EvtCtrl = GameObject.Find("EventController");
 
         if (!EvtCtrl)
         {
-            Debug.LogError("Could not find EventController. Are you missing it in the scene?");
+            //Debug.LogError("Could not find EventController. Are you missing it in the scene?");
         }
         else
         {
@@ -238,6 +243,16 @@ public class GameManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.I))
             {
                 OnStateEnter(GameState.Startup_New_Game);
+            }
+
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                Instance.SideEventBegin.Invoke();
+            }
+
+            if (Input.GetKeyUp(KeyCode.L))
+            {
+                Instance.SideEventEnd.Invoke();
             }
         }
     }
@@ -499,7 +514,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("New Player Joined");
         LastJoinedPlayer = newPlayer.playerIndex;
         newPlayer.gameObject.name = ("Player" + newPlayer.playerIndex);
-        players.Add(newPlayer.gameObject);
+        Instance.players.Add(newPlayer.gameObject);
 
         GameObject newUI = Instantiate(lobbyUI, GameObject.Find("PlayerLobby" + newPlayer.playerIndex + "UI").transform);
         newUI.name = "Player" + newPlayer.playerIndex + "Canvas";
@@ -508,7 +523,6 @@ public class GameManager : MonoBehaviour
         newPlayer.GetComponent<PlayerInput>().uiInputModule = newUI.transform.GetChild(0).GetComponent<InputSystemUIInputModule>();
 
         Instance.PlayerJoined.Invoke();
-        //newPlayer.gameObject.SetActive(false);
     }
 
     public void UpdatePlayerWeapon(int player, int index)

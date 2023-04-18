@@ -32,7 +32,7 @@ public class PlatformingTrial : TrialRoomScript
 		//Debug.Log("Collided with: " + other);
 		if(other.transform.tag == "Player" && currRoomState == RoomState.empty)
 		{
-			Debug.Log("Player found for this room");
+			//Debug.Log("Player found for this room");
 			RoomClose();
 			playerRef = other.gameObject;
 		}
@@ -40,6 +40,7 @@ public class PlatformingTrial : TrialRoomScript
 	}
 
     public override void StartTrial(){
+        currRoomState = RoomState.trialing;
         foreach (GameObject thing in trialGeometry)
         {
             if(thing){

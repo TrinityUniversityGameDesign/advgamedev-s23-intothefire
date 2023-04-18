@@ -9,7 +9,6 @@ public class DamageItem : Item
     {
         value = 5;
         Texture2D texture = Resources.Load("Textures/ItemIcons/ball") as Texture2D;
-        Debug.Log("");
         icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "spikeyBall";
         description = "putting this spikey ball on your weapon should make it hurt some more. It does +" + value as string + "more damage now";
@@ -17,7 +16,8 @@ public class DamageItem : Item
     public DamageItem(float val)
     {
         value = val;
-        icon = Resources.Load("Sprites/test-icon") as Sprite;
+        Texture2D texture = Resources.Load("Textures/ItemIcons/ball") as Texture2D;
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "spikeyBall";
         description = "putting this spikey ball on your weapon should make it hurt some more. It does +" + value as string + "more damage now";
     }

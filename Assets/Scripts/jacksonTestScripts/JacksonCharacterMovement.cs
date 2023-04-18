@@ -80,6 +80,8 @@ public class JacksonCharacterMovement : MonoBehaviour
     float jumpHeight = 20f;
     float repeatTimer = 0f;
 
+    bool invincible = false;
+
 
     Vector3 oldSpeed = Vector3.zero;
     Vector3 velocity = Vector3.zero;
@@ -95,13 +97,15 @@ public class JacksonCharacterMovement : MonoBehaviour
     
     float timer = 0;
     GameObject player;
-    private QuickView _quickview;
-    private InventoryView _inventoryView;
+    //private QuickView ////_quickView;
+    //private InventoryView _inventoryView;
     public Sprite Icon { get; private set; }
     private Camera _minicam;
     private void Awake()
     {
         GameManager.Instance?.StartupNewGameBegin.AddListener(StartPlayer);
+        GameManager.Instance?.EnablePlayerInvincibility.AddListener(EnableInvincible);
+        GameManager.Instance?.DisablePlayerInvincibility.AddListener(DisableInvincible);
     }
     void Start()
     {
@@ -109,9 +113,9 @@ public class JacksonCharacterMovement : MonoBehaviour
 
         if(plsWork == null)
         {
-            Debug.Log("there's no game logic");
+            //Debug.Log("there's no game logic");
             GameObject.Find("HUD").SetActive(false);
-            Debug.Log("yerr a wizard marry");
+            //Debug.Log("yerr a wizard marry");
             transform.GetChild(1).gameObject.SetActive(false);
             damnYouGabriel = true;
             transform.position = GameObject.Find("PlayerInputManager").transform.position;
@@ -127,8 +131,8 @@ public class JacksonCharacterMovement : MonoBehaviour
 
         cam.transform.parent = null;
         cc = gameObject.GetComponent<CharacterController>();
-        _quickview = transform.GetComponentInChildren<QuickView>();
-        _inventoryView = transform.GetComponentInChildren<InventoryView>();
+        ////_quickView = transform.GetComponentInChildren<QuickView>();
+        //_inventoryView = transform.GetComponentInChildren<InventoryView>();
         _minicam = GetComponentInChildren<Camera>();
         Icon = Resources.Load<Sprite>("Sprites/test-icon");
         sword = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
@@ -140,7 +144,6 @@ public class JacksonCharacterMovement : MonoBehaviour
 
     private void UpdateMinimap()
     {
-        Debug.Log("player z: " + transform.rotation.z);
         Transform camTransform = _minicam.transform;
         camTransform.position = new Vector3(transform.position.x, camTransform.position.y, transform.position.z);
         camTransform.eulerAngles = new Vector3(90f, 0f, 0f) ;
@@ -229,7 +232,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     }
     public void ToggleInventory(InputAction.CallbackContext ctx)
     {
-        if (ctx.started) _inventoryView.ToggleUI();
+        //if (ctx.started) //_inventoryView.ToggleUI();
     }
     // Update is called once per frame
     void Update()
@@ -643,13 +646,13 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         state = PlayerState.idle;
         AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        _quickview.ToggleUI();
-        _quickview.LoadUI();
+        AddItem(new KnockbackResistanceItem());
+        AddItem(new KnockbackItem());
+        AddItem(new DamageOverTimeItem());
+        AddItem(new AttackSpeedItem());
+        AddItem(new ArmorItem());
+        //_quickView.ToggleUI();
+        //_quickView.LoadUI();
     }
     public void MovementManagement(float horizontal, float vertical)
     {
@@ -805,14 +808,18 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         DamageScript temp = other.GetComponent<DamageScript>();
         float hurts = Mathf.Max(0f, (temp.GetDamage() - armor));
-        health -= hurts;
-        float kb = temp.GetKnockback() - KnockbackResistance;
-        currBurn = temp.GetDamageOverTime();
-        burnTime = 10;
-        if (temp.GetLifesteal())
+
+        if (!invincible)
         {
-            other.GetComponentInParent<JacksonCharacterMovement>().StealLife(hurts);
+            health -= hurts;
+            currBurn = temp.GetDamageOverTime();
+            if (temp.GetLifesteal())
+            {
+                other.GetComponentInParent<JacksonPlayerMovement>().StealLife(hurts);
+            }
         }
+
+        float kb = temp.GetKnockback() - KnockbackResistance;
         if (kb < 1) { kb = 1f; }
         state = PlayerState.hitstun;
         transform.LookAt(new Vector3(other.transform.position.x, transform.position.y - 1f, other.transform.position.z));
@@ -871,7 +878,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         if(other.gameObject.tag == "Damage" && other.gameObject != lastDam && this.gameObject != other.gameObject.GetComponent<DamageScript>().GetParent())
         {
-            Debug.Log("ow damage");
+            //Debug.Log("ow damage");
             lastDam = other.gameObject;
             damTime = 60;
             HurtPlayer(other.gameObject);
@@ -883,7 +890,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         if (other.gameObject.tag == "Damage" && other.gameObject != lastDam && this.gameObject != other.gameObject.GetComponent<DamageScript>().GetParent())
         {
-            Debug.Log("ow damage");
+            //Debug.Log("ow damage");
             lastDam = other.gameObject;
             damTime = 60;
             HurtPlayer(other.gameObject);
@@ -961,13 +968,21 @@ public class JacksonCharacterMovement : MonoBehaviour
 
     private void UpdateInventoryUI()
     {
-        _quickview.UpdateUI();
-        _inventoryView.UpdateUI();
+        //_quickView.UpdateUI();
+        //_inventoryView.UpdateUI();
     }
 
     private void UpdateHealthBar()
     {
-        _quickview.UpdateHealth();
+        //_quickView.UpdateHealth();
     }
-    
+
+    private void DisableInvincible()
+    {
+        invincible = false;
+    }
+    private void EnableInvincible()
+    {
+        invincible = true;
+    }
 }

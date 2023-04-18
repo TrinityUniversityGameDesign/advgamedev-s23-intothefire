@@ -6,6 +6,7 @@ public class TrialRoomScript : MonoBehaviour
 {
 	// public enum RoomSize
 	// { onextwo, twoxtwo };
+	public EmptyRoom hostEmpty;
 
 	public enum RoomState
 	{ empty, closed, trialing, completed};
@@ -42,15 +43,15 @@ public class TrialRoomScript : MonoBehaviour
 
 	public void OnTriggerEnter(Collider other)
 	{
-		Debug.Log(currRoomState);
+		//Debug.Log(currRoomState);
 		//Debug.Log("Collided with: " + other);
 		if(other.transform.tag == "Player" && currRoomState == RoomState.empty)
 		{
-			Debug.Log("Player found for this room");
+			//Debug.Log("Player found for this room");
 			RoomClose();
 			playerRef = other.gameObject;
 		}
-		Debug.Log(doors);
+		//Debug.Log(doors);
 	}
 
 	//Player enters room
@@ -58,7 +59,7 @@ public class TrialRoomScript : MonoBehaviour
 	{
 		SetDoorPresence(true);
 		currRoomState = RoomState.closed;
-		Debug.Log("Room Closed");
+		//Debug.Log("Room Closed");
 
 		//Spawn Startpad in appropriate room location
 		PlaceStartPad();
@@ -118,6 +119,9 @@ public class TrialRoomScript : MonoBehaviour
 		currRoomState = RoomState.completed;
 		Debug.Log("Room Completed");
 		SetDoorPresence(false);
+		if(hostEmpty){
+			hostEmpty.depsawnRoom();
+		}
 	}
 	
 	public virtual void DespawnTrialGeometry()
