@@ -3,12 +3,7 @@
     <ui:VisualElement name="Container" class="container">
         <ui:VisualElement name="Inventory" class="inventory" style="width: 60%; height: 75%; max-width: 60%; max-height: 75%; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; background-color: rgb(28, 32, 36); border-top-color: rgb(255, 197, 0); border-top-width: 5px; flex-direction: row;">
             <ui:VisualElement name="PlayerContainer" class="slotcontainer" style="flex-direction: column; width: 40%; height: 100%; max-width: 40%; max-height: 100%;">
-                <ui:VisualElement name="Stat-List" style="width: auto; flex-grow: 1; flex-direction: column; height: 75%; justify-content: flex-start; align-items: flex-start; color: rgb(255, 255, 255);">
-                    <ui:Label text="Health" display-tooltip-when-elided="true" name="Health" />
-                    <ui:Label text="Attack Damage" display-tooltip-when-elided="true" name="Damage" style="color: rgb(231, 231, 231);" />
-                    <ui:Label text="Move Speed" display-tooltip-when-elided="true" name="Move" />
-                    <ui:Label text="Attack Speed" display-tooltip-when-elided="true" name="Speed" />
-                </ui:VisualElement>
+                <ui:ListView focusable="false" name="Stat-List" selection-type="None" style="flex-grow: 1;" />
             </ui:VisualElement>
             <ui:ListView focusable="true" name="Inventory-List" style="flex-grow: 1; width: 60%; max-width: 60%; height: 100%; max-height: 100%;" />
         </ui:VisualElement>
