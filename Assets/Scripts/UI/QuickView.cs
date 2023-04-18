@@ -117,6 +117,7 @@ public class QuickView : MonoBehaviour
             float drainRatio = elapsedTime / _healthDrainTime;
             float updatedHealth = Mathf.Lerp(currentHealth, newHealth, drainRatio);
             _progressBar.value = updatedHealth;
+            Debug.Log(_progressBar.value);
             _progressBar.title = $"{Mathf.Round(updatedHealth)}/{_player.GetMaxHealth()}";
             SetHealthColor(_healthBarGradient.Evaluate(_progressBar.value/_progressBar.highValue));
             
