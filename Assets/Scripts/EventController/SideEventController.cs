@@ -110,6 +110,6 @@ public class SideEventController : MonoBehaviour
 
     void AwardPlayer(int victor)
     {
-        //Debug.Log("Awarding player " + victor);
+        GameManager.Instance.AwardRandomItem(victor);
     }
 }

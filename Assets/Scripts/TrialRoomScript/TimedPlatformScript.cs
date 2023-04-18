@@ -25,7 +25,7 @@ public class TimedPlatformScript : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider target){
-        Debug.Log("bug");
+        //Debug.Log("bug");
         if(target.transform.tag == "Player" && state == PlatformState.visible){
             state = PlatformState.disappearing;
             Invoke("disablePlatform", timeUntilDisappear);

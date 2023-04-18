@@ -10,7 +10,7 @@ public class StartPadScript : MonoBehaviour
 	{
 		if (other.transform.tag == "Player")
 		{
-			Debug.Log("Player Trigger Detected");
+			//Debug.Log("Player Trigger Detected");
 			hostRoom.StartTrial();
 		}
 	}
