@@ -7,18 +7,20 @@ public class EnemyUpdate : MonoBehaviour
     //Public values to be set in the editor
     public float maxHitPoints;
     public float detectionRange;
+    public GameObject hitbox;
 
     //Public values to be ignored in the editor
     public TrialRoomScript hostRoom;
     public bool trialSpawned;
 
     protected float hitPoints;
-    protected float frameCount;
+    protected float frameCount = 0;
     protected Rigidbody rb;
+    protected string state;
+    protected int stateTimer;
 
     void Start() {   
         hitPoints = maxHitPoints;
-        frameCount = 0;
         rb = GetComponent<Rigidbody>();
         EnemyInit();
     }
@@ -62,6 +64,31 @@ public class EnemyUpdate : MonoBehaviour
     public void Kill() {
         if (trialSpawned) {hostRoom.DecrementEnemyCount();}
         Destroy(gameObject);
+    }
+
+    public GameObject MakeHitbox(Vector3 offset, float damage, float knockback){
+        GameObject newHitbox = Instantiate(hitbox, transform.position + offset, Quaternion.identity);
+        EnemyHitbox hitboxScript = newHitbox.GetComponent<EnemyHitbox>();
+        hitboxScript.SetDamage(damage);
+        hitboxScript.SetKnockback(knockback);
+        return newHitbox;
+    }
+
+    public GameObject MakeProjectile(Vector3 velocity, float damage, float knockback){
+        GameObject newHitbox = Instantiate(hitbox, transform.position + velocity.normalized, Quaternion.identity);
+        EnemyHitbox hitboxScript = newHitbox.GetComponent<EnemyHitbox>();
+        hitboxScript.SetDamage(damage);
+        hitboxScript.SetKnockback(knockback);
+        hitboxScript.SetDuration(900);
+        hitboxScript.SetVelocity(velocity);
+        hitboxScript.SetScale(0.8f);
+        hitboxScript.isProjectile = true;
+        return newHitbox;
+    }
+
+    public Vector3 ModifyVelocity(float amount) {
+        rb.velocity = new Vector3(rb.velocity.x * amount, rb.velocity.y, rb.velocity.z);
+        return rb.velocity;
     }
 
 	private void OnTriggerEnter(Collider other) {
