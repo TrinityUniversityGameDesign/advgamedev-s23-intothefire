@@ -30,8 +30,7 @@ public class MiniBossAi : MonoBehaviour
 
         _anim = GetComponentInChildren<Animator>();
         _damager = transform.GetChild(1).gameObject;
-        damageTracker = new List<float>(4);//GameManager.Instance.players.Count);
-        damageTracker.Add(0);
+        damageTracker = new List<float>(GameManager.Instance.players.Count) { 0 };
 
     }
 
