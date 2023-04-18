@@ -24,7 +24,6 @@ public class AxSwing : MonoBehaviour
         if (Mathf.Abs(newAngle) >= swayAngle) {
             isSwayingRight = !isSwayingRight;
         }
-        Debug.Log("Ax position: " + axis.transform.position);
     }
 
     
