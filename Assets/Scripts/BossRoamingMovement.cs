@@ -12,6 +12,7 @@ public class BossRoamingMovement : MonoBehaviour
     public float waitTime;
     public GameObject detectionRadius;
     private float rotationSpeed = 5f;
+    private Vector3 currentDirection;
 
     private int currentPointIndex;
     private bool isWaiting;
@@ -27,64 +28,74 @@ public class BossRoamingMovement : MonoBehaviour
     // the boss towards the current patrol point. 
     // If the boss reaches the current patrol point, it will move to the next 
     // point and start waiting at it.
-    void Update()
+void Update()
     {
-        if (!isWaiting && patrolPoints.Count > 0)
+        if (patrolPoints.Count > 0)
         {
-            // Point = 0
             Transform currentPoint = patrolPoints[currentPointIndex];
+            Debug.Log("current point" + currentPoint);
 
-            // Shoot rays to all patrol points
             RaycastHit[] hits = Physics.RaycastAll(transform.position, currentPoint.position - transform.position, Vector3.Distance(transform.position, currentPoint.position));
             Transform closestPatrolPoint = null;
             float closestDistance = Mathf.Infinity;
 
-        // Iterate through the hits to find the closest patrol point that is not blocked by a wall
-        foreach (RaycastHit hit in hits)
-        {
-            if (hit.collider.CompareTag("Player"))
+            foreach (RaycastHit hit in hits)
             {
-                Vector3 hitDirection = (hit.collider.transform.position - transform.position).normalized;
-                if (!IsHitPointBehindWall(hit.collider.transform.position) && Vector3.Distance(transform.position, hit.collider.transform.position) < closestDistance)
+                if (hit.collider.CompareTag("Player"))
                 {
-                    closestPatrolPoint = hit.collider.transform;
-                    Debug.Log("Closest Point: " + closestPatrolPoint);
-                    closestDistance = Vector3.Distance(transform.position, hit.collider.transform.position);
+                    Vector3 hitDirection = (hit.collider.transform.position - transform.position).normalized;
+                    if (!IsHitPointBehindWall(hit.collider.transform.position) && Vector3.Distance(transform.position, hit.collider.transform.position) < closestDistance)
+                    {
+                        closestPatrolPoint = hit.collider.transform;
+                        Debug.Log("Closest Point: " + closestPatrolPoint);
+                        closestDistance = Vector3.Distance(transform.position, hit.collider.transform.position);
+                    }
+                }
+            }
+
+            if (closestPatrolPoint != null)
+            {
+                Debug.Log("Player detected.");
+                currentDirection = (closestPatrolPoint.position - transform.position).normalized;
+                transform.position = Vector3.MoveTowards(transform.position, closestPatrolPoint.position, moveSpeed * 2 * Time.deltaTime);
+                RotateTowards(closestPatrolPoint.position);
+            }
+
+            else
+            {
+                if (!isWaiting)
+                {
+                    currentDirection = (currentPoint.position - transform.position).normalized;
+                    transform.position = Vector3.MoveTowards(transform.position, currentPoint.position, moveSpeed * Time.deltaTime);
+                }
+
+                if (Vector3.Distance(transform.position, currentPoint.position) < 0.01f)
+                {
+                    currentPointIndex = (currentPointIndex + 1) % patrolPoints.Count;
+                    animator.SetBool("IsWalking", false);
+                    StartCoroutine(WaitAtPoint(currentPoint));
+                    Debug.Log("Patrol Point Location: " + patrolPoints[currentPointIndex]);
+                }
+                else
+                {
+                    RotateTowards(currentPoint.position);
                 }
             }
         }
-
-        if (closestPatrolPoint != null)
-        {
-            Debug.Log("Player detected.");
-            transform.position = Vector3.MoveTowards(transform.position, closestPatrolPoint.position, moveSpeed * 2 * Time.deltaTime);
-            RotateTowards(closestPatrolPoint.position);
-            return;
-        }
-
-        transform.position = Vector3.MoveTowards(transform.position, currentPoint.position, moveSpeed * Time.deltaTime);
-
-        if (Vector3.Distance(transform.position, currentPoint.position) < 0.01f)
-        {
-            currentPointIndex = (currentPointIndex + 1) % patrolPoints.Count;
-            animator.SetBool("IsWalking", false);
-
-            StartCoroutine(WaitAtPoint());
-
-            RotateTowards(patrolPoints[currentPointIndex].position);
-        }
     }
-}
 
-    IEnumerator WaitAtPoint()
-    {
-        isWaiting = true;
-        if (waitTime >= 0f)
-        {
-            yield return new WaitForSeconds(waitTime);
-        }
-        isWaiting = false;
-    }
+IEnumerator WaitAtPoint(Transform currentPoint)
+{
+    isWaiting = true;
+    animator.SetBool("IsWalking", false);
+    animator.SetBool("IsIdle", true);
+    yield return new WaitForSeconds(waitTime);
+    isWaiting = false;
+    animator.SetBool("IsWalking", true);
+    Debug.Log("Moving to next point.");
+} 
+
+
 
     private void RotateTowards(Vector3 targetPosition)
     {
@@ -101,11 +112,6 @@ public class BossRoamingMovement : MonoBehaviour
         {
             Gizmos.DrawSphere(point.position, 0.25f);
         }
-    }
-
-    private void Dectect()
-    {
-
     }
 
     private bool IsHitPointBehindWall(Vector3 hitPoint)
