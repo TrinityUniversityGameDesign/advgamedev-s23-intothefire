@@ -13,6 +13,7 @@ public class BossRoamingMovement : MonoBehaviour
     public GameObject detectionRadius;
     private float rotationSpeed = 5f;
     private Vector3 currentDirection;
+    public LayerMask layerMask;
 
     private int currentPointIndex;
     private bool isWaiting;
@@ -34,6 +35,29 @@ void Update()
         {
             Transform currentPoint = patrolPoints[currentPointIndex];
             Debug.Log("current point" + currentPoint);
+/*
+        RaycastHit sphit;
+        if (Physics.SphereCast(transform.position, 10f, transform.forward, out sphit, 1000f, (1 << 31))) {
+            Debug.Log("Close to " + sphit.transform.gameObject.name);
+            if (sphit.transform == currentPoint) {
+                currentPointIndex = (currentPointIndex + 1) % patrolPoints.Count;
+                currentPoint = patrolPoints[currentPointIndex];
+                Debug.Log("current point: " + currentPoint.gameObject.name);
+            }
+        }*/
+        RaycastHit sphit;
+        if (Physics.SphereCast(transform.position, 10f, transform.forward, out sphit, 1000f, layerMask))
+        {
+            if (sphit.transform == patrolPoints[currentPointIndex])
+            {
+                currentPointIndex = (currentPointIndex + 1) % patrolPoints.Count;
+            }
+        }
+
+        Vector3 targetPosition = patrolPoints[currentPointIndex].position;
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * moveSpeed);
+        
+
 
             RaycastHit[] hits = Physics.RaycastAll(transform.position, currentPoint.position - transform.position, Vector3.Distance(transform.position, currentPoint.position));
             Transform closestPatrolPoint = null;
@@ -41,6 +65,7 @@ void Update()
 
             foreach (RaycastHit hit in hits)
             {
+                Debug.Log("Hits so far: " + hit.collider);
                 if (hit.collider.CompareTag("Player"))
                 {
                     Vector3 hitDirection = (hit.collider.transform.position - transform.position).normalized;
@@ -50,6 +75,7 @@ void Update()
                         Debug.Log("Closest Point: " + closestPatrolPoint);
                         closestDistance = Vector3.Distance(transform.position, hit.collider.transform.position);
                     }
+               
                 }
             }
 
