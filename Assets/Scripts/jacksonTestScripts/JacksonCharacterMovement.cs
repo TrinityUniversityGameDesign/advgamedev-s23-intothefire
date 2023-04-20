@@ -58,6 +58,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     float burnTime = 0f;
     Weapon weapon = new FryingPan();
     GameObject lastDam;
+    float deadTick = 0;
 
 
     //Here's a list of all the stats a player can obtain / items can modify:
@@ -352,6 +353,20 @@ public class JacksonCharacterMovement : MonoBehaviour
         {
             repeatTimer++;
         }
+        if (transform.position.y < -40f || (state == PlayerState.dead && deadTick > 40))
+        {
+            Debug.Log("player is reset");
+            health = maxHealth;
+            velocity = Vector3.zero;
+            deadTick = 0;
+            if(currSword != null)
+            {
+                Destroy(currSword);
+            }
+            state = PlayerState.idle;
+            GameManager.Instance?.TeleportPlayerToSpawn(gameObject);
+        }
+        
         //Debug.Log("grounded: " + grounded);
         switch (state)
         {
@@ -376,6 +391,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                         state = PlayerState.dead;
                     }
                     velocity = velocity + (new Vector3(0f, -1f, 0f) * (gravMult * gravity));
+                   
                     //rb.AddForce(new Vector3(0f, -1f, 0f) * (gravMult*gravity));
                     MovementManagement(h, v);
                     if (lightPress > 0)
@@ -609,8 +625,9 @@ public class JacksonCharacterMovement : MonoBehaviour
                 break;
             case PlayerState.dead:
                 {
-                    gravity = -30;
-                    velocity = velocity + (new Vector3(0f, -1f, 0f) * gravity);
+                    //gravity = -30;
+                    velocity = velocity + (new Vector3(0f, -1f, 0f) * -30f);
+                    deadTick++;
                     //rb.AddForce(new Vector3(0f, -1f, 0f) * gravity);
                 }
                 break;
