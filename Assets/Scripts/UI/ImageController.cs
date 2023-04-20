@@ -19,4 +19,18 @@ public class ImageController : MonoBehaviour
             throw;
         }
     }
+
+    public void SetImageToSprite(Sprite newImage)
+    {
+        try
+        {
+            var image = GetComponent<Image>();
+            image.sprite = newImage;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e + ": There is not an image component to set");
+            throw;
+        }
+    }
 }

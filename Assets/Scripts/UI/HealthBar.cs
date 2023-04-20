@@ -37,7 +37,6 @@ public class HealthBar : MonoBehaviour
     
     public void InitializeHealthBar(float health, float maxHealth)
     {
-        Debug.Log("Initializing health at " + health + "/" + maxHealth);
         // Set health values
         _currentHealth = health;
         _slider.value = health / maxHealth;
@@ -47,7 +46,8 @@ public class HealthBar : MonoBehaviour
         
         // Set the current max health at initial load
         _currentMaxHealth = maxHealth;
-        _rectTransform.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 0, _currentMaxHealth * barWidthMultiplier);
+        // _rectTransform.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 0, _currentMaxHealth * barWidthMultiplier);
+        _rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,_currentMaxHealth * barWidthMultiplier);
     }
 
     IEnumerator ScaleHealthBar(float health)
@@ -80,8 +80,9 @@ public class HealthBar : MonoBehaviour
             
             // Set the healthbar width
             var finalBarWidth = maxHealth * barWidthMultiplier;
-            _rectTransform.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 200, 
-                Mathf.MoveTowards(_rectTransform.rect.width, finalBarWidth, changeRatio));
+            _rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Mathf.MoveTowards(_rectTransform.rect.width, finalBarWidth, changeRatio));
+            //_rectTransform.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 200, 
+            //    Mathf.MoveTowards(_rectTransform.rect.width, finalBarWidth, changeRatio));
             
             // Update currentMaxHealth
             var healthRatio = changeRatio / barWidthMultiplier;

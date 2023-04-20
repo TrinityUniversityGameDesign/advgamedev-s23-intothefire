@@ -147,7 +147,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         _minicam = GetComponentInChildren<Camera>();
         
         // UI Variables
-        icon = Resources.Load<Sprite>("Sprites/test-icon");
+        icon = Resources.Load<Sprite>("Sprites/gun");
     }
 
     private void UpdateMinimap()
@@ -659,7 +659,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         AddItem(new AttackSpeedItem());
         AddItem(new ArmorItem());
         
-        _hud.InstantiatePlayerHUD(icon, health, maxHealth);
+        _hud.InitializePlayerHUD(icon, health, maxHealth, GetInventory(), GetInventoryStats());
     }
     public void MovementManagement(float horizontal, float vertical)
     {
@@ -937,8 +937,8 @@ public class JacksonCharacterMovement : MonoBehaviour
     public List<(string, float)> GetInventoryStats()
     {
         List<(string, float)> temp = new List<(string, float)>();
-        temp.Add(("Max Health", maxHealth));
-        temp.Add(("Current Health", health));
+        //temp.Add(("Max Health", maxHealth));
+        //temp.Add(("Current Health", health));
         temp.Add(("Max Speed", maxSpeed));
         temp.Add(("Damage", damage));
         temp.Add(("Attack Speed", attackSpeed));
