@@ -555,9 +555,9 @@ public class JacksonCharacterMovement : MonoBehaviour
                         Destroy(currSword);
                         if (h != 0f || v != 0f)
                         {
-                            velocity = new Vector3(oldSpeed.x, velocity.y, oldSpeed.z);
+                            //velocity = new Vector3(oldSpeed.x, velocity.y, oldSpeed.z);
+                            MovementManagement(h, v);
                         }
-                        MovementManagement(h, v);
                         oldSpeed = Vector3.zero;
                         airStrike = false;
                         state = PlayerState.idle;
