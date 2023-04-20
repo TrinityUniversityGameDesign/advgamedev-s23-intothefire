@@ -93,64 +93,88 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Unity Events
+    [HideInInspector]
     [Tooltip("Event uesd to call when a Micro Event is starting")]
     public UnityEvent MicroEventBegin;
+    [HideInInspector]
     [Tooltip("Event used to call when a Micro Event is ending")]
     public UnityEvent MicroEventEnd;
 
+    [HideInInspector]
     [Tooltip("Event used to call when a Side Event is starting")]
     public UnityEvent SideEventBegin;
+    [HideInInspector]
     [Tooltip("Event used to cal when a Side Event is Starting")]
     public UnityEvent SideEventEnd;
 
+    [HideInInspector]
     [Tooltip("Event used to indicate when the Labyrinth is beginning to be explored")]
     public UnityEvent LabyrinthExploreBegin;
+    [HideInInspector]
     [Tooltip("Event used to indicate when the Labyrinth explore phase is being exited")]
     public UnityEvent LabyrinthExploreEnd;
 
+    [HideInInspector]
     [Tooltip("Event called when the Showdown begins")]
     public UnityEvent ShowdownBegin;
+    [HideInInspector]
     [Tooltip("Event call when the Showdown ends")]
     public UnityEvent ShowdownEnd;
 
+    [HideInInspector]
     [Tooltip("Event called when the lobby begins")]
     public UnityEvent LobbyBegin;
+    [HideInInspector]
     [Tooltip("Event called when the lobby ends")]
     public UnityEvent LobbyEnd;
 
+    [HideInInspector]
     [Tooltip("Event called when the game pauses")]
     public UnityEvent PausedBegin;
+    [HideInInspector]
     [Tooltip("Event called when the game unpauses")]
     public UnityEvent PausedEnd;
 
+    [HideInInspector]
     [Tooltip("Event called when the Game over begins")]
     public UnityEvent GameOverBegin;
+    [HideInInspector]
     [Tooltip("Event called when the Game over ends")]
     public UnityEvent GameOverEnd;
 
+    [HideInInspector]
     [Tooltip("Event called when the end screen sequence begins")]
     public UnityEvent EndScreenBegin;
+    [HideInInspector]
     [Tooltip("Event called when the end screen sequence ends")]
     public UnityEvent EndScreenEnd;
 
+    [HideInInspector]
     [Tooltip("Event called when the startup screen begins")]
     public UnityEvent StartupNewGameBegin;
+    [HideInInspector]
     [Tooltip("Event called when the startup screen ends")]
     public UnityEvent StartupNewGameEnd;
 
+    [HideInInspector]
     [Tooltip("Event called when a Major event begins")]
     public UnityEvent MajorEventBegin;
+    [HideInInspector]
     [Tooltip("Event called when the Major event ends")]
     public UnityEvent MajorEventEnd;
 
+    [HideInInspector]
     [Tooltip("Event to toggle player invincibility status on")]
     public UnityEvent EnablePlayerInvincibility;
+    [HideInInspector]
     [Tooltip("Event to toggle player invincibility status off")]
     public UnityEvent DisablePlayerInvincibility;
 
+    [HideInInspector]
     [Tooltip("Event called when a player joined.")]
     public UnityEvent PlayerJoined;
 
+    [HideInInspector]
     [Tooltip("Event called when the dungeon generation is complete")]
     public UnityEvent DungeonGenerationComplete;
     #endregion
@@ -547,15 +571,20 @@ public class GameManager : MonoBehaviour
     {
         for(int i = 0; i < Instance.players.Count; i++)
         {
+            Instantiate(teleport, players[i].transform);
             players[i].transform.position = GameObject.Find("Spawn" + i).transform.position;
         }
     }
-    
+
+
+    [SerializeField]
+    GameObject teleport;
     public void TeleportPlayerToSpawn(GameObject playerToTeleport)
     {
         for(int i = 0; i < Instance.players.Count; i++) { 
             if(Instance.players[i] == playerToTeleport)
             {
+                Instantiate(teleport, playerToTeleport.transform);
                 playerToTeleport.transform.position = GameObject.Find("Spawn" + i).transform.position;
             }
         }
