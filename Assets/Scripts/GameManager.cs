@@ -153,6 +153,9 @@ public class GameManager : MonoBehaviour
 
     [Tooltip("Event called when a player joined.")]
     public UnityEvent PlayerJoined;
+
+    [Tooltip("Event called when the dungeon generation is complete")]
+    public UnityEvent DungeonGenerationComplete;
     #endregion
 
     #region Private Methods
@@ -189,6 +192,8 @@ public class GameManager : MonoBehaviour
 
         Instance.StartupNewGameBegin.AddListener(TestStartupNewGameBegin);
         Instance.StartupNewGameEnd.AddListener(TestStartupNewGameEnd);
+
+        Instance.DungeonGenerationComplete.AddListener(TeleportPlayersToSpawnPoints);
 
         secondsOfGameTime = 60 * Minutes;
 
@@ -247,12 +252,13 @@ public class GameManager : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.L))
             {
-                Instance.SideEventBegin.Invoke();
+                AwardRandomItem(0);
+                //Instance.SideEventBegin.Invoke();
             }
 
             if (Input.GetKeyUp(KeyCode.L))
             {
-                Instance.SideEventEnd.Invoke();
+                //Instance.SideEventEnd.Invoke();
             }
         }
     }
@@ -313,7 +319,8 @@ public class GameManager : MonoBehaviour
                 //Currently this will reset the timings of Side Events and Micro Events which I think is fine for now....
 
                 Timer += Time.deltaTime;
-                if (timer != null) { timer.text = string.Format("{0}:{1}", (int)((secondsOfGameTime - Timer) / 60), (int)((secondsOfGameTime - Timer) % 60)); }
+                int seconds = (int)((secondsOfGameTime - Timer) % 60);
+                if (timer != null) { timer.text = string.Format("{0}:{1}", (int)((secondsOfGameTime - Timer) / 60), seconds < 10 ? "0" + seconds : seconds); }
 
                 //Micro events and side events happen differently because micro events are concurrent and side events are disruptive
                 if (!microEventInProgress) timeUntilNextMicroEvent -= Time.deltaTime;
@@ -512,7 +519,7 @@ public class GameManager : MonoBehaviour
     private void InputManagerPlayerJoinedEvent(PlayerInput newPlayer)
     {
         //Debug.Log("New Player Joined");
-        LastJoinedPlayer = newPlayer.playerIndex;
+        Instance.LastJoinedPlayer = newPlayer.playerIndex;
         newPlayer.gameObject.name = ("Player" + newPlayer.playerIndex);
         Instance.players.Add(newPlayer.gameObject);
 
@@ -542,6 +549,31 @@ public class GameManager : MonoBehaviour
             Instance.OnStateEnter(GameState.Startup_New_Game);
         }
     }
+
+    public void AwardRandomItem(int victor)
+    {
+        Item newItem = Item.GrantNewRandomItem();
+        if(newItem != null || victor < 0 || victor >= Instance.players.Count) players[victor].GetComponent<JacksonCharacterMovement>().AddItem(newItem);
+    }
+
+    void TeleportPlayersToSpawnPoints()
+    {
+        for(int i = 0; i < Instance.players.Count; i++)
+        {
+            players[i].transform.position = GameObject.Find("Spawn" + i).transform.position;
+        }
+    }
+    
+    public void TeleportPlayerToSpawn(GameObject playerToTeleport)
+    {
+        for(int i = 0; i < Instance.players.Count; i++) { 
+            if(Instance.players[i] == playerToTeleport)
+            {
+                playerToTeleport.transform.position = GameObject.Find("Spawn" + i).transform.position;
+            }
+        }
+    }
+
     #endregion
     #endregion
 }

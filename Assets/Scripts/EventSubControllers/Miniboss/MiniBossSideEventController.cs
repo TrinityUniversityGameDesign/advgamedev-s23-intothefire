@@ -6,6 +6,6 @@ public class MiniBossSideEventController : SideEventController_General
 {
     public override int ComputeVictor()
     {
-        return GetComponent<MiniBossAi>().GetWinner();
+        return GetComponentInChildren<MiniBossAi>().GetWinner();
     }
 }
