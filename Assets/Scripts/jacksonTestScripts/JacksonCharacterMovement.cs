@@ -776,7 +776,7 @@ public class JacksonCharacterMovement : MonoBehaviour
 
         // Create a rotation that is an increment closer to the target rotation from the player's rotation.
         //Quaternion newRotation = Quaternion.Lerp(GetComponent<Rigidbody>().rotation, targetRotation, turnSmoothing * Time.deltaTime);
-        Quaternion newRotation = Quaternion.Lerp(transform.rotation, targetRotation, 1);
+        Quaternion newRotation = Quaternion.Lerp(transform.rotation, targetRotation, 0.6f);
 
         // Change the players rotation to t$$anonymous$$s new rotation.
         
