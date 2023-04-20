@@ -680,11 +680,11 @@ public class JacksonCharacterMovement : MonoBehaviour
                 {
                     velocity = Magnitude() * transform.forward + new Vector3(0f, velocity.y, 0f); ;
                     //rb.AddRelativeForce(new Vector3(0, 0, 2f), ForceMode.VelocityChange);
-                    velocity = velocity + (transform.forward.normalized * 2f);
+                    velocity = velocity + (transform.forward.normalized * 1f);
                 }
                 else if (Magnitude() >= maxSpeed)
                 {
-                    velocity = Magnitude() * transform.forward + new Vector3(0f, velocity.y, 0f);
+                    velocity = maxSpeed * .95f * transform.forward + new Vector3(0f, velocity.y, 0f);
                 }
             }
             else
@@ -692,7 +692,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                 if(Magnitude() < maxSpeed)
                 {
                     //rb.AddRelativeForce(new Vector3(0, 0, 2f), ForceMode.VelocityChange);
-                    velocity = velocity + (transform.forward.normalized * 2f);
+                    velocity = velocity + (transform.forward.normalized * 1f);
                 }
                 else
                 {
