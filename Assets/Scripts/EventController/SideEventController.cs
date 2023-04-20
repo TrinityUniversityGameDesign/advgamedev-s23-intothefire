@@ -74,8 +74,6 @@ public class SideEventController : MonoBehaviour
         {
             GameManager.Instance.players[i].transform.position = svc.spawnPoints[i].position;
         }
-
-        Debug.Log(3);
     }
 
     void EndCurrentSideEvent()
@@ -89,6 +87,7 @@ public class SideEventController : MonoBehaviour
         for (int i = 0; i < GameManager.Instance.players.Count; i++)
         {
             GameManager.Instance.players[i].transform.position = preSideEventPlayerPositions[i];
+            GameManager.Instance.players[i].transform.GetComponent<PlayerParticleController>().PlayTeleport();
         }
 
         GameManager.Instance.DisablePlayerInvincibility.Invoke();

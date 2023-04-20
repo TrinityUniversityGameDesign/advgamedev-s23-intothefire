@@ -56,13 +56,16 @@ MonoBehaviour:
   LastJoinedPlayer: 0
   minPlayerCount: 1
   lobbyUI: {fileID: 8162475761223437536, guid: 4ad96f3806669784eab41ddaa7e1a34f, type: 3}
-  MaxSecondsBetweenSideEvents: 600
-  MinSecondsBetweenSideEvents: 300
-  MaxSecondsBetweenMicroEvents: 20
-  MinSecondsBetweenMicroEvents: 5
-  MaxSecondsDurationMicroEvents: 20
-  MinSecondsDurationMicroEvents: 10
+  Timer: 0
+  secondsOfGameTime: 0
+  MaxSecondsBetweenSideEvents: 300
+  MinSecondsBetweenSideEvents: 200
+  MaxSecondsBetweenMicroEvents: 120
+  MinSecondsBetweenMicroEvents: 60
+  MaxSecondsDurationMicroEvents: 45
+  MinSecondsDurationMicroEvents: 30
   SecondsDurationSideEvent: 60
+  timeLeftInSideEvent: 0
   MicroEventBegin:
     m_PersistentCalls:
       m_Calls: []
@@ -130,5 +133,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   PlayerJoined:
+    m_PersistentCalls:
+      m_Calls: []
+  DungeonGenerationComplete:
     m_PersistentCalls:
       m_Calls: []

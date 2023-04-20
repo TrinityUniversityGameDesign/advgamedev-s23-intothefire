@@ -60,9 +60,10 @@ public class GameManager : MonoBehaviour
     [Tooltip("Internal state the game manager is currently in.")]
     private GameState _state = GameState.Lobby;
 
-
+    [HideInInspector]
     [Tooltip("Represents the number of seconds since the game has started.")]
     public float Timer = 0;
+    [HideInInspector]
     public float secondsOfGameTime = 0;
 
     private bool gameInProgress = false;
@@ -571,21 +572,18 @@ public class GameManager : MonoBehaviour
     {
         for(int i = 0; i < Instance.players.Count; i++)
         {
-            Instantiate(teleport, players[i].transform);
             players[i].transform.position = GameObject.Find("Spawn" + i).transform.position;
+            players[i].transform.GetComponent<PlayerParticleController>().PlayTeleport();
         }
     }
 
-
-    [SerializeField]
-    GameObject teleport;
     public void TeleportPlayerToSpawn(GameObject playerToTeleport)
     {
         for(int i = 0; i < Instance.players.Count; i++) { 
             if(Instance.players[i] == playerToTeleport)
             {
-                Instantiate(teleport, playerToTeleport.transform);
                 playerToTeleport.transform.position = GameObject.Find("Spawn" + i).transform.position;
+                playerToTeleport.GetComponent<PlayerParticleController>().PlayTeleport();
             }
         }
     }
