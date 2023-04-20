@@ -4,27 +4,31 @@ using UnityEngine;
 
 public class AxSwing : MonoBehaviour
 {
-    public GameObject axe; // the axe game object to sway
-    public GameObject axis; // the axis game object to sway around
-    private float swaySpeed = 1.0f; // speed of the sway in degrees per second
-    private float swayAngle = 1.0f; // maximum angle of the sway
+    [SerializeField] private GameObject ax; // the ax game object to swing
+    [SerializeField] private Transform swingAxis; // the axis game object to swing around
+    [SerializeField] private float maxAngle = 60.0f; // maximum angle of the swing
+    [SerializeField] private float swingSpeed = 10.0f; // speed of the swing in degrees per second
 
-    private bool isSwayingRight = true; // flag to indicate which direction the axe is swaying
+    private float currentAngle = 0.0f; // current angle of the swing
+    private float direction = 1.0f; // direction of the swing
 
-    void Update()
+    private void Update()
     {
-        // calculate the new angle based on the current time and sway speed
-        float newAngle = isSwayingRight ? swayAngle : -swayAngle;
-        newAngle *= Mathf.Sin(Time.time * swaySpeed);
+        // calculate the new angle based on the current time and swing speed
+        float deltaAngle = direction * swingSpeed * Time.deltaTime;
+        currentAngle += deltaAngle;
 
-        // rotate the axe around the axis by the new angle
-        axe.transform.RotateAround(axis.transform.position, axis.transform.up, newAngle);
-
-        // flip the sway direction if the angle reaches the maximum
-        if (Mathf.Abs(newAngle) >= swayAngle) {
-            isSwayingRight = !isSwayingRight;
+        // flip the swing direction if the angle reaches the maximum
+        if (Mathf.Abs(currentAngle) > maxAngle) {
+            currentAngle = Mathf.Sign(currentAngle) * maxAngle;
+            direction *= -1.0f;
         }
-    }
 
-    
+        // calculate the rotation axis and angle
+        Vector3 rotationAxis = swingAxis.TransformDirection(Vector3.right);
+        float rotationAngle = deltaAngle;
+
+        // rotate the ax around the swing axis by the new angle
+        ax.transform.RotateAround(swingAxis.position, rotationAxis, rotationAngle);
+    }
 }
