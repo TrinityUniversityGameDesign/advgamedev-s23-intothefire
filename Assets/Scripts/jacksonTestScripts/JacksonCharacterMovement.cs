@@ -844,7 +844,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         state = PlayerState.hitstun;
         transform.LookAt(new Vector3(other.transform.position.x, transform.position.y - 1f, other.transform.position.z));
         stunValue = kb;
-        kb *= -20;
+        kb *= -1;
         grounded = false;
         transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
         stunTimer = 10f;
