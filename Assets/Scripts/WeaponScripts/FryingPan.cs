@@ -6,10 +6,11 @@ public class FryingPan : Weapon
 {
     // Start is called before the first frame update
     Vector3 boomPos;
+    Quaternion boomRot;
     public FryingPan()
     {
-        name = "Sword";
-        description = "Basic sword, pretty fast, with a dash slash to move around";
+        name = "Frying Pan";
+        description = "Tangled is better than Frozen";
         specialDuration = 30;
         specialTimer = 0;
         lightDamage = 15;
@@ -38,7 +39,11 @@ public class FryingPan : Weapon
             {
                 lazy.SetVelocity(lazy.GetVelocity() + player.transform.forward * 10f + new Vector3(0f, 20f, 0f));
             }
-            boomPos = player.transform.position;
+            hitbox.transform.localRotation = hitbox.transform.localRotation * Quaternion.AngleAxis(-90f, Vector3.right);
+            boomRot = hitbox.transform.localRotation;
+            hitbox.transform.localScale = new Vector3(3.5f, 3.5f, 3.5f);
+            hitbox.transform.position = new Vector3(hitbox.transform.position.x, hitbox.transform.position.y - 3f, hitbox.transform.position.z);
+            boomPos = hitbox.transform.position;
         }
         
         if (specialTimer > specialDuration)
