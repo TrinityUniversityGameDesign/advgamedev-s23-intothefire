@@ -13,6 +13,9 @@ public class SpikeTrapScript : MonoBehaviour
     void Start()
     {
         startY = objectToMove.transform.position.y;
+
+        // Sets the damage it will deal to the players
+        gameObject.GetComponent<DamageScript>().SetDamage(10f);
     }
 
     void Update()

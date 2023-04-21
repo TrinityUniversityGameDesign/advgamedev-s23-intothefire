@@ -4,31 +4,35 @@ using UnityEngine;
 
 public class AxSwing : MonoBehaviour
 {
-    [SerializeField] private GameObject ax; // the ax game object to swing
-    [SerializeField] private Transform swingAxis; // the axis game object to swing around
-    [SerializeField] private float maxAngle = 60.0f; // maximum angle of the swing
-    [SerializeField] private float swingSpeed = 10.0f; // speed of the swing in degrees per second
+     public GameObject ax; // the GameObject that will swing
+    public GameObject axis; // the axis GameObject
 
-    private float currentAngle = 0.0f; // current angle of the swing
-    private float direction = 1.0f; // direction of the swing
+    public float amplitude = 30f; // the amount of swing (in degrees)
+    public float speed = 1f; // the speed of the swing
 
-    private void Update()
+    private Vector3 pivotPoint; // the point the ax will pivot around
+    private Quaternion initialRotation; // the ax's initial rotation
+    private float currentAngle = 0f; // the current angle of the swing
+
+    void Start()
     {
-        // calculate the new angle based on the current time and swing speed
-        float deltaAngle = direction * swingSpeed * Time.deltaTime;
-        currentAngle += deltaAngle;
+        // set the pivot point to the position of the axis GameObject
+        pivotPoint = axis.transform.position;
 
-        // flip the swing direction if the angle reaches the maximum
-        if (Mathf.Abs(currentAngle) > maxAngle) {
-            currentAngle = Mathf.Sign(currentAngle) * maxAngle;
-            direction *= -1.0f;
-        }
+        // save the ax's initial rotation
+        initialRotation = ax.transform.rotation;
 
-        // calculate the rotation axis and angle
-        Vector3 rotationAxis = swingAxis.TransformDirection(Vector3.right);
-        float rotationAngle = deltaAngle;
+        // Sets the damage it will deal to the players
+        gameObject.GetComponent<DamageScript>().SetDamage(15f);
+    }
 
-        // rotate the ax around the swing axis by the new angle
-        ax.transform.RotateAround(swingAxis.position, rotationAxis, rotationAngle);
+    void Update()
+    {
+        // calculate the angle of the swing
+        currentAngle = Mathf.Sin(Time.time * speed) * amplitude;
+
+        // rotate the ax around the pivot point
+        ax.transform.rotation = initialRotation * Quaternion.Euler(currentAngle, 0f, 0f);
+        ax.transform.position = pivotPoint + ax.transform.up * -Mathf.Cos(currentAngle * Mathf.Deg2Rad);
     }
 }

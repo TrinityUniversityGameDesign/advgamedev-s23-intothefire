@@ -4,10 +4,22 @@ using UnityEngine;
 
 public class ModifiedTeleporter : MonoBehaviour
 {
-    public Transform player;
     public List<ModifiedTeleporter> portals;
 
     private bool playerIsOverlapping = false;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        // Add this teleporter to the portals list of other teleporters
+        foreach (ModifiedTeleporter portal in portals)
+        {
+            if (!portal.portals.Contains(this))
+            {
+                portal.portals.Add(this);
+            }
+        }
+    }
 
     // Update is called once per frame
     void Update()
@@ -22,22 +34,19 @@ public class ModifiedTeleporter : MonoBehaviour
                     continue;
                 }
 
-                Vector3 portalToPlayer = player.position - portal.transform.position;
-                float dotProduct = Vector3.Dot(portal.transform.up, portalToPlayer);
-
-                // If this is true: The player has moved across the portal
-                if (dotProduct < 9f)
+                // Teleport the player to a random portal
+                if (portal.CompareTag("Teleporter"))
                 {
-                    // Teleport him!
-                    Vector3 positionOffset = portal.transform.position - transform.position;
-                    player.position = transform.position + positionOffset;
+                    ModifiedTeleporter randomPortal = portals[Random.Range(0, portals.Count)];
+                    Vector3 positionOffset = randomPortal.transform.position - transform.position;
+                    GameObject.FindGameObjectWithTag("Player").transform.position = randomPortal.transform.position + positionOffset;
 
-                    float angle = Quaternion.Angle(portal.transform.rotation, transform.rotation);
+                    float angle = Quaternion.Angle(randomPortal.transform.rotation, transform.rotation);
                     Quaternion rotationDiff = Quaternion.AngleAxis(angle, Vector3.up);
-                    player.rotation = rotationDiff * player.rotation;
+                    GameObject.FindGameObjectWithTag("Player").transform.rotation = rotationDiff * GameObject.FindGameObjectWithTag("Player").transform.rotation;
 
                     playerIsOverlapping = false;
-                    portal.playerIsOverlapping = true;
+                    randomPortal.playerIsOverlapping = true;
                     Debug.Log("Transport!");
 
                     break;
@@ -48,7 +57,7 @@ public class ModifiedTeleporter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.CompareTag("Player"))
         {
             playerIsOverlapping = true;
         }
@@ -56,7 +65,7 @@ public class ModifiedTeleporter : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.CompareTag("Player"))
         {
             playerIsOverlapping = false;
         }
