@@ -13,7 +13,7 @@ public class OnCameraCameraController : MonoBehaviour
     public float cameraSensitivity = 4f; // The sensitivity of the camera movement
     bool lockOn = false;
     private float yaw = 0f;
-    private float pitch = 0f;
+    private float pitch = 90f;
     bool leftMove = true;
     bool rightMove = true;
     List<GameObject> targets = new List<GameObject>();
