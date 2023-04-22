@@ -69,7 +69,7 @@ public class OnCameraCameraController : MonoBehaviour
                 pitch += inputs.y;
                 lostFocus = false;
                 // Limit pitch rotation
-
+                //Debug.Log("here's the yaw: " + yaw);
                 pitch = Mathf.Clamp(pitch, 10f, 80f);
                 // Convert spherical coordinates to Cartesian coordinates
                 float x = radius * Mathf.Sin(pitch * Mathf.Deg2Rad) * Mathf.Cos(yaw * Mathf.Deg2Rad);
@@ -87,6 +87,7 @@ public class OnCameraCameraController : MonoBehaviour
             }
             else
             {
+                pitch = 60;
                 if(inputs.x > 0.5f && rightMove)
                 {
                     targetIndex = (targetIndex + 1) % targets.Count;
@@ -113,13 +114,34 @@ public class OnCameraCameraController : MonoBehaviour
                 Vector3 desiredPosition;
                 // Calculate the desired position of the camera - You align the camera on the new player instead of the old player 
                 //Players never leave the selection radius - the cylinder is absolutely massive
-                Vector3 fakeTarget = new Vector3(target.position.x, target.position.y + 5f, target.position.z);
+                Vector3 fakeTarget = new Vector3(target.position.x, target.position.y + 3f, target.position.z);
 
                 desiredPosition = ((targets[targetIndex].transform.position /*.normalized * -radius*/));
                 //desiredPosition = ((target.position.normalized * -radius));
                 transform.position = fakeTarget + Vector3.Slerp(transform.position - fakeTarget, desiredPosition - fakeTarget, 1);
                 transform.position = fakeTarget + (fakeTarget - transform.position).normalized * 10f;
                 transform.LookAt(targets[targetIndex].transform.position);
+                float closestYaw = 0;
+                float closestPos = 100000;
+                for(float i = 0; i <=360; i+= 10)
+                {
+                    yaw = i;
+                    pitch = Mathf.Clamp(pitch, 10f, 80f);
+                    // Convert spherical coordinates to Cartesian coordinates
+                    float x = radius * Mathf.Sin(pitch * Mathf.Deg2Rad) * Mathf.Cos(yaw * Mathf.Deg2Rad);
+                    float y = radius * Mathf.Cos(pitch * Mathf.Deg2Rad);
+                    float z = radius * Mathf.Sin(pitch * Mathf.Deg2Rad) * Mathf.Sin(yaw * Mathf.Deg2Rad);
+                    desiredPosition = target.position + new Vector3(x, y, z);
+                    if(Vector3.Distance(transform.position, desiredPosition) < closestPos)
+                    {
+                        closestYaw = i;
+                        closestPos = Vector3.Distance(transform.position, desiredPosition);
+                    }
+                    yaw = closestYaw;
+                    
+
+
+                }
             }
         } else
         {

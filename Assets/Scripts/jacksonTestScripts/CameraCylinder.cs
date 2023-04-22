@@ -21,7 +21,7 @@ public class CameraCylinder : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("cylinder exit");
+        //Debug.Log("cylinder exit");
         if(other.gameObject.tag == "Player" && noGo != other.gameObject)
         {
 

@@ -14,7 +14,7 @@ public class CameraCone : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("cone added");
+        //Debug.Log("cone added");
         if(other.gameObject.tag == "Player" && noGo != other.gameObject)
         {
             cam.AddTarget(other.gameObject);
