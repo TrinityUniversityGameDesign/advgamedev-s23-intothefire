@@ -8,11 +8,15 @@ public class BossRoamingMovement : MonoBehaviour
     public List<Transform> patrolPoints;
     public float moveSpeed;
     //public float waitTime = 10f;
+    public float attackRadius;
 
     private Animator animator;
     private int currentPointIndex;
     private Vector3 targetPosition;
     private bool isWaiting = false;
+    bool playerFound = false;
+    float attackCooldown = 2f;
+
 
     // Define a maximum angle for the field of view
     public float maxAngle = 45f;
@@ -37,6 +41,7 @@ public class BossRoamingMovement : MonoBehaviour
     {
         Transform currentPoint = patrolPoints[currentPointIndex];
         //Debug.Log("Distance between: " + Vector3.Distance(transform.position, currentPoint.position));
+        
         
         RaycastHit[] hits = Physics.RaycastAll(transform.position, currentPoint.position - transform.position, Vector3.Distance(transform.position, currentPoint.position));
         Transform closestPatrolPoint = null;
@@ -64,6 +69,7 @@ public class BossRoamingMovement : MonoBehaviour
                         closestPatrolPoint = hit.collider.transform;
                         Debug.Log("Closest Player: " + closestPatrolPoint);
                         closestDistance = Vector3.Distance(transform.position, hit.collider.transform.position);
+                        transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * (2 * moveSpeed));
                     }
                 }
             }
@@ -101,14 +107,67 @@ public class BossRoamingMovement : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * moveSpeed);
             animator.SetBool("IsWalking", true);
-        }
-    }
+
+            // Check if there are any players within the attack radius
+        Collider[] colliderHits = Physics.OverlapSphere(transform.position, attackRadius);
+        float attackDistance = Mathf.Infinity;
+        Transform closestPlayerPoint = null;
+        foreach (Collider chits in colliderHits)
+        {
+            if (chits.gameObject.CompareTag("Player"))
+            {
+                float distanceToPlayer = Vector3.Distance(transform.position, chits.transform.position);
+                if (distanceToPlayer < attackDistance)
+                {
+                    closestPlayerPoint = chits.transform;
+                    attackDistance = distanceToPlayer;
+                }
+                    playerFound = true;
+                }
+                else
+                {
+                    animator.SetBool("IsWalking", true);
+                }
+                
+                if (playerFound && attackCooldown <= 0)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, closestPlayerPoint.position, Time.deltaTime * (2 * moveSpeed));
+                    StartCoroutine(AttackPlayer(chits));
+                    attackCooldown = 5f; //maxAttackCooldown;
+                    break;
+                }
+            }
+
+                    if (!playerFound)
+                    {
+                        animator.SetBool("IsWalking", true);
+                    }
+                }
+            }
 }
 
 IEnumerator WaitForSecondsCoroutine(float waitTime)
 {
     yield return new WaitForSeconds(waitTime);
     isWaiting = false;
+}
+
+IEnumerator AttackPlayer(Collider playerCollider)
+{
+    // Attack the player
+    Debug.Log("Attacking Player: " + playerCollider.gameObject.name);
+    animator.SetBool("IsAttacking", true);
+
+    // Disable the player's collider to prevent repeated attacks during cooldown
+    playerCollider.enabled = false;
+
+    // Wait for some time to simulate an attack cooldown
+    yield return new WaitForSeconds(attackCooldown);
+
+    // Re-enable the player's collider and resume other functions
+    playerCollider.enabled = true;
+    animator.SetBool("IsAttacking", false);
+    animator.SetBool("IsWalking", true);
 }
 
 private void RotateTowards(Vector3 targetPosition)
