@@ -54,7 +54,7 @@ public class MicroEventController : MonoBehaviour
 
     void EndCurrentMicroEvent()
     {
-        Debug.Log("Ending MicroEvent from MicroEventController");
+        //Debug.Log("Ending MicroEvent from MicroEventController");
         switch (_currentEvent)
         {
             case MicroEvents.Meteor:

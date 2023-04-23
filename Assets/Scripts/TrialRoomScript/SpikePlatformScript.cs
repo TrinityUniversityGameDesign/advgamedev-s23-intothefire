@@ -15,22 +15,23 @@ public class SpikePlatformScript : MonoBehaviour
     void Start()
     {
         gameObject.GetComponent<DamageScript>().SetDamage(10f);
+        gameObject.GetComponent<DamageScript>().SetKnockback(2f);
         trigger = GetComponent<Collider>();
-        trigger.isTrigger = false;
+        trigger.enabled = false;
         mesh = GetComponent<MeshRenderer>();
         mats = mesh.materials;
         Invoke("Activate", timeUntilFirstActive);
     }
 
     private void Activate(){
-        trigger.isTrigger = true;
+        trigger.enabled = true;
         mesh.material = mats[1];
         gameObject.tag = "Damage";
         Invoke("Deactivate", timeUntilDeactive);
     }
 
     private void Deactivate(){
-        trigger.isTrigger = false;
+        trigger.enabled = false;
         mesh.material = mats[0];
         gameObject.tag = "Untagged";
         Invoke("Activate", timeUntilActive);

@@ -320,7 +320,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5238163496281388859}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -365,10 +365,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e78112732c96afe4fb4180ee3661762c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hostEmpty: {fileID: 0}
   doors: []
-  enemyPrefab: {fileID: 0}
   startPad: {fileID: 2746824381483398428, guid: a9d36c9f83f2995448e84630cea72c20, type: 3}
-  endPad: {fileID: 4825946071030987746, guid: e2b7f3c3989865f4b99523faed2b6c93, type: 3}
   trialGeometry: []
   enemyList: []
   enemyPool:

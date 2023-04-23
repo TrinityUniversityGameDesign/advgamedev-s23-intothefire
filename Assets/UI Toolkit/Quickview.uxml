@@ -1,6 +1,11 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/Inventory.uss?fileID=7433441132597879392&amp;guid=7e925dea81e9f4fefb174f493851c6a7&amp;type=3#Inventory" />
-    <ui:VisualElement name="Container" class="container" style="align-items: center; justify-content: flex-start;">
-        <ui:ListView focusable="true" name="Inventory-List" style="flex-grow: 1; width: 60%; max-width: 60%; height: 100%; max-height: 30%; flex-wrap: wrap; flex-direction: row;" />
+    <ui:VisualElement name="Container" class="container" style="align-items: flex-start; justify-content: flex-start; flex-direction: row;">
+        <ui:VisualElement name="Player-Icon" style="flex-grow: 0; justify-content: flex-start; border-top-left-radius: 100%; border-bottom-left-radius: 100%; border-top-right-radius: 100%; border-bottom-right-radius: 100%; -unity-background-scale-mode: scale-to-fit; margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px; align-items: flex-start; transform-origin: left top; width: 100px; height: 100px;" />
+        <ui:VisualElement style="flex-grow: 1;">
+            <ui:ProgressBar value="100" name="Health-Bar" style="margin-top: 10px; margin-left: 0; margin-right: 0; margin-bottom: 0; padding-bottom: 0; max-width: 300px; -unity-font: url(&apos;project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&amp;guid=e3265ab4bf004d28a9537516768c1c75&amp;type=3#LiberationSans&apos;);" />
+            <ui:VisualElement name="Quick-View" style="justify-content: flex-start; flex-direction: row; flex-wrap: wrap; margin-top: 10px; flex-grow: 1; align-items: stretch;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Minimap" style="background-image: resource(&apos;Textures/Minimap Render Texture&apos;); flex-grow: 0; -unity-background-scale-mode: scale-to-fit; margin-top: 10px; margin-right: 10px; align-items: auto; width: 150px; height: 150px;" />
     </ui:VisualElement>
 </ui:UXML>

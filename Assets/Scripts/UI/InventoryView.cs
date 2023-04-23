@@ -6,7 +6,9 @@ using UnityEngine.UIElements;
 public class InventoryView : MonoBehaviour
 {
     [SerializeField]
-    private VisualTreeAsset listEntryTemplate;
+    private VisualTreeAsset invListEntryTemplate;
+    [SerializeField]
+    private VisualTreeAsset statListEntryTemplate;
     private JacksonCharacterMovement _player;
     private UIDocument _uiDocument;
     private InventoryListController _inventoryListController;
@@ -22,11 +24,11 @@ public class InventoryView : MonoBehaviour
         
         // Retrieve the player from the parent
         _player = transform.parent.GetComponentInChildren<JacksonCharacterMovement>();
-        //this.gameObject.SetActive(false);
+        ToggleUI();
     }
     public void UpdateUI()
     {
-        _inventoryListController.InitializeInventoryList(_uiDocument.rootVisualElement, listEntryTemplate, _player);
+        _inventoryListController.InitializeInventoryList(_uiDocument.rootVisualElement, invListEntryTemplate, statListEntryTemplate, _player);
     }
 
     public void ToggleUI()
