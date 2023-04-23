@@ -1,80 +1,194 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI; //important
+using UnityEngine.AI;
 
-public class BossRoamingMovement_MajorController : MonoBehaviour
+public class RoamingBoss_MajorController : MonoBehaviour
 {
-    public GameObject roamingBossPrefab;
     public List<Transform> patrolPoints;
     public float moveSpeed;
-    public float waitTime;
-    public GameObject detectionRadius;
+    public float attackRadius;
 
+    public GameObject roamingBossPrefab;
+    private Animator animator;
     private int currentPointIndex;
-    private bool isWaiting;
+    private Vector3 targetPosition;
+    private bool isWaiting = false;
+    bool playerFound = false;
+    float attackCooldown = 2f;
+
+
+    // Define a maximum angle for the field of view
+    public float maxAngle = 45f;
+    [SerializeField] private float idleTime = 10f;
 
     void Start()
     {
         currentPointIndex = 0;
-        isWaiting = false;
-
-        // Instantiate the roamingBoss game object and use its transform as the starting position
-        GameObject roamingBoss = Instantiate(roamingBossPrefab);
-        transform.position = roamingBoss.transform.position;
+        animator = roamingBossPrefab.GetComponent<Animator>();
+        Debug.Log("Patrol Count: " + patrolPoints.Count);
+        if (patrolPoints.Count > 0)
+        {
+            targetPosition = patrolPoints[currentPointIndex].position;
+        }
     }
 
-    // This function is called once per frame and is responsible for moving
-    // the boss towards the current patrol point. 
-    // If the boss reaches the current patrol point, it will move to the next 
-    // point and start waiting at it.
     void Update()
     {
-        if (!isWaiting && patrolPoints.Count > 0)
+        if (patrolPoints != null && patrolPoints.Count > 0)
         {
             Transform currentPoint = patrolPoints[currentPointIndex];
-            if (detectionRadius != null)
+            RaycastHit[] hits = Physics.RaycastAll(roamingBossPrefab.transform.position, currentPoint.position - roamingBossPrefab.transform.position, Vector3.Distance(roamingBossPrefab.transform.position, currentPoint.position));
+            Transform closestPatrolPoint = null;
+            float closestDistance = Mathf.Infinity;
+
+
+            // Get the forward direction of the patrol object
+            Vector3 patrolDirection = roamingBossPrefab.transform.forward;
+
+            foreach (RaycastHit hit in hits)
             {
-                Collider[] hitColliders = Physics.OverlapSphere(detectionRadius.transform.position, detectionRadius.transform.localScale.x / 2);
-                Debug.Log("Barrier: " + detectionRadius.transform.position);
-                foreach (Collider hitCollider in hitColliders)
+                Debug.Log("Hits so far: " + hit.collider);
+                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
                 {
-                    if (hitCollider.CompareTag("Player"))
+                    Vector3 hitDirection = (hit.collider.transform.position - roamingBossPrefab.transform.position).normalized;
+                    float angle = Vector3.Angle(patrolDirection, hitDirection);
+                    if (angle <= maxAngle)
                     {
-                        Debug.Log("In contact with the player.");
-                        transform.position = Vector3.MoveTowards(transform.position, hitCollider.transform.position, moveSpeed * 2 * Time.deltaTime);
-                        return;
+                        if (!IsHitPointBehindWall(hit.collider.transform.position) && Vector3.Distance(roamingBossPrefab.transform.position, hit.collider.transform.position) < closestDistance)
+                        {
+                            closestPatrolPoint = hit.collider.transform;
+                            Debug.Log("Closest Player: " + closestPatrolPoint);
+                            closestDistance = Vector3.Distance(roamingBossPrefab.transform.position, hit.collider.transform.position);
+                            roamingBossPrefab.transform.position = Vector3.MoveTowards(roamingBossPrefab.transform.position, targetPosition, Time.deltaTime * (2 * moveSpeed));
+                        }
+                    }
+                }
+
+                else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Wall"))
+                {
+                    Debug.Log("Hit a Wall");
+                }
+
+            }
+
+            if (Vector3.Distance(roamingBossPrefab.transform.position, currentPoint.position) < 6f)
+            {
+                if (!isWaiting)
+                {
+                    animator.SetBool("IsIdle", true);
+                    animator.SetBool("IsWalking", false);
+                    roamingBossPrefab.transform.position = Vector3.MoveTowards(roamingBossPrefab.transform.position, targetPosition, Time.deltaTime * 0);
+                    StartCoroutine(WaitForSecondsCoroutine(idleTime));
+                    isWaiting = true;
+                }
+                else
+                {
+                    currentPointIndex = (currentPointIndex + 1) % patrolPoints.Count;
+                    animator.SetBool("IsIdle", false);
+                    animator.SetBool("IsWalking", true);
+                    Debug.Log("Patrol Point Location: " + patrolPoints[currentPointIndex]);
+                    targetPosition = patrolPoints[currentPointIndex].position;
+                    RotateTowards(targetPosition);
+                    isWaiting = false;
+                }
+            }   
+            else
+            {
+                roamingBossPrefab.transform.position = Vector3.MoveTowards(roamingBossPrefab.transform.position, targetPosition, Time.deltaTime * moveSpeed);
+                animator.SetBool("IsWalking", true);
+
+            // Check if there are any players within the attack radius
+            Collider[] colliderHits = Physics.OverlapSphere(roamingBossPrefab.transform.position, attackRadius);
+            float attackDistance = Mathf.Infinity;
+            Transform closestPlayerPoint = null;
+            foreach (Collider chits in colliderHits)
+            {
+                if (chits.gameObject.CompareTag("Player"))
+                {
+                    float distanceToPlayer = Vector3.Distance(roamingBossPrefab.transform.position, chits.transform.position);
+                    if (distanceToPlayer < attackDistance)
+                    {
+                        Debug.Log("Distance to player: " + distanceToPlayer);
+                        Debug.Log("Distance Attack: " + attackCooldown);
+                        closestPlayerPoint = chits.transform;
+                        attackDistance = distanceToPlayer;
+                    }
+                        playerFound = true;
+                    }
+                    else
+                    {
+                        animator.SetBool("IsWalking", true);
+                    }
+                    
+                    if (playerFound && attackCooldown <= 2f)
+                    {
+                        roamingBossPrefab.transform.position = Vector3.MoveTowards(roamingBossPrefab.transform.position, closestPlayerPoint.position, Time.deltaTime * (2 * moveSpeed));
+                        StartCoroutine(AttackPlayer(chits));
+                        attackCooldown = 5f; //maxAttackCooldown;
+                        break;
+                    }
+                }
+
+                        if (!playerFound)
+                        {
+                            animator.SetBool("IsWalking", true);
+                        }
                     }
                 }
             }
-            transform.position = Vector3.MoveTowards(transform.position, currentPoint.position, moveSpeed * Time.deltaTime);
+    
 
-            if (transform.position == currentPoint.position)
+IEnumerator WaitForSecondsCoroutine(float waitTime)
+{
+    yield return new WaitForSeconds(waitTime);
+    isWaiting = false;
+}
+
+IEnumerator AttackPlayer(Collider playerCollider)
+{
+    // Attack the player
+    Debug.Log("Attacking Player: " + playerCollider.gameObject.name);
+    animator.SetBool("IsAttacking", true);
+
+    // Disable the player's collider to prevent repeated attacks during cooldown
+    playerCollider.enabled = false;
+
+    // Wait for some time to simulate an attack cooldown
+    yield return new WaitForSeconds(attackCooldown);
+
+    // Re-enable the player's collider and resume other functions
+    playerCollider.enabled = true;
+    animator.SetBool("IsAttacking", false);
+    animator.SetBool("IsWalking", true);
+}
+
+private void RotateTowards(Vector3 targetPosition)
+    {
+        Vector3 direction = (targetPosition - roamingBossPrefab.transform.position).normalized;
+        float rotationAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        //Debug.Log("Rotation Angle: " + rotationAngle);
+        roamingBossPrefab.transform.rotation = Quaternion.Euler(new Vector3(0, rotationAngle, 0));
+    }
+
+
+private bool IsHitPointBehindWall(Vector3 hitPoint)
+    {
+        Vector3 direction = hitPoint - roamingBossPrefab.transform.position;
+        Ray ray = new Ray(roamingBossPrefab.transform.position, direction);
+        RaycastHit[] hits = Physics.RaycastAll(ray, direction.magnitude);
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.collider.CompareTag("Wall"))
             {
-                currentPointIndex = (currentPointIndex + 1) % patrolPoints.Count;
-                StartCoroutine(WaitAtPoint());
+                return true;
             }
         }
+        return false;
     }
 
-    IEnumerator WaitAtPoint()
-    {
-        isWaiting = true;
-        if (waitTime >= 0f)
-        {
-            yield return new WaitForSeconds(waitTime);
-        }
-        isWaiting = false;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        foreach (Transform point in patrolPoints)
-        {
-            Gizmos.DrawSphere(point.position, 0.25f);
-        }
-    }
 
     
 }
+
+

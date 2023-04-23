@@ -20,6 +20,9 @@ public class SpawnHallwayObjects : MonoBehaviour
 	private void SpawnHallwayObject()
 	{
 		int numOfSpawnPoints = spawnpoints.Count;
+		Debug.Log("Count: " + numOfSpawnPoints);
+		Debug.Log("Location: " + spawnpoints[2].name + " Location: " + spawnpoints[2].position);
+		
 		int randomIndex = Random.Range(0, numOfSpawnPoints+2);
 		//This gives a 1 in (numOfSpawnPoints +2) chance that there won't be a hallway object in this hallway.
 		//This is where we would put in any global % chance stuff for hallway object generation, such as outer hallways are safer, more centeral hallways are more dangerous, etc
@@ -29,6 +32,7 @@ public class SpawnHallwayObjects : MonoBehaviour
 			int randomHallwayObjectIndex = Random.Range(0, numOfHallwayObjects);
 
 			Instantiate(hallwayObjects[randomHallwayObjectIndex], spawnpoints[randomIndex].position, gameObject.transform.rotation, this.transform);
+
 		}
 	}
 
