@@ -24,7 +24,8 @@ public class TimedPlatformScript : MonoBehaviour
         
     }
 
-    void OnCollisionEnter(Collision target){
+    void OnTriggerEnter(Collider target){
+        //Debug.Log("bug");
         if(target.transform.tag == "Player" && state == PlatformState.visible){
             state = PlatformState.disappearing;
             Invoke("disablePlatform", timeUntilDisappear);
@@ -32,13 +33,21 @@ public class TimedPlatformScript : MonoBehaviour
     }
 
     private void disablePlatform(){
-        gameObject.GetComponent<BoxCollider>().enabled = false;
+        //gameObject.GetComponent<BoxCollider>().enabled = false;
+        foreach (BoxCollider col in gameObject.GetComponents<BoxCollider>())
+        {
+            col.enabled = false;
+        }
         gameObject.GetComponent<MeshRenderer>().enabled = false;
         Invoke("enablePlatform", timeUntilReappear);
     }
 
     private void enablePlatform(){
-        gameObject.GetComponent<BoxCollider>().enabled = true;
+        //gameObject.GetComponent<BoxCollider>().enabled = true;
+        foreach (BoxCollider col in gameObject.GetComponents<BoxCollider>())
+        {
+            col.enabled = true;
+        }
         gameObject.GetComponent<MeshRenderer>().enabled = true;
         state = PlatformState.visible;
     }

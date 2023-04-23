@@ -47,16 +47,18 @@ public class Hammer : Weapon
         else
         {
             JacksonCharacterMovement lazy = player.GetComponent<JacksonCharacterMovement>();
+            if (h != 0 || v != 0)
+            {
+                Vector3 targetDirection = new Vector3(h, 0f, v);
+                targetDirection = lazy.GetCamera().transform.TransformDirection(targetDirection);
+                targetDirection.y = 0.0f;
 
-            Vector3 targetDirection = new Vector3(h, 0f, v);
-            targetDirection = lazy.GetCamera().transform.TransformDirection(targetDirection);
-            targetDirection.y = 0.0f;
+                Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
 
-            Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+                Quaternion newRotation = Quaternion.Lerp(player.transform.rotation, targetRotation, 0.03f);
 
-            Quaternion newRotation = Quaternion.Lerp(player.transform.rotation, targetRotation, 0.03f);
-
-            player.transform.rotation = newRotation;
+                player.transform.rotation = newRotation;
+            }
             lazy.SetVelocity((lazy.Magnitude() * player.transform.forward) + new Vector3 (0f, lazy.GetVelocity().y, 0f) + new Vector3(0f, -0.33f, 0f));
             
             //hitbox.transform.position = boomPos;

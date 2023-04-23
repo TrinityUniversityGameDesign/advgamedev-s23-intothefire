@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Animations;
 
 public class JacksonCharacterMovement : MonoBehaviour
 {
@@ -26,7 +27,10 @@ public class JacksonCharacterMovement : MonoBehaviour
     float gravMult = 1f;
     private LineRenderer lr;
     GameObject enemy = null;
-    List<Item> inventory = new List<Item>();
+    
+    public List<Item> inventory = new List<Item>();
+    
+    
     List<Item> Moveinventory = new List<Item>();
     List<Item> Jumpinventory = new List<Item>();
     List<Item> Lightinventory = new List<Item>();
@@ -34,7 +38,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     List<Item> Specialinventory = new List<Item>();
     List<Item> Cooldowninventory = new List<Item>();
 
-
+    Animation anim;
     float gravity = 1f;
     float jumpPress = 0f;
     bool jumpHold = false;
@@ -51,6 +55,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     float lerpTime = 0.2f;
     float stunTimer = 0f;
     float stunValue = 0f;
+    float burnTime = 0f;
     Weapon weapon = new FryingPan();
     GameObject lastDam;
 
@@ -59,6 +64,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     float maxHealth = 100f;
     //public float health { get; private set; } = 100f;
     float health = 100f;
+    int damTime = 0;
     float maxSpeed = 20f;
     float damage = 0f;
     float attackSpeed = 0f;
@@ -77,6 +83,8 @@ public class JacksonCharacterMovement : MonoBehaviour
     float jumpHeight = 20f;
     float repeatTimer = 0f;
 
+    bool invincible = false;
+
 
     Vector3 oldSpeed = Vector3.zero;
     Vector3 velocity = Vector3.zero;
@@ -92,14 +100,15 @@ public class JacksonCharacterMovement : MonoBehaviour
     
     float timer = 0;
     GameObject player;
-    private InventoryView _inventoryView;
-    private InventoryView _quickview;
-    private Healthbar _healthbar;
-    private Canvas _hud;
+    //private QuickView ////_quickView;
+    //private InventoryView _inventoryView;
+    public Sprite Icon { get; private set; }
     private Camera _minicam;
     private void Awake()
     {
         GameManager.Instance?.StartupNewGameBegin.AddListener(StartPlayer);
+        GameManager.Instance?.EnablePlayerInvincibility.AddListener(EnableInvincible);
+        GameManager.Instance?.DisablePlayerInvincibility.AddListener(DisableInvincible);
     }
     void Start()
     {
@@ -107,9 +116,9 @@ public class JacksonCharacterMovement : MonoBehaviour
 
         if(plsWork == null)
         {
-            Debug.Log("there's no game logic");
+            //Debug.Log("there's no game logic");
             GameObject.Find("HUD").SetActive(false);
-            Debug.Log("yerr a wizard marry");
+            //Debug.Log("yerr a wizard marry");
             transform.GetChild(1).gameObject.SetActive(false);
             damnYouGabriel = true;
             transform.position = GameObject.Find("PlayerInputManager").transform.position;
@@ -124,28 +133,15 @@ public class JacksonCharacterMovement : MonoBehaviour
         cam = transform.GetChild(0).gameObject.GetComponent<Camera>();
 
         cam.transform.parent = null;
-        //inputs = playerMovement.jacksonControls;
-        //player = transform.GetChild(0).gameObject;
-        //transform.GetChild(1).gameObject.GetComponent<CapsuleCollider>().enabled = false;
         cc = gameObject.GetComponent<CharacterController>();
-        _inventoryView = transform.GetChild(3).gameObject.GetComponent<InventoryView>();
-        _quickview = transform.GetChild(3).gameObject.GetComponent<InventoryView>();
-        _healthbar = GetComponentInChildren<Healthbar>();
-        _hud = GetComponentInChildren<Canvas>();
+        ////_quickView = transform.GetComponentInChildren<QuickView>();
+        //_inventoryView = transform.GetComponentInChildren<InventoryView>();
         _minicam = GetComponentInChildren<Camera>();
-        //rb.useGravity = true;
-        //rb.drag = 0;
-        //rb.angularDrag = 0;
+        Icon = Resources.Load<Sprite>("Sprites/test-icon");
         sword = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
+        //anim = GetComponent<Animation>();
         lr = GetComponent<LineRenderer>();
         
-        /*
-        if(GameManager.Instance == null)
-        {
-            state = PlayerState.idle;
-            transform.position = FindObjectOfType<PlayerInputManager>().transform.position;
-        }
-        */
         weapon.AssignPlayer(this.gameObject);
     }
 
@@ -237,10 +233,14 @@ public class JacksonCharacterMovement : MonoBehaviour
         //Debug.Log("we moving");
         ul = ctx.ReadValue<Vector2>();
     }
+    public void ToggleInventory(InputAction.CallbackContext ctx)
+    {
+        //if (ctx.started) //_inventoryView.ToggleUI();
+    }
     // Update is called once per frame
     void Update()
     {
-        
+        UpdateHealthBar();
         //jumpHold = inputs.Jump.ReadValue<float>() > 0.1f;
         // lightHold = inputs.LightAttack.ReadValue<float>() > 0.1f;
         //heavyHold = inputs.HeavyAttack.ReadValue<float>() > 0.1f;
@@ -281,6 +281,32 @@ public class JacksonCharacterMovement : MonoBehaviour
         grounded = cc.isGrounded;
         h = ul.x;
         v = ul.y;
+        if(damTime == 0)
+        {
+            damTime--;
+            lastDam = null;
+        }
+        else if(damTime > 0)
+        {
+            damTime--;
+        }
+
+        if(Magnitude() < 1f)
+        {
+            //anim.Play("idle");
+        }
+        else
+        {
+            //anim.Play("run");
+        }
+        if(velocity.y > 0)
+        {
+            //anim.Play("jumpUp");
+        }
+        else if(velocity.y < 0 && !grounded)
+        {
+            //anim.Play("jumpDown");
+        }
         if(jumpPress > 0)
         {
             jumpPress--;
@@ -298,16 +324,18 @@ public class JacksonCharacterMovement : MonoBehaviour
             specialPress--;
         }
 
-        if(repeatTimer >= 0)
+        if(repeatTimer >= 50)
         {
             repeatTimer = 0;
             if (currBurn > 0)
             {
                 health -= Mathf.Ceil(currBurn / 10f);
+                //burnTime--;
                 currBurn -= Mathf.Ceil(currBurn / 10f);
                 if (currBurn <= 0)
                 {
                     currBurn = 0;
+                    burnTime = 0;
                 }
             }
             health += lifegain;
@@ -358,6 +386,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                         }
                         lightPress = 0f;
                         state = PlayerState.attack;
+                        //anim.Play("lightAttack");
                         currSword = Instantiate(sword, transform.position, transform.rotation);
                         currSword.transform.parent = transform;
                         currSword.GetComponent<DamageScript>().SetParent(this.gameObject);
@@ -384,6 +413,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                         }
                         heavyPress = 0f;
                         state = PlayerState.attack;
+                        //anim.Play("heavyAttack");
                         currSword = Instantiate(sword, transform.position, transform.rotation);
                         
                         currSword.transform.parent = transform;
@@ -442,6 +472,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                         currSpecials--;
                         //isDodging = true;
                         state = PlayerState.special;
+                        //anim.Play("specialAttack");
                         if (h != 0 || v != 0)
                         {
                             Rotating(h, v);
@@ -617,15 +648,14 @@ public class JacksonCharacterMovement : MonoBehaviour
     public void StartPlayer()
     {
         state = PlayerState.idle;
-        _hud.enabled = true;
-        //AddItem(new DamageItem());
-        //AddItem(new DamageItem());
-        //AddItem(new DamageItem());
-        //AddItem(new DamageItem());
-        //AddItem(new DamageItem());
-        //AddItem(new DamageItem());
-        //health -= 30f;
-        UpdateHealthbar();
+        AddItem(new DamageItem());
+        AddItem(new KnockbackResistanceItem());
+        AddItem(new KnockbackItem());
+        AddItem(new DamageOverTimeItem());
+        AddItem(new AttackSpeedItem());
+        AddItem(new ArmorItem());
+        //_quickView.ToggleUI();
+        //_quickView.LoadUI();
     }
     public void MovementManagement(float horizontal, float vertical)
     {
@@ -717,7 +747,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         
     }
 
-    void Rotating(float horizontal, float vertical)
+    public void Rotating(float horizontal, float vertical)
     {
         // Create a new vector of the horizontal and vertical inputs.
         Vector3 targetDirection = new Vector3(horizontal, 0f, vertical);
@@ -764,6 +794,11 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         grounded = g;
     }
+
+    public bool GetGrounded()
+    {
+        return grounded;
+    }
     public void StealLife(float steal)
     {
         health += Mathf.Ceil(steal*lifesteal);
@@ -776,13 +811,18 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         DamageScript temp = other.GetComponent<DamageScript>();
         float hurts = Mathf.Max(0f, (temp.GetDamage() - armor));
-        health -= hurts;
-        float kb = temp.GetKnockback() - KnockbackResistance;
-        currBurn = temp.GetDamageOverTime();
-        if (temp.GetLifesteal())
+
+        if (!invincible)
         {
-            other.GetComponentInParent<JacksonPlayerMovement>().StealLife(hurts);
+            health -= hurts;
+            currBurn = temp.GetDamageOverTime();
+            if (temp.GetLifesteal())
+            {
+                other.GetComponentInParent<JacksonPlayerMovement>().StealLife(hurts);
+            }
         }
+
+        float kb = temp.GetKnockback() - KnockbackResistance;
         if (kb < 1) { kb = 1f; }
         state = PlayerState.hitstun;
         transform.LookAt(new Vector3(other.transform.position.x, transform.position.y - 1f, other.transform.position.z));
@@ -793,7 +833,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         stunTimer = 10f;
         velocity = kb * transform.forward;
         Destroy(currSword);
-        UpdateHealthbar();
+        UpdateInventoryUI();
     }
 
     public List<Item> GetInventory()
@@ -812,9 +852,15 @@ public class JacksonCharacterMovement : MonoBehaviour
         if (i.ItemMove()) { Moveinventory.Add(i); }
         if (i.ItemCooldown()) { Cooldowninventory.Add(i); }
         if (i.ItemSpecial()) { Specialinventory.Add(i); }
-        //UpdateInventoryUI();
-       }
-    float CalculateDamage(float d)
+        UpdateInventoryUI();
+
+    }
+    public void AssignWeapon(Weapon w)
+    {
+        weapon = w;
+        weapon.AssignPlayer(gameObject);
+    }
+    public float CalculateDamage(float d)
     {
         float rand = Random.Range(0f, 1f);
         float dmg = d + damage;
@@ -836,8 +882,9 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         if(other.gameObject.tag == "Damage" && other.gameObject != lastDam && this.gameObject != other.gameObject.GetComponent<DamageScript>().GetParent())
         {
-            Debug.Log("ow damage");
+            //Debug.Log("ow damage");
             lastDam = other.gameObject;
+            damTime = 60;
             HurtPlayer(other.gameObject);
 
         }
@@ -845,9 +892,13 @@ public class JacksonCharacterMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "Damage")
+        if (other.gameObject.tag == "Damage" && other.gameObject != lastDam && this.gameObject != other.gameObject.GetComponent<DamageScript>().GetParent())
         {
+            //Debug.Log("ow damage");
+            lastDam = other.gameObject;
+            damTime = 60;
             HurtPlayer(other.gameObject);
+
         }
     }
 
@@ -875,10 +926,12 @@ public class JacksonCharacterMovement : MonoBehaviour
     public void ChangeLifegain(float f) { lifegain += f; }
     public void ChangeDamageOverTime(float f) { damageOverTime += f; }
     public void ChangeKnockback(float f) { knockback += f; }
-    public void ChangeKockbackResistance(float f) { KnockbackResistance += f; }
+    public void ChangeKnockbackResistance(float f) { KnockbackResistance += f; }
     public void ChangeMaxSpecials(float f) { maxSpecials += f; }
     public void ChangeMaxJumps(float f) { maxJumps += f; }
     public void ChangeJumpHeight(float f) { jumpHeight += f; }
+
+    public void ChangeRange(float f) { }
 
     public List<(string, float)> GetInventoryStats()
     {
@@ -916,20 +969,24 @@ public class JacksonCharacterMovement : MonoBehaviour
     public float GetMaxSpecials() {return  maxSpecials; }
     public float GetMaxJumps() { return maxJumps; }
     public float GetJumpHeight() { return jumpHeight; }
-    
-    private void UpdateHealthbar()
-    {
-        _healthbar.UpdateHealth(health/maxHealth);
-    }
-
-    private void ToggleInventoryUI()
-    {
-        _inventoryView.ToggleUI();
-    }
 
     private void UpdateInventoryUI()
     {
-        // _inventoryView.UpdateUI();
-        _quickview.UpdateUI();
+        //_quickView.UpdateUI();
+        //_inventoryView.UpdateUI();
+    }
+
+    private void UpdateHealthBar()
+    {
+        //_quickView.UpdateHealth();
+    }
+
+    private void DisableInvincible()
+    {
+        invincible = false;
+    }
+    private void EnableInvincible()
+    {
+        invincible = true;
     }
 }
