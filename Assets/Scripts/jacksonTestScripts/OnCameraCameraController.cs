@@ -65,7 +65,7 @@ public class OnCameraCameraController : MonoBehaviour
             }
             if (!lockOn)
             {
-                yaw -= inputs.x;
+                yaw -= (Mathf.Clamp(inputs.x, -2f, 2f) * cameraSensitivity);
                 pitch += inputs.y;
                 lostFocus = false;
                 // Limit pitch rotation
