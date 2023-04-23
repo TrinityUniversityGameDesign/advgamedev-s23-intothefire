@@ -439,6 +439,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                         //currSword.transform.localRotation = currSword.transform.localRotation * Quaternion.AngleAxis(45f, Vector3.up); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);
                         anim.SetFloat("Speed", attackSpeed);
                         currSword.transform.localPosition = Vector3.zero;
+                        currSword.transform.rotation = Quaternion.AngleAxis(-45f, Vector3.right) * currSword.transform.rotation;
                     }
                     if(heavyPress > 0)
                     {
@@ -478,6 +479,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                            // GameObject bullet = Instantiate(Resources.Load("Prefabs/IceBullet") as GameObject, transform.position + transform.forward * 2f, transform.rotation);
                             //bullet.GetComponent<Rigidbody>().velocity = transform.forward * 15f;
                        currSword.transform.localPosition = Vector3.zero;
+                       
                         anim.SetFloat("Speed", attackSpeed);
                     }
                     if(jumpPress > 0 && currJumps >0)
@@ -581,7 +583,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                     //combat shit
                     //currSword.transform.localRotation = Quaternion.Lerp(currSword.transform.localRotation, targetRot, lerpTime) ;
                     
-                    if (!anim.GetCurrentAnimatorStateInfo(0).IsName(attackAnim) && timer > 20)
+                    if (!anim.GetCurrentAnimatorStateInfo(0).IsName(attackAnim) && timer > 30)
                     {
                         Destroy(currSword);
                         if (h != 0f || v != 0f)
