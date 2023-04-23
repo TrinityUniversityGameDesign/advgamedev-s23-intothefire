@@ -38,7 +38,8 @@ public class JacksonCharacterMovement : MonoBehaviour
     List<Item> Specialinventory = new List<Item>();
     List<Item> Cooldowninventory = new List<Item>();
 
-    Animation anim;
+    Animator anim;
+    string attackAnim = "";
     float gravity = 1f;
     float jumpPress = 0f;
     bool jumpHold = false;
@@ -68,7 +69,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     int damTime = 0;
     float maxSpeed = 20f;
     float damage = 0f;
-    float attackSpeed = 0f;
+    float attackSpeed = 1f;
     float critRate = 0.1f;
     float armor = 0f;
     float lifesteal = 0f;
@@ -280,6 +281,10 @@ public class JacksonCharacterMovement : MonoBehaviour
         //Debug.Log(ul);
         //Debug.Log(health);
         grounded = cc.isGrounded;
+        if (anim != null)
+        {
+            anim.SetBool("isGrounded", grounded);
+        }
         h = ul.x;
         v = ul.y;
         if(damTime == 0)
@@ -294,11 +299,14 @@ public class JacksonCharacterMovement : MonoBehaviour
 
         if(Magnitude() < 1f)
         {
-            //anim.Play("idle");
+            if (anim != null)
+            {
+                anim.SetBool("isRunning", false);
+            }
         }
         else
         {
-            //anim.Play("run");
+            anim.SetBool("isRunning", true);
         }
         if(velocity.y > 0)
         {
@@ -413,13 +421,24 @@ public class JacksonCharacterMovement : MonoBehaviour
                         {
                             currSword.GetComponent<DamageScript>().DoLifesteal(this.gameObject);
                         }
-                        
+                        anim.SetTrigger("lightAttack");
+                        Transform [] plz = GetComponentsInChildren<Transform>();
+                        foreach(Transform t in plz)
+                        {
+                            if(t.name == "SwordHand")
+                            {
+                                currSword.transform.parent = t;
+                            }
+                        }
+                        attackAnim = "Light Attack";
+                        //Debug.Log("swords parent is: " + currSword.transform.parent.name);
                         //currSword.transform.rotation = Quaternion.AngleAxis(90f, Vector3.right) * transform.rotation;// * Quaternion.Euler(0f, 0f, 90f);
-                        timer = 30f;
+                        timer = 0f;
                         // currSword.transform.localRotation = transform.rotation * Quaternion.Euler(0f, 0f, 90f);
-                        targetRot = currSword.transform.localRotation * Quaternion.AngleAxis(-45f, Vector3.up); //* currSword.transform.localRotation;
-                        currSword.transform.localRotation = currSword.transform.localRotation * Quaternion.AngleAxis(45f, Vector3.up); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);
-                        lerpTime = weapon.lightSpeed + attackSpeed;
+                        //targetRot = currSword.transform.localRotation * Quaternion.AngleAxis(-45f, Vector3.up); //* currSword.transform.localRotation;
+                        //currSword.transform.localRotation = currSword.transform.localRotation * Quaternion.AngleAxis(45f, Vector3.up); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);
+                        anim.SetFloat("Speed", attackSpeed);
+                        currSword.transform.localPosition = Vector3.zero;
                     }
                     if(heavyPress > 0)
                     {
@@ -441,15 +460,25 @@ public class JacksonCharacterMovement : MonoBehaviour
                         {
                             currSword.GetComponent<DamageScript>().DoLifesteal(this.gameObject);
                         }
+                        anim.SetTrigger("heavyAttack");
+                        attackAnim = "Heavy Attack";
+                        Transform[] plz = GetComponentsInChildren<Transform>();
+                        foreach (Transform t in plz)
+                        {
+                            if (t.name == "SwordHand")
+                            {
+                                currSword.transform.parent = t;
+                            }
+                        }
                         //currSword.transform.rotation = Quaternion.AngleAxis(90f, Vector3.right) * transform.rotation;// * Quaternion.Euler(0f, 0f, 90f);
-                        timer = 30f;
+                        timer = 0f;
                         // currSword.transform.localRotation = transform.rotation * Quaternion.Euler(0f, 0f, 90f);
                         targetRot = currSword.transform.localRotation;  //* currSword.transform.localRotation;
-                        currSword.transform.localRotation = currSword.transform.localRotation * Quaternion.AngleAxis(-90f, Vector3.right); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);                       
+                        //currSword.transform.localRotation = currSword.transform.localRotation * Quaternion.AngleAxis(-90f, Vector3.right); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);                       
                            // GameObject bullet = Instantiate(Resources.Load("Prefabs/IceBullet") as GameObject, transform.position + transform.forward * 2f, transform.rotation);
                             //bullet.GetComponent<Rigidbody>().velocity = transform.forward * 15f;
-                       
-                        lerpTime = weapon.heavySpeed + attackSpeed;
+                       currSword.transform.localPosition = Vector3.zero;
+                        anim.SetFloat("Speed", attackSpeed);
                     }
                     if(jumpPress > 0 && currJumps >0)
                     {
@@ -465,6 +494,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                             velocity = new Vector3(velocity.x, 0f, velocity.z);
                         }
                         velocity = velocity + new Vector3(0f, jumpHeight, 0f);
+                        anim.SetTrigger("jump");
                         //rb.AddRelativeForce(new Vector3(0, jumpHeight, 0f), ForceMode.VelocityChange);
                     }
                     else if (jumpPress > 0 && currJumps == 0)
@@ -549,8 +579,9 @@ public class JacksonCharacterMovement : MonoBehaviour
                     velocity = velocity + (new Vector3(0f, -1f, 0f) * gravity);
 
                     //combat shit
-                    currSword.transform.localRotation = Quaternion.Lerp(currSword.transform.localRotation, targetRot, lerpTime) ;
-                    if(currSword.transform.localRotation == targetRot || timer < 0)
+                    //currSword.transform.localRotation = Quaternion.Lerp(currSword.transform.localRotation, targetRot, lerpTime) ;
+                    
+                    if (!anim.GetCurrentAnimatorStateInfo(0).IsName(attackAnim) && timer > 20)
                     {
                         Destroy(currSword);
                         if (h != 0f || v != 0f)
@@ -564,7 +595,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                     }
                     else
                     {
-                        timer--;
+                        timer++;
                     }
                     //Movement shit
                     
@@ -671,6 +702,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         AddItem(new DamageOverTimeItem());
         AddItem(new AttackSpeedItem());
         AddItem(new ArmorItem());
+        anim = GetComponentInChildren<Animator>();
         //_quickView.ToggleUI();
         //_quickView.LoadUI();
     }
@@ -1005,5 +1037,15 @@ public class JacksonCharacterMovement : MonoBehaviour
     private void EnableInvincible()
     {
         invincible = true;
+    }
+
+    bool AnimatorIsPlaying()
+    {
+        return anim.GetCurrentAnimatorStateInfo(0).length >
+               anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
+    }
+    bool AnimatorIsPlaying(string stateName)
+    {
+        return AnimatorIsPlaying() && anim.GetCurrentAnimatorStateInfo(0).IsName(stateName);
     }
 }
