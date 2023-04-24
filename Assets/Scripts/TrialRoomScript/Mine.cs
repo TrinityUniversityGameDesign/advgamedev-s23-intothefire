@@ -16,7 +16,7 @@ public class Mine : MonoBehaviour
     void Start()
     {
         state = MineState.quiet;
-        explosion = GameObject.Find("Explosion");
+        explosion = transform.Find("Explosion").gameObject;
         explosionScript = explosion.GetComponent<ExplosionScript>();
     }
 
@@ -28,8 +28,10 @@ public class Mine : MonoBehaviour
 
     void OnTriggerEnter(Collider target){
         if(target.transform.tag == "Player" && state == MineState.quiet){
+            state = MineState.triggered;
             explosionScript.TriggerExplode();
             Destroy(explosion, explosionScript.timeUntilExplosion + 0.5f);
+            Destroy(gameObject, explosionScript.timeUntilExplosion + 0.6f);
         }
     }
 }

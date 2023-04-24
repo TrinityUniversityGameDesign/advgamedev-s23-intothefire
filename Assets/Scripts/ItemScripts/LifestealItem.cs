@@ -10,14 +10,17 @@ public class LifestealItem : Item
     public LifestealItem()
     {
         value = 0.1f;
-        icon = Resources.Load("Textures/ItemIcons/bath_sponges") as Sprite;
+        
+        Texture2D texture = Resources.Load("Textures/ItemIcons/bath_sponges") as Texture2D;
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "Sponge";
         description = "You put sponges all over your weapon to soak up the opponents life???? heal  " + value as string + " percent on hit";
     }
     public LifestealItem(float val)
     {
         value = val;
-        icon = Resources.Load("Textures/ItemIcons/bath_sponges") as Sprite;
+        Texture2D texture = Resources.Load("Textures/ItemIcons/bath_sponges") as Texture2D;
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "Sponge";
         description = "You put sponges all over your weapon to soak up the opponents life???? heal  " + value as string + " percent on hit";
     }
