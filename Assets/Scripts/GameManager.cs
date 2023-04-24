@@ -60,14 +60,11 @@ public class GameManager : MonoBehaviour
     [Tooltip("Internal state the game manager is currently in.")]
     private GameState _state = GameState.Lobby;
 
-    [Tooltip("Simple timer for testing purposes")]
-    private GameObject timerTextObj;
 
     [Tooltip("Represents the number of seconds since the game has started.")]
-    float Timer = 0;
-    float secondsOfGameTime = 0;
+    public float Timer = 0;
+    public float secondsOfGameTime = 0;
 
-    private TMP_Text timer;
     private bool gameInProgress = false;
 
     #endregion
@@ -90,7 +87,7 @@ public class GameManager : MonoBehaviour
     float timeLeftInMicroEvent;
 
     float timeUntilNextSideEvent;
-    float timeLeftInSideEvent;
+    public float timeLeftInSideEvent;
 
     bool microEventInProgress = false;
     #endregion
@@ -153,6 +150,9 @@ public class GameManager : MonoBehaviour
 
     [Tooltip("Event called when a player joined.")]
     public UnityEvent PlayerJoined;
+
+    [Tooltip("Event called when the dungeon generation is complete")]
+    public UnityEvent DungeonGenerationComplete;
     #endregion
 
     #region Private Methods
@@ -190,20 +190,14 @@ public class GameManager : MonoBehaviour
         Instance.StartupNewGameBegin.AddListener(TestStartupNewGameBegin);
         Instance.StartupNewGameEnd.AddListener(TestStartupNewGameEnd);
 
+        Instance.DungeonGenerationComplete.AddListener(TeleportPlayersToSpawnPoints);
+
         secondsOfGameTime = 60 * Minutes;
 
 
         if (!GameObject.Find("MainCanvas"))
         {
             //Debug.LogError("Could not find UI Prefab named MainCanvas");
-        }
-
-        timerTextObj = GameObject.Find("Timer");
-        timer = timerTextObj?.GetComponent<TMP_Text>();
-
-        if (!timer)
-        {
-            //Debug.LogError("Could not find a TMP_Text component on a GameObject named Timer. Are you missing the UI?");
         }
 
         if (!GameObject.Find("DungeonGenerator"))
@@ -314,7 +308,6 @@ public class GameManager : MonoBehaviour
                 //Currently this will reset the timings of Side Events and Micro Events which I think is fine for now....
 
                 Timer += Time.deltaTime;
-                if (timer != null) { timer.text = string.Format("{0}:{1}", (int)((secondsOfGameTime - Timer) / 60), (int)((secondsOfGameTime - Timer) % 60)); }
 
                 //Micro events and side events happen differently because micro events are concurrent and side events are disruptive
                 if (!microEventInProgress) timeUntilNextMicroEvent -= Time.deltaTime;
@@ -548,6 +541,24 @@ public class GameManager : MonoBehaviour
     {
         Item newItem = Item.GrantNewRandomItem();
         if(newItem != null || victor < 0 || victor >= Instance.players.Count) players[victor].GetComponent<JacksonCharacterMovement>().AddItem(newItem);
+    }
+
+    void TeleportPlayersToSpawnPoints()
+    {
+        for(int i = 0; i < Instance.players.Count; i++)
+        {
+            players[i].transform.position = GameObject.Find("Spawn" + i).transform.position;
+        }
+    }
+    
+    public void TeleportPlayerToSpawn(GameObject playerToTeleport)
+    {
+        for(int i = 0; i < Instance.players.Count; i++) { 
+            if(Instance.players[i] == playerToTeleport)
+            {
+                playerToTeleport.transform.position = GameObject.Find("Spawn" + i).transform.position;
+            }
+        }
     }
 
     #endregion
