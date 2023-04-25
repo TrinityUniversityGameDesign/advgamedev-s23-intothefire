@@ -27,7 +27,10 @@ public class JacksonCharacterMovement : MonoBehaviour
     float gravMult = 1f;
     private LineRenderer lr;
     GameObject enemy = null;
-    List<Item> inventory = new List<Item>();
+    
+    public List<Item> inventory = new List<Item>();
+    
+    
     List<Item> Moveinventory = new List<Item>();
     List<Item> Jumpinventory = new List<Item>();
     List<Item> Lightinventory = new List<Item>();
@@ -97,12 +100,10 @@ public class JacksonCharacterMovement : MonoBehaviour
     
     float timer = 0;
     GameObject player;
-    
-    // UI Variables
-    public Sprite icon;
+    //private QuickView ////_quickView;
+    //private InventoryView _inventoryView;
+    public Sprite Icon { get; private set; }
     private Camera _minicam;
-    private HUDController _hud;
-    
     private void Awake()
     {
         GameManager.Instance?.StartupNewGameBegin.AddListener(StartPlayer);
@@ -133,22 +134,15 @@ public class JacksonCharacterMovement : MonoBehaviour
 
         cam.transform.parent = null;
         cc = gameObject.GetComponent<CharacterController>();
-
-        // Other variables
+        ////_quickView = transform.GetComponentInChildren<QuickView>();
+        //_inventoryView = transform.GetComponentInChildren<InventoryView>();
+        _minicam = GetComponentInChildren<Camera>();
+        Icon = Resources.Load<Sprite>("Sprites/test-icon");
         sword = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
-        
         //anim = GetComponent<Animation>();
         lr = GetComponent<LineRenderer>();
         
         weapon.AssignPlayer(this.gameObject);
-        
-        // UI Controllers
-        _hud = GetComponentInChildren<HUDController>();
-        // _minicam = GetComponentInChildren<Camera>();
-        _minicam = GameObject.FindGameObjectWithTag("MinimapCamera").GetComponent<Camera>();
-        Debug.Log(_minicam.name);
-        // UI Variables
-        icon = Resources.Load<Sprite>("Sprites/gun");
     }
 
     private void UpdateMinimap()
@@ -241,11 +235,12 @@ public class JacksonCharacterMovement : MonoBehaviour
     }
     public void ToggleInventory(InputAction.CallbackContext ctx)
     {
-        if (ctx.started) _hud.ToggleInventory();
+        //if (ctx.started) //_inventoryView.ToggleUI();
     }
     // Update is called once per frame
     void Update()
     {
+        UpdateHealthBar();
         //jumpHold = inputs.Jump.ReadValue<float>() > 0.1f;
         // lightHold = inputs.LightAttack.ReadValue<float>() > 0.1f;
         //heavyHold = inputs.HeavyAttack.ReadValue<float>() > 0.1f;
@@ -274,7 +269,7 @@ public class JacksonCharacterMovement : MonoBehaviour
             dodgePress = 3;
         }
         */
-        // UpdateMinimap();
+        UpdateMinimap();
 
     }
 
@@ -652,22 +647,15 @@ public class JacksonCharacterMovement : MonoBehaviour
     }
     public void StartPlayer()
     {
-        Debug.Log("Starting player: " + gameObject.name);
         state = PlayerState.idle;
         AddItem(new DamageItem());
-        Debug.Log("Items added");
         AddItem(new KnockbackResistanceItem());
-        Debug.Log("Items added");
         AddItem(new KnockbackItem());
-        Debug.Log("Items added");
         AddItem(new DamageOverTimeItem());
-        Debug.Log("Items added");
         AddItem(new AttackSpeedItem());
-        Debug.Log("Items added");
         AddItem(new ArmorItem());
-        Debug.Log("Items last added");
-        Debug.Log("Before HUD");
-        _hud.InitializePlayerHUD(icon, health, maxHealth, GetInventory(), GetInventoryStats());
+        //_quickView.ToggleUI();
+        //_quickView.LoadUI();
     }
     public void MovementManagement(float horizontal, float vertical)
     {
@@ -845,6 +833,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         stunTimer = 10f;
         velocity = kb * transform.forward;
         Destroy(currSword);
+        UpdateInventoryUI();
     }
 
     public List<Item> GetInventory()
@@ -854,19 +843,17 @@ public class JacksonCharacterMovement : MonoBehaviour
 
     public void AddItem(Item i)
     {
-        Debug.Log("Attempt to add item");
-        i.AssignPlayer(gameObject);
-        Debug.Log("Assigned player as: " + gameObject);
+        i.AssignPlayer(this.gameObject);
         i.ItemPickup();
-        Debug.Log("Pickup confirmed");
         inventory.Add(i);
-        Debug.Log("Added to inventory: " + inventory);
         if (i.ItemLight()) { Lightinventory.Add(i); }
         if (i.ItemHeavy()) { Heavyinventory.Add(i); }
         if (i.ItemJump()) { Jumpinventory.Add(i); }
         if (i.ItemMove()) { Moveinventory.Add(i); }
         if (i.ItemCooldown()) { Cooldowninventory.Add(i); }
         if (i.ItemSpecial()) { Specialinventory.Add(i); }
+        UpdateInventoryUI();
+
     }
     public void AssignWeapon(Weapon w)
     {
@@ -949,8 +936,8 @@ public class JacksonCharacterMovement : MonoBehaviour
     public List<(string, float)> GetInventoryStats()
     {
         List<(string, float)> temp = new List<(string, float)>();
-        //temp.Add(("Max Health", maxHealth));
-        //temp.Add(("Current Health", health));
+        temp.Add(("Max Health", maxHealth));
+        temp.Add(("Current Health", health));
         temp.Add(("Max Speed", maxSpeed));
         temp.Add(("Damage", damage));
         temp.Add(("Attack Speed", attackSpeed));
@@ -960,7 +947,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         temp.Add(("Lifegain", lifegain));
         temp.Add(("Damage Over Time", damageOverTime));
         temp.Add(("Knockback", knockback));
-        temp.Add(("Knockback Resist", KnockbackResistance));
+        temp.Add(("Knockback Resistance", KnockbackResistance));
         temp.Add(("Max Air Specials", maxSpecials));
         temp.Add(("Max Jumps", maxJumps));
         temp.Add(("Jump Height", jumpHeight));
@@ -983,6 +970,17 @@ public class JacksonCharacterMovement : MonoBehaviour
     public float GetMaxJumps() { return maxJumps; }
     public float GetJumpHeight() { return jumpHeight; }
 
+    private void UpdateInventoryUI()
+    {
+        //_quickView.UpdateUI();
+        //_inventoryView.UpdateUI();
+    }
+
+    private void UpdateHealthBar()
+    {
+        //_quickView.UpdateHealth();
+    }
+
     private void DisableInvincible()
     {
         invincible = false;
@@ -990,10 +988,5 @@ public class JacksonCharacterMovement : MonoBehaviour
     private void EnableInvincible()
     {
         invincible = true;
-    }
-
-    private void ToggleInventory()
-    {
-        _hud.ToggleInventory();
     }
 }

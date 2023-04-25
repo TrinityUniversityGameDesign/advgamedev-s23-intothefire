@@ -61,11 +61,9 @@ public class SideEventController : MonoBehaviour
         {
             case SideEvents.Spleef:
                 spawnedSpleefController = Instantiate(spleefControllerPrefab, this.transform);
-                GameManager.Instance.CurrentEvent = GameEvents.Spleef;
                 break;
             case SideEvents.Miniboss:
                 spawnedMinibossController = Instantiate(miniBossControllerPrefab, transform);
-                GameManager.Instance.CurrentEvent = GameEvents.Miniboss;
                 break;
             default:
                 break;
