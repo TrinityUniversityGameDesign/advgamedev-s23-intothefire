@@ -9,6 +9,8 @@ public class SpleefSideEventController : SideEventController_General
   [SerializeField]
   private GameObject spleefPlatform;
 
+  private List<int> victors;
+
   //public Transform P1SpawnPoint;
   //public Transform P2SpawnPoint;
   //public Transform P3SpawnPoint;
@@ -29,30 +31,31 @@ public class SpleefSideEventController : SideEventController_General
     ourY = gameObject.transform.position.y;
     ourZ = gameObject.transform.position.z;
 
-    //List<Transform> spawnPoints = new List<Transform>();
-    //spawnPoints.Add(P1SpawnPoint);
-    //spawnPoints.Add(P2SpawnPoint);
-    //spawnPoints.Add(P3SpawnPoint);
-    //spawnPoints.Add(P4SpawnPoint);
+		//List<Transform> spawnPoints = new List<Transform>();
+		//spawnPoints.Add(P1SpawnPoint);
+		//spawnPoints.Add(P2SpawnPoint);
+		//spawnPoints.Add(P3SpawnPoint);
+		//spawnPoints.Add(P4SpawnPoint);
 
-        //Teleporting players is handled by the event controller. 
-  //  for (int i = 0; i < 4; i++)
-		//{
-  //    if(i + 1 <= GameManager.Instance.players.Count)
-		//	{
-  //      Debug.Log("Before: " + GameManager.Instance.players[i].transform.position);
-  //      GameManager.Instance.players[i].transform.position = spawnPoints[i].position;
-  //      Debug.Log("After: " + GameManager.Instance.players[i].transform.position);
-
-  //      //Error being caused by Player+Camera Object transform.position being updated, but the actual player part is being teleported wierdly in relation to it's parent object
-		//	}
-		//}
+		//Teleporting players is handled by the event controller. 
+		for (int i = 0; i < 4; i++)
+		{
+		  if(i + 1 <= GameManager.Instance.players.Count)
+			{
+        victors.Add(GameManager.Instance.players[i].GetComponent<PlayerData>().PlayerIndex);
+			}
+		}
 
 
-    SpawnPlatforms();
+		SpawnPlatforms();
   }
 
   
+
+  public void removeVictor(GameObject loser)
+	{
+    victors.Remove(loser.GetComponent<PlayerData>().PlayerIndex);
+	}
   
   private void SpawnPlatforms()
 	{
@@ -68,10 +71,9 @@ public class SpleefSideEventController : SideEventController_General
 	}
 
 
-    public override int ComputeVictor()
-    {
-        //TODO @Drew
-        return base.ComputeVictor();
-    }
+	public override List<int> ComputeVictor()
+	{
+		return victors;
+	}
 
 }

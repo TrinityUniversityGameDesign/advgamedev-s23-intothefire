@@ -8,5 +8,5 @@ public class SideEventController_General : MonoBehaviour
 
     public int victor = -1;
 
-    public virtual int ComputeVictor() { return -2; }
+    public virtual List<int> ComputeVictor() { return new List<int>(-2); }
 }

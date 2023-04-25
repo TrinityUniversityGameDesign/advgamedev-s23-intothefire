@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class MiniBossSideEventController : SideEventController_General
 {
-    public override int ComputeVictor()
+    public override List<int> ComputeVictor()
     {
-        return GetComponentInChildren<MiniBossAi>().GetWinner();
-    }
+    List<int> winner = new List<int>();
+    winner.Add(GetComponentInChildren<MiniBossAi>().GetWinner());
+    return winner;
+  }
 }

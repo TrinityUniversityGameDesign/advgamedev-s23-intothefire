@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class SpleefArenaBottomFloor : MonoBehaviour
 {
-	private void OnCollisionEnter(Collision collision)
+	[SerializeField]
+	SpleefSideEventController controller;
+
+
+
+	private void OnTriggerEnter(Collider other)
 	{
-
-		Debug.Log(collision.transform.tag);
-
-		if(collision.transform.tag == "Player")
-		{
-			collision.transform.position = new Vector3(collision.transform.position.x, gameObject.transform.position.y + 81, collision.transform.position.z);
-		}
+			if(other.transform.tag == "Player")
+			{
+				other.transform.position = new Vector3(other.transform.position.x, gameObject.transform.position.y + 81, other.transform.position.z);
+			}
+		
 	}
 }
