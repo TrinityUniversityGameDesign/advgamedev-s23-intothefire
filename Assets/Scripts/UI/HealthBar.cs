@@ -25,16 +25,29 @@ public class HealthBar : MonoBehaviour
         _text = GetComponentInChildren<TMP_Text>();
     }
 
+    /// <summary>
+    ///  Update the player's health value
+    /// </summary>
+    /// <param name="health">player health</param>
     public void UpdateHealth(float health)
     {
         StartCoroutine(ScaleHealthBar(health));
     }
     
+    /// <summary>
+    ///  Update the player's max health
+    /// </summary>
+    /// <param name="maxHealth">player max health</param>
     public void UpdateMaxHealth(float maxHealth)
     {
         StartCoroutine(ScaleMaxHealthWidth(maxHealth));
     }
     
+    /// <summary>
+    ///  Initialize healthbar with starting values from the HUD
+    /// </summary>
+    /// <param name="health">health of player</param>
+    /// <param name="maxHealth">max health of player</param>
     public void InitializeHealthBar(float health, float maxHealth)
     {
         // Set health values

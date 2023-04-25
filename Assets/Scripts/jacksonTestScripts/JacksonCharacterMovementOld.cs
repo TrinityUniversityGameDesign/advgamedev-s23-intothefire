@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Animations;
-
+#if UNITY_IOS
 public class JacksonCharacterMovement : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -35,7 +34,6 @@ public class JacksonCharacterMovement : MonoBehaviour
     List<Item> Heavyinventory = new List<Item>();
     List<Item> Specialinventory = new List<Item>();
     List<Item> Cooldowninventory = new List<Item>();
-    private List<ItemData> _inventory = new List<ItemData>();
 
     Animation anim;
     float gravity = 1f;
@@ -60,26 +58,24 @@ public class JacksonCharacterMovement : MonoBehaviour
 
 
     //Here's a list of all the stats a player can obtain / items can modify:
-    private PlayerStats _stats = new PlayerStats(new Dictionary<StatType, float>{
-        { StatType.MaxHealth, 100f },
-        { StatType.Health, 100f },
-        { StatType.Armor, 0f },
-        { StatType.AttackSpeed, 0f },
-        { StatType.Critical, 0.1f },
-        { StatType.Damage, 0f },
-        { StatType.DamageOverTime, 0f },
-        { StatType.KnockBack, 0f },
-        { StatType.KnockBackResist, 0f },
-        { StatType.LifeGain, 0f },
-        { StatType.LifeSteal, 0f },
-        { StatType.MaxJumps, 1f },
-        { StatType.MaxSpecials, 1f },
-        { StatType.Speed, 20f } 
-    });
+    float maxHealth = 100f;
     //public float health { get; private set; } = 100f;
+    float health = 100f;
     int damTime = 0;
+    float maxSpeed = 20f;
+    float damage = 0f;
+    float attackSpeed = 0f;
+    float critRate = 0.1f;
+    float armor = 0f;
+    float lifesteal = 0f;
+    float lifegain = 0f;
+    float knockback = 0f;
+    float KnockbackResistance = 0f;
+    float damageOverTime = 0f;
     float currBurn = 0f;
+    float maxJumps = 1f;
     float currJumps = 1f;
+    float maxSpecials = 1f;
     float currSpecials = 1f;
     float jumpHeight = 20f;
     float repeatTimer = 0f;
@@ -338,7 +334,7 @@ public class JacksonCharacterMovement : MonoBehaviour
             repeatTimer = 0;
             if (currBurn > 0)
             {
-                _stats.TakeDamage(-Mathf.Ceil(currBurn / 10f));
+                health -= Mathf.Ceil(currBurn / 10f);
                 //burnTime--;
                 currBurn -= Mathf.Ceil(currBurn / 10f);
                 if (currBurn <= 0)
@@ -347,8 +343,11 @@ public class JacksonCharacterMovement : MonoBehaviour
                     burnTime = 0;
                 }
             }
-            _stats.Heal(_stats.LifeGain);
-            // if(_stats.Health > _stats.MaxHealth) _stats.SetHealth(_stats.MaxHealth);
+            health += lifegain;
+            if(health > maxHealth)
+            {
+                health = maxHealth;
+            }
             foreach (Item it in Cooldowninventory)
             {
                 it.ItemCooldown();
@@ -368,8 +367,8 @@ public class JacksonCharacterMovement : MonoBehaviour
                     {
                         //rb.useGravity = true;
                         gravMult = 3;
-                        currSpecials = _stats.MaxSpecials;
-                        currJumps = _stats.MaxJumps;
+                        currSpecials = maxSpecials;
+                        currJumps = maxJumps;
                         velocity = new Vector3(velocity.x, 0f, velocity.z);
                     }
                     else
@@ -377,7 +376,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                         gravMult = 1;
                         //rb.useGravity = false;
                     }
-                    if(_stats.Health < 0)
+                    if(health < 0)
                     {
                         state = PlayerState.dead;
                     }
@@ -397,9 +396,9 @@ public class JacksonCharacterMovement : MonoBehaviour
                         currSword.transform.parent = transform;
                         currSword.GetComponent<DamageScript>().SetParent(this.gameObject);
                         currSword.GetComponent<DamageScript>().SetDamage(CalculateDamage(weapon.lightDamage));
-                        currSword.GetComponent<DamageScript>().SetKnockback(weapon.lightKnockback + _stats.KnockBack);
-                        currSword.GetComponent<DamageScript>().SetDamageOverTime(_stats.DamageOverTime);
-                        if (_stats.LifeSteal > 0)
+                        currSword.GetComponent<DamageScript>().SetKnockback(weapon.lightKnockback + knockback);
+                        currSword.GetComponent<DamageScript>().SetDamageOverTime(damageOverTime);
+                        if (lifesteal > 0)
                         {
                             currSword.GetComponent<DamageScript>().DoLifesteal(this.gameObject);
                         }
@@ -409,7 +408,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                         // currSword.transform.localRotation = transform.rotation * Quaternion.Euler(0f, 0f, 90f);
                         targetRot = currSword.transform.localRotation * Quaternion.AngleAxis(-45f, Vector3.up); //* currSword.transform.localRotation;
                         currSword.transform.localRotation = currSword.transform.localRotation * Quaternion.AngleAxis(45f, Vector3.up); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);
-                        lerpTime = weapon.lightSpeed + _stats.AttackSpeed;
+                        lerpTime = weapon.lightSpeed + attackSpeed;
                     }
                     if(heavyPress > 0)
                     {
@@ -425,9 +424,9 @@ public class JacksonCharacterMovement : MonoBehaviour
                         currSword.transform.parent = transform;
                         currSword.GetComponent<DamageScript>().SetParent(this.gameObject);
                         currSword.GetComponent<DamageScript>().SetDamage(CalculateDamage(weapon.heavyDamage));
-                        currSword.GetComponent<DamageScript>().SetKnockback(weapon.heavyKnockback + _stats.KnockBack);
-                        currSword.GetComponent<DamageScript>().SetDamageOverTime(_stats.DamageOverTime);
-                        if(_stats.LifeSteal > 0)
+                        currSword.GetComponent<DamageScript>().SetKnockback(weapon.heavyKnockback + knockback);
+                        currSword.GetComponent<DamageScript>().SetDamageOverTime(damageOverTime);
+                        if(lifesteal > 0)
                         {
                             currSword.GetComponent<DamageScript>().DoLifesteal(this.gameObject);
                         }
@@ -439,7 +438,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                            // GameObject bullet = Instantiate(Resources.Load("Prefabs/IceBullet") as GameObject, transform.position + transform.forward * 2f, transform.rotation);
                             //bullet.GetComponent<Rigidbody>().velocity = transform.forward * 15f;
                        
-                        lerpTime = weapon.heavySpeed + _stats.AttackSpeed;
+                        lerpTime = weapon.heavySpeed + attackSpeed;
                     }
                     if(jumpPress > 0 && currJumps >0)
                     {
@@ -487,9 +486,9 @@ public class JacksonCharacterMovement : MonoBehaviour
                         currSword.transform.parent = transform;
                         currSword.GetComponent<DamageScript>().SetParent(this.gameObject);
                         currSword.GetComponent<DamageScript>().SetDamage(CalculateDamage(weapon.specialDamage));
-                        currSword.GetComponent<DamageScript>().SetKnockback(weapon.specialKnockback + _stats.KnockBack);
-                        currSword.GetComponent<DamageScript>().SetDamageOverTime(_stats.DamageOverTime);
-                        if (_stats.LifeSteal > 0)
+                        currSword.GetComponent<DamageScript>().SetKnockback(weapon.specialKnockback + knockback);
+                        currSword.GetComponent<DamageScript>().SetDamageOverTime(damageOverTime);
+                        if (lifesteal > 0)
                         {
                             currSword.GetComponent<DamageScript>().DoLifesteal(this.gameObject);
                         }
@@ -655,22 +654,20 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         Debug.Log("Starting player: " + gameObject.name);
         state = PlayerState.idle;
-        //AddItem(new DamageItem());
-        //AddItem(new KnockbackResistanceItem());
-        //AddItem(new KnockbackItem());
-        //AddItem(new DamageOverTimeItem());
-        //AddItem(new AttackSpeedItem());
-        //AddItem(new ArmorItem());
-        AddItem(Resources.Load<ItemData>("Items/Spikey Ball"));
-        AddItem(Resources.Load<ItemData>("Items/5 Pound Weight"));
-        AddItem(Resources.Load<ItemData>("Items/Bassball Bat"));
-        AddItem(Resources.Load<ItemData>("Items/Garlic"));
-        AddItem(Resources.Load<ItemData>("Items/Feet"));
-        AddItem(Resources.Load<ItemData>("Items/Torso"));
-        AddItem(Resources.Load<ItemData>("Items/Energy Drink"));
+        AddItem(new DamageItem());
+        Debug.Log("Items added");
+        AddItem(new KnockbackResistanceItem());
+        Debug.Log("Items added");
+        AddItem(new KnockbackItem());
+        Debug.Log("Items added");
+        AddItem(new DamageOverTimeItem());
+        Debug.Log("Items added");
+        AddItem(new AttackSpeedItem());
+        Debug.Log("Items added");
+        AddItem(new ArmorItem());
+        Debug.Log("Items last added");
         Debug.Log("Before HUD");
-        //_hud.InitializePlayerHUD(icon, _stats.Health, _stats.MaxHealth, GetInventory(), GetInventoryStats());
-        _hud.InitializePlayerHUD(icon, _stats.Health, _stats.MaxHealth, _inventory, _stats);
+        _hud.InitializePlayerHUD(icon, health, maxHealth, GetInventory(), GetInventoryStats());
     }
     public void MovementManagement(float horizontal, float vertical)
     {
@@ -691,20 +688,20 @@ public class JacksonCharacterMovement : MonoBehaviour
             float angle = Vector3.Angle(velocity, transform.forward);
             if (grounded)
             {
-                if (Magnitude() < _stats.Speed)
+                if (Magnitude() < maxSpeed)
                 {
                     velocity = Magnitude() * transform.forward + new Vector3(0f, velocity.y, 0f); ;
                     //rb.AddRelativeForce(new Vector3(0, 0, 2f), ForceMode.VelocityChange);
                     velocity = velocity + (transform.forward.normalized * 2f);
                 }
-                else if (Magnitude() >= _stats.Speed)
+                else if (Magnitude() >= maxSpeed)
                 {
                     velocity = Magnitude() * transform.forward + new Vector3(0f, velocity.y, 0f);
                 }
             }
             else
             {
-                if(Magnitude() < _stats.Speed)
+                if(Magnitude() < maxSpeed)
                 {
                     //rb.AddRelativeForce(new Vector3(0, 0, 2f), ForceMode.VelocityChange);
                     velocity = velocity + (transform.forward.normalized * 2f);
@@ -719,7 +716,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                     {
                         velocity = Magnitude() * .95f * new Vector3(velocity.x, 0f, velocity.z).normalized + new Vector3(0f, velocity.y, 0f);
                     }
-                    if (ArbitraryMagnitude(velocity) < _stats.Speed)
+                    if (ArbitraryMagnitude(velocity) < maxSpeed)
                     {
                         //rb.AddRelativeForce(new Vector3(0, 0, 2f), ForceMode.VelocityChange);
                         velocity = velocity + (transform.forward.normalized * 2f);
@@ -816,17 +813,20 @@ public class JacksonCharacterMovement : MonoBehaviour
     }
     public void StealLife(float steal)
     {
-        _stats.Heal(Mathf.Ceil(steal*_stats.LifeSteal));
-        // if(_stats.Health > _stats.MaxHealth) _stats.SetHealth(_stats.MaxHealth);
+        health += Mathf.Ceil(steal*lifesteal);
+        if(health > maxHealth)
+        {
+            health = maxHealth;
+        }
     }
     public void HurtPlayer(GameObject other)
     {
         DamageScript temp = other.GetComponent<DamageScript>();
-        float hurts = Mathf.Max(0f, (temp.GetDamage() - _stats.Armor));
+        float hurts = Mathf.Max(0f, (temp.GetDamage() - armor));
 
         if (!invincible)
         {
-            _stats.SetHealth(_stats.Health - hurts);
+            health -= hurts;
             currBurn = temp.GetDamageOverTime();
             if (temp.GetLifesteal())
             {
@@ -834,7 +834,7 @@ public class JacksonCharacterMovement : MonoBehaviour
             }
         }
 
-        float kb = temp.GetKnockback() - _stats.KnockBackResist;
+        float kb = temp.GetKnockback() - KnockbackResistance;
         if (kb < 1) { kb = 1f; }
         state = PlayerState.hitstun;
         transform.LookAt(new Vector3(other.transform.position.x, transform.position.y - 1f, other.transform.position.z));
@@ -854,23 +854,19 @@ public class JacksonCharacterMovement : MonoBehaviour
 
     public void AddItem(Item i)
     {
+        Debug.Log("Attempt to add item");
         i.AssignPlayer(gameObject);
+        Debug.Log("Assigned player as: " + gameObject);
         i.ItemPickup();
+        Debug.Log("Pickup confirmed");
         inventory.Add(i);
+        Debug.Log("Added to inventory: " + inventory);
         if (i.ItemLight()) { Lightinventory.Add(i); }
         if (i.ItemHeavy()) { Heavyinventory.Add(i); }
         if (i.ItemJump()) { Jumpinventory.Add(i); }
         if (i.ItemMove()) { Moveinventory.Add(i); }
         if (i.ItemCooldown()) { Cooldowninventory.Add(i); }
         if (i.ItemSpecial()) { Specialinventory.Add(i); }
-    }
-    
-    public void AddItem(ItemData itemData)
-    {
-        _stats.AddItem(itemData);
-        Debug.Log("Pickup confirmed");
-        _inventory.Add(itemData);
-        Debug.Log("Added to inventory: " + _inventory);
     }
     public void AssignWeapon(Weapon w)
     {
@@ -880,12 +876,12 @@ public class JacksonCharacterMovement : MonoBehaviour
     public float CalculateDamage(float d)
     {
         float rand = Random.Range(0f, 1f);
-        float dmg = d + _stats.Damage;
-        if (rand > _stats.Critical)
+        float dmg = d + damage;
+        if (rand > critRate)
         {
-            if (_stats.Critical > 1)
+            if (critRate > 1)
             {
-                dmg = dmg * (1f + _stats.Critical);
+                dmg = dmg * (1f + critRate);
             }
             else
             {
@@ -933,70 +929,19 @@ public class JacksonCharacterMovement : MonoBehaviour
         return specialHold;
     }
 
-    public void ChangeHealth(float f)
-    {
-        _stats.AddStat("Health", f);
-    }
-
-    public void ChangeSpeed(float f)
-    {
-        _stats.AddStat("Speed", f);
-    }
-
-    public void ChangeDamage(float f)
-    {
-        _stats.AddStat("Damage", f);
-    }
-
-    public void ChangeAttackSpeed(float f)
-    {
-        _stats.AddStat("AttackSpeed", f);
-    }
-
-    public void ChangeArmor(float f)
-    {
-        _stats.AddStat("Armor", f);
-    }
-
-    public void ChangeCrit(float f)
-    {
-        _stats.AddStat("Critical", f);
-    }
-
-    public void ChangeLifesteal(float f)
-    {
-        _stats.AddStat("LifeSteal", f);
-    }
-
-    public void ChangeLifegain(float f)
-    {
-        _stats.AddStat("LifeGain", f);
-    }
-
-    public void ChangeDamageOverTime(float f)
-    {
-        _stats.AddStat("DamageOverTime", f);
-    }
-
-    public void ChangeKnockback(float f)
-    {
-        _stats.AddStat("KnockBack", f);
-    }
-
-    public void ChangeKnockbackResistance(float f)
-    {
-        _stats.AddStat("KnockBackResist", f);
-    }
-
-    public void ChangeMaxSpecials(float f)
-    {
-        _stats.AddStat("MaxSpecials", f);
-    }
-
-    public void ChangeMaxJumps(float f)
-    {
-        _stats.AddStat("MaxJumps", f);
-    }
+    public void ChangeHealth(float f) { maxHealth += f; health += f; }
+    public void ChangeSpeed(float f) { maxSpeed += f; }
+    public void ChangeDamage(float f) { damage += f; }
+    public void ChangeAttackSpeed(float f) { attackSpeed += f; }
+    public void ChangeArmor(float f) { armor += f; }
+    public void ChangeCrit(float f) { critRate += f; }
+    public void ChangeLifesteal(float f) { lifesteal += f; }
+    public void ChangeLifegain(float f) { lifegain += f; }
+    public void ChangeDamageOverTime(float f) { damageOverTime += f; }
+    public void ChangeKnockback(float f) { knockback += f; }
+    public void ChangeKnockbackResistance(float f) { KnockbackResistance += f; }
+    public void ChangeMaxSpecials(float f) { maxSpecials += f; }
+    public void ChangeMaxJumps(float f) { maxJumps += f; }
     public void ChangeJumpHeight(float f) { jumpHeight += f; }
 
     public void ChangeRange(float f) { }
@@ -1006,36 +951,36 @@ public class JacksonCharacterMovement : MonoBehaviour
         List<(string, float)> temp = new List<(string, float)>();
         //temp.Add(("Max Health", maxHealth));
         //temp.Add(("Current Health", health));
-        temp.Add(("Max Speed", _stats.Speed));
-        temp.Add(("Damage", _stats.Damage));
-        temp.Add(("Attack Speed", _stats.AttackSpeed));
-        temp.Add(("Armor", _stats.Armor));
-        temp.Add(("Crit Rate", _stats.Critical));
-        temp.Add(("Lifesteal", _stats.LifeSteal));
-        temp.Add(("Lifegain", _stats.LifeGain));
-        temp.Add(("Damage Over Time", _stats.DamageOverTime));
-        temp.Add(("Knockback", _stats.KnockBack));
-        temp.Add(("Knockback Resist", _stats.KnockBackResist));
-        temp.Add(("Max Air Specials", _stats.MaxSpecials));
-        temp.Add(("Max Jumps", _stats.MaxJumps));
+        temp.Add(("Max Speed", maxSpeed));
+        temp.Add(("Damage", damage));
+        temp.Add(("Attack Speed", attackSpeed));
+        temp.Add(("Armor", armor));
+        temp.Add(("Crit Rate", critRate));
+        temp.Add(("Lifesteal", lifesteal));
+        temp.Add(("Lifegain", lifegain));
+        temp.Add(("Damage Over Time", damageOverTime));
+        temp.Add(("Knockback", knockback));
+        temp.Add(("Knockback Resist", KnockbackResistance));
+        temp.Add(("Max Air Specials", maxSpecials));
+        temp.Add(("Max Jumps", maxJumps));
         temp.Add(("Jump Height", jumpHeight));
         return temp;
     }
 
-    public float GetMaxHealth() { return _stats.MaxHealth; }
-    public float GetHealth() { return _stats.Health; }
-    public float GetSpeed() { return _stats.Speed; }
-    public float GetDamage() { return _stats.Damage; }
-    public float GetAttackSpeed() {return _stats.AttackSpeed; }
-    public float GetArmor() {return _stats.Armor; }
-    public float GetCrit() { return _stats.Critical; }
-    public float GetLifesteal() { return _stats.LifeSteal; }
-    public float GetLifegain() { return _stats.LifeGain; }
-    public float GetDamageOverTime() { return _stats.DamageOverTime; }
-    public float GetKnockback() { return _stats.KnockBack; }
-    public float GetKockbackResistance() { return _stats.KnockBackResist; }
-    public float GetMaxSpecials() {return _stats.MaxSpecials; }
-    public float GetMaxJumps() { return _stats.MaxJumps; }
+    public float GetMaxHealth() { return maxHealth; }
+    public float GetHealth() { return health; }
+    public float GetSpeed() { return maxSpeed; }
+    public float GetDamage() { return damage; }
+    public float GetAttackSpeed() {return  attackSpeed; }
+    public float GetArmor() {return  armor; }
+    public float GetCrit() { return critRate; }
+    public float GetLifesteal() { return lifesteal; }
+    public float GetLifegain() { return lifegain; }
+    public float GetDamageOverTime() { return damageOverTime; }
+    public float GetKnockback() { return knockback; }
+    public float GetKockbackResistance() { return KnockbackResistance; }
+    public float GetMaxSpecials() {return  maxSpecials; }
+    public float GetMaxJumps() { return maxJumps; }
     public float GetJumpHeight() { return jumpHeight; }
 
     private void DisableInvincible()
@@ -1052,3 +997,4 @@ public class JacksonCharacterMovement : MonoBehaviour
         _hud.ToggleInventory();
     }
 }
+# endif
