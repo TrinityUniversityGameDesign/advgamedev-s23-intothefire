@@ -1270,11 +1270,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bea8b8d212dceb34d83d12dd092d4f3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
-  range: 0
-  angularSpeed: 0
+  patrolPoints: []
+  moveSpeed: 0
+  attackRadius: 0
   roamingBossPrefab: {fileID: 3852045324045704723}
-  destination: {fileID: 2310266335988637508, guid: ce81fad8bf9d3124ab56de239fb9a702, type: 3}
+  maxAngle: 45
+  idleTime: 10
 --- !u!195 &8897007547987805341
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1309,6 +1310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2cc9684f26cfac4b8578ed782e4c047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goal: {fileID: 0}
 --- !u!1 &3852045324053444489
 GameObject:
   m_ObjectHideFlags: 0
@@ -1650,7 +1652,7 @@ Transform:
   m_GameObject: {fileID: 3852045324495274920}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3852045324045704722}
