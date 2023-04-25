@@ -15,12 +15,17 @@ public class MajorEventController : MonoBehaviour
 
     public GameObject roamingBossPrefab;
     GameObject roamingBoss;
+    [SerializeField] Transform goal;
+
 
     // Start is called before the first frame update
     void Start()
     {
         GameManager.Instance.MajorEventBegin.AddListener(StartNewMajorEvent);
         GameManager.Instance.MajorEventEnd.AddListener(EndCurrentMajorEvent);
+
+        goal = GameObject.FindGameObjectWithTag("Destination").transform;
+        Debug.Log("Found Destination: " + goal.position);
     }
 
     void StartNewMajorEvent()
@@ -42,7 +47,7 @@ public class MajorEventController : MonoBehaviour
         switch (_currentEvent)
         {
             case MajorEvents.Minotaur:
-                roamingBoss = Instantiate(roamingBossPrefab, this.transform);
+                roamingBoss = Instantiate(roamingBossPrefab, goal.position, Quaternion.identity, this.transform);
                 Debug.Log("Minotaur location: " + roamingBoss.transform.position);
                 break;
             default:
