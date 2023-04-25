@@ -11,7 +11,7 @@ public class SpleefPlatform : MonoBehaviour
 
 	private void Start()
 	{
-		thisRenderer = gameObject.GetComponent<MeshRenderer>();
+		thisRenderer = gameObject.transform.GetChild(0).GetComponent<MeshRenderer>();
 	}
 
 

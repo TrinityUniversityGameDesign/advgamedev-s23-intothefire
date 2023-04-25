@@ -540,7 +540,7 @@ public class GameManager : MonoBehaviour
     public void AwardRandomItem(int victor)
     {
         Item newItem = Item.GrantNewRandomItem();
-        if(newItem != null || victor < 0 || victor >= Instance.players.Count) players[victor].GetComponent<JacksonCharacterMovement>().AddItem(newItem);
+        if(newItem != null && !(victor < 0 || victor > Instance.players.Count-1)) players[victor].GetComponent<JacksonCharacterMovement>().AddItem(newItem);
     }
 
     void TeleportPlayersToSpawnPoints()
