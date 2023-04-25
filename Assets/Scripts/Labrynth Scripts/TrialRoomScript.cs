@@ -117,7 +117,7 @@ public class TrialRoomScript : MonoBehaviour
 		DespawnTrialGeometry();
 		GivePlayerLoot();
 		currRoomState = RoomState.completed;
-		Debug.Log("Room Completed");
+		//Debug.Log("Room Completed");
 		SetDoorPresence(false);
 		if(hostEmpty){
 			hostEmpty.depsawnRoom();
