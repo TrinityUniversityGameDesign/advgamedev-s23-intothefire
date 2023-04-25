@@ -62,7 +62,7 @@ public class TrialRoomScript : MonoBehaviour
 		//Debug.Log("Room Closed");
 
 		//Spawn Startpad in appropriate room location
-		PlaceStartPad();
+		//PlaceStartPad();
 	}
 	protected void SetDoorPresence(bool doorsEnabled)
 	{
