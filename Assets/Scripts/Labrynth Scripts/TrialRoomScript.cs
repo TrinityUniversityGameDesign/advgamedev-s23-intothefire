@@ -34,8 +34,7 @@ public class TrialRoomScript : MonoBehaviour
 		//doors = transform.GetChild(0).transform.GetComponentsInChildren<Transform>();
 		SetDoorPresence(false);
 		currRoomState = RoomState.empty;
-
-
+	
 		//if this room is an empty room, don't turn it into a combat or platforming room
 	}
 
@@ -62,7 +61,8 @@ public class TrialRoomScript : MonoBehaviour
 		//Debug.Log("Room Closed");
 
 		//Spawn Startpad in appropriate room location
-		PlaceStartPad();
+		if(hostEmpty){StartTrial();}
+		else{PlaceStartPad();}
 	}
 	protected void SetDoorPresence(bool doorsEnabled)
 	{
@@ -138,6 +138,4 @@ public class TrialRoomScript : MonoBehaviour
 	{
 		//use playerRef to give loot
 	}
-
-
 }
