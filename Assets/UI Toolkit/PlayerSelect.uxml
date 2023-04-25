@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/lobby.uss?fileID=7433441132597879392&amp;guid=dde428cfe0ef94f1a84ca3785b2ff86a&amp;type=3#lobby" />
+    <ui:VisualElement name="Container" style="flex-grow: 1; flex-direction: row; background-color: rgb(28, 32, 36); -unity-font: url(&apos;project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&amp;guid=e3265ab4bf004d28a9537516768c1c75&amp;type=3#LiberationSans&apos;); -unity-font-style: bold; font-size: 18px; -unity-text-align: upper-center; border-top-color: rgb(236, 206, 37); border-top-width: 5px;">
+        <ui:VisualElement name="Character-Container" style="flex-direction: column; flex-grow: 0; width: 40%; padding-left: 20px; padding-right: 20px; padding-top: 5px; padding-bottom: 20px; border-right-color: rgb(114, 135, 156); border-right-width: 1px; min-width: auto; min-height: auto;">
+            <ui:Label text="Character" display-tooltip-when-elided="true" class="player-select-title" />
+            <ui:SliderInt picking-mode="Ignore" value="0" high-value="3" show-input-field="false" name="Character-Slider" low-value="0" inverted="false" style="flex-grow: 1; flex-shrink: 1; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; background-image: resource(&apos;Textures/Hashira Render Texture&apos;); opacity: 1; visibility: visible; display: flex; -unity-background-scale-mode: scale-to-fit; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 10px;" />
+            <ui:Label text="Label" display-tooltip-when-elided="true" name="Character-Name" style="font-size: 12px; color: rgb(253, 253, 253); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+            <ui:Label text="This is a descirption of the characer here put into this line" display-tooltip-when-elided="true" name="Character-Description" style="flex-wrap: nowrap; white-space: normal; font-size: 10px; -unity-font-style: normal; color: rgb(224, 224, 224);" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Secondary-Container" style="flex-grow: 0; width: 60%; padding-left: 20px; padding-right: 20px; padding-top: 5px; padding-bottom: 20px; max-height: 100%;">
+            <ui:VisualElement name="Weapon-Container" style="flex-grow: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;">
+                <ui:Label text="Weapon" display-tooltip-when-elided="true" class="player-select-title" style="color: rgb(236, 236, 236); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 10px; -unity-font-style: bold;" />
+                <ui:VisualElement name="Weapons" style="flex-direction: row; flex-wrap: wrap; flex-grow: 1;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
