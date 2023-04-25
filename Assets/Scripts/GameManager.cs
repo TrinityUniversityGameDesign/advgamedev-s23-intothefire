@@ -21,6 +21,36 @@ public enum GameState
     Startup_New_Game
 }
 
+public enum GameEvents
+{
+    Meteor,
+    Spleef,
+    Miniboss
+}
+
+public static class GameManagerGlobalStatics
+{
+    //Events
+    public static string SpleefTitle = "Spleef";
+    public static string SpleefText = "Keep moving! Avoid falling through the holes in the floor! Knock your enemies through them!";
+
+    public static string MiniBossTitle = "Rampant Mummy";
+    public static string MiniBossText = "Damage the mummy!";
+
+    public static string MeteorTitle = "Meteors!";
+    public static string MeteorText = "Avoid the rocks falling from the sky.";
+
+    //Labyrinth Related
+    public static string LabyrinthTitle = "Out of the Fyring Pan";
+    public static string LabyrinthText = "Explore the labyrinth, collect rewards. Beware the Minotaur";
+
+    public static string ShowdownTitle = "Into the Fire";
+    public static string ShowdownText = "Destroy your opponents, whatever means necessary.";
+
+
+
+}
+
 public class GameManager : MonoBehaviour
 {
     #region Public Fields
@@ -54,6 +84,8 @@ public class GameManager : MonoBehaviour
     private int minPlayerCount = 1;
 
     public GameObject lobbyUI;
+
+    public GameEvents CurrentEvent;
     #endregion
 
     #region Private Fields
