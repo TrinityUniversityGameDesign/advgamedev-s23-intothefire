@@ -13,10 +13,15 @@ public class MiniBossAi : MonoBehaviour
 
     private NavMeshAgent navAgent; // reference to the NavMeshAgent component
     Animator _anim;
-    GameObject _damager;
-    GameObject _navSphere;
+   
+    GameObject base_damage;
+    GameObject stomp;
+    GameObject jump;
+    GameObject charge;
 
     List<float> damageTracker;
+
+    bool windingUpAttack = false;
 
     // Start is called before the first frame update
     void Start()
@@ -24,12 +29,13 @@ public class MiniBossAi : MonoBehaviour
         navAgent = GetComponent<NavMeshAgent>(); // get reference to the NavMeshAgent component
         navAgent.speed = speed;
         navAgent.angularSpeed = angularSpeed;
-        _navSphere = transform.GetChild(0).gameObject;
-        _navSphere.transform.parent = null;
         SetRandomDestination(); // set initial random destination
 
         _anim = GetComponentInChildren<Animator>();
-        _damager = transform.GetChild(1).gameObject;
+        base_damage = transform.GetChild(1).gameObject;
+        stomp = transform.GetChild(2).gameObject;
+        jump = transform.GetChild(3).gameObject;
+        charge = transform.GetChild(4).gameObject;
         damageTracker = new List<float>(GameManager.Instance.players.Count) { 0 };
 
     }
@@ -38,10 +44,56 @@ public class MiniBossAi : MonoBehaviour
     void Update()
     {
         // if the NavMeshAgent has reached its destination, set a new random destination
-        if (navAgent.remainingDistance <= navAgent.stoppingDistance)
+        if (navAgent.remainingDistance <= navAgent.stoppingDistance && !windingUpAttack)
         {
-            SetRandomDestination();
+            //See if we should make a new attack
+            
+            if(!CheckRandomAttack()) SetRandomDestination();
         }
+    }
+
+    bool CheckRandomAttack()
+    {
+        //Lets see if we should make a new attack and then do that. 
+        int attack = Random.Range(0, 3);
+
+        switch (attack)
+        {
+            case 0:
+                windingUpAttack = true;
+                PerformStompAttack();
+                return true;
+            case 1:
+                windingUpAttack = true;
+                PerformJumpAttack();
+                return true;
+            case 2:
+                windingUpAttack = true;
+                PerformChargeAttack();
+                return true;
+            case 3:
+                break;
+            default:
+                windingUpAttack = false;
+                break;
+        }
+
+        return false;
+    }
+
+    private void PerformStompAttack()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    private void PerformJumpAttack()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    private void PerformChargeAttack()
+    {
+        throw new System.NotImplementedException();
     }
 
     // sets a random destination within the range
@@ -56,7 +108,6 @@ public class MiniBossAi : MonoBehaviour
         {
             // set the NavMeshAgent's destination to the nearest point on the NavMesh
             navAgent.SetDestination(hit.position);
-            _navSphere.transform.position = hit.position;
         }
     }
 
