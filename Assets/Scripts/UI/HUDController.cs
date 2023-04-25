@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HUDController : MonoBehaviour
 {
     [SerializeField] private GameObject itemIconPrefab;
     [SerializeField] private GameObject itemRowPrefab;
     [SerializeField] private GameObject statPrefab;
+    [SerializeField] private float notifDuration = 2f;
+    private float currentAlpha = 0f;
     private ImageController _imageController;
     private HealthBar _healthBar;
     private QuickView _quickView;
@@ -14,8 +18,19 @@ public class HUDController : MonoBehaviour
     private Inventory _inventory;
     private Minimap _minimap;
     private InventoryContainer _inventoryContainer;
+
+    private Image _eventNotification;
+    private TMP_Text _eventTitle;
+    private TMP_Text _eventInstructions;
     
     private Canvas _canvas;
+    
+    private void Awake()
+    {
+        GameManager.Instance?.StartupNewGameBegin.AddListener(NotifyNewGame);
+        GameManager.Instance?.MicroEventBegin.AddListener(NotifyMicroEvent);
+        GameManager.Instance?.SideEventBegin.AddListener(NotifySideEvent);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +43,10 @@ public class HUDController : MonoBehaviour
         _inventory = GetComponentInChildren<Inventory>();
         _inventoryContainer = GetComponentInChildren<InventoryContainer>();
         _minimap = GetComponentInChildren<Minimap>();
+
+        _eventNotification = transform.Find("Notification").GetComponent<Image>();
+        _eventTitle = _eventNotification.transform.Find("Event Title").GetComponent<TMP_Text>();
+        _eventInstructions = _eventNotification.transform.Find("Event Instructions").GetComponent<TMP_Text>();
 
         // Keep the HUD off by default, until it's instantiated
         Debug.Log("Starting the hud controller, disabling the canvas");
@@ -90,6 +109,12 @@ public class HUDController : MonoBehaviour
         Debug.Log("Stats done");
         ToggleInventory();
         Debug.Log("Closing inventory done");
+        InitializeNotifications();
+    }
+
+    private void InitializeNotifications()
+    {
+        _eventNotification.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -114,5 +139,61 @@ public class HUDController : MonoBehaviour
     public void ToggleInventory()
     {
         _inventoryContainer.ToggleInventory();
+    }
+
+    private void NotifyNewGame()
+    {
+        _eventTitle.text = "A new fire burns...";
+        _eventInstructions.text = "Navigate the labyrinth, conquer rooms, and earn items";
+        StartCoroutine(DeliverNotification(notifDuration));
+    }
+
+    private void NotifySideEvent()
+    {
+        _eventTitle.text = "Spleef";
+        _eventInstructions.text = "Shovel your way to victory but don't fall through";
+        StartCoroutine(DeliverNotification(notifDuration));
+    }
+
+    private void NotifyMicroEvent()
+    {
+        _eventTitle.text = "Meteor shower";
+        _eventInstructions.text = "Dodge meteors";
+        StartCoroutine(DeliverNotification(notifDuration/2));
+    }
+
+    private void UpdateNotificationAlpha(float alpha)
+    {
+        currentAlpha = alpha;
+        _eventNotification.color = new Color(_eventNotification.color.r, _eventNotification.color.g, _eventNotification.color.b, currentAlpha);
+        _eventTitle.color = new Color(_eventTitle.color.r, _eventTitle.color.g, _eventTitle.color.b, currentAlpha);
+        _eventInstructions.color = new Color(_eventInstructions.color.r, _eventInstructions.color.g, _eventInstructions.color.b, currentAlpha);
+    }
+
+    private IEnumerator FadeInText(float timeSpeed)
+    {
+        _eventNotification.gameObject.SetActive(true);
+        UpdateNotificationAlpha(0);
+        while (currentAlpha < 1.0f)
+        {
+            UpdateNotificationAlpha(currentAlpha + Time.deltaTime * timeSpeed);
+            yield return null;
+        }
+    }
+    private IEnumerator FadeOutText(float timeSpeed)
+    {
+        UpdateNotificationAlpha(1);
+        while (currentAlpha > 0.0f)
+        {
+            UpdateNotificationAlpha(currentAlpha - Time.deltaTime * timeSpeed);
+            yield return null;
+        }
+        _eventNotification.gameObject.SetActive(false);
+    }
+
+    private IEnumerator DeliverNotification (float duration = 2f) {
+        yield return StartCoroutine(FadeInText(duration / 2));
+        yield return new WaitForSeconds(duration);
+        yield return StartCoroutine(FadeOutText(duration / 2));
     }
 }
