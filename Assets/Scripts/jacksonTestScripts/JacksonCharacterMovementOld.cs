@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Animations;
-#if UNITY_IOS
-public class JacksonCharacterMovement : MonoBehaviour
+
+public class JacksonCharacterMovementOld : MonoBehaviour
 {
     // Start is called before the first frame update
     public enum PlayerState
@@ -997,4 +997,3 @@ public class JacksonCharacterMovement : MonoBehaviour
         _hud.ToggleInventory();
     }
 }
-# endif

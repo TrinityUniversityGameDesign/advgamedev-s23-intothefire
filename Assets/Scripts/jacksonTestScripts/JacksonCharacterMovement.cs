@@ -28,7 +28,10 @@ public class JacksonCharacterMovement : MonoBehaviour
     float gravMult = 1f;
     private LineRenderer lr;
     GameObject enemy = null;
-    List<Item> inventory = new List<Item>();
+    
+    public List<Item> inventory = new List<Item>();
+    
+    
     List<Item> Moveinventory = new List<Item>();
     List<Item> Jumpinventory = new List<Item>();
     List<Item> Lightinventory = new List<Item>();
