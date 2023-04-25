@@ -95,6 +95,7 @@ public class JacksonPlayerMovement : MonoBehaviour
     
     float timer = 0;
     GameObject player;
+    private InventoryView _inventoryView;
     private Canvas _hud;
     void Start()
     {
@@ -109,6 +110,7 @@ public class JacksonPlayerMovement : MonoBehaviour
         //inputs = playerMovement.jacksonControls;
         //player = transform.GetChild(0).gameObject;
         transform.GetChild(1).gameObject.GetComponent<CapsuleCollider>().enabled = false;
+        _inventoryView = transform.parent.GetComponentInChildren<InventoryView>();
         _hud = transform.parent.GetComponentInChildren<Canvas>();
         rb = gameObject.GetComponent<Rigidbody>();
         //rb.useGravity = true;
@@ -214,10 +216,12 @@ public class JacksonPlayerMovement : MonoBehaviour
         if (ctx.started)
         {
             _inventoryState = InventoryState.inventory;
+            ToggleInventoryUI();
         }
         else if (ctx.canceled)
         {
             _inventoryState = InventoryState.quickview;
+            ToggleInventoryUI();
         }
         Debug.Log(_inventoryState);
     }
@@ -765,6 +769,7 @@ public class JacksonPlayerMovement : MonoBehaviour
         if (i.ItemMove()) { Moveinventory.Add(i); }
         if (i.ItemCooldown()) { Cooldowninventory.Add(i); }
         if (i.ItemSpecial()) { Specialinventory.Add(i); }
+        UpdateInventoryUI();
         
     }
     
@@ -822,4 +827,13 @@ public class JacksonPlayerMovement : MonoBehaviour
     public void ChangeMaxJumps(float f) { maxJumps += f; }
     public void ChangeJumpHeight(float f) { jumpHeight += f; }
     
+    private void ToggleInventoryUI()
+    {
+        _inventoryView.ToggleUI();
+    }
+
+    private void UpdateInventoryUI()
+    {
+        _inventoryView.UpdateUI();
+    }
 }
