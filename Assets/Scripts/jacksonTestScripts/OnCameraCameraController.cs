@@ -12,8 +12,10 @@ public class OnCameraCameraController : MonoBehaviour
     public float radius = 3f; // The distance of the camera from the target
     public float cameraSensitivity = 4f; // The sensitivity of the camera movement
     bool lockOn = false;
+    float flickTimer = 0;
     private float yaw = 0f;
     private float pitch = 90f;
+    float lerpVal = 1;
     bool leftMove = true;
     bool rightMove = true;
     List<GameObject> targets = new List<GameObject>();
@@ -83,7 +85,10 @@ public class OnCameraCameraController : MonoBehaviour
                 transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
 
                 // Make the camera look at the target
+                
                 transform.LookAt(target);
+
+                flickTimer = 0;
             }
             else
             {
@@ -111,16 +116,40 @@ public class OnCameraCameraController : MonoBehaviour
                 {
                     leftMove = true;
                 }
+                if(flickTimer < 20)
+                {
+                    lerpVal = 1f;
+                    flickTimer++;
+                }
+                else
+                {
+                    lerpVal = 1f;
+                }
                 Vector3 desiredPosition;
                 // Calculate the desired position of the camera - You align the camera on the new player instead of the old player 
                 //Players never leave the selection radius - the cylinder is absolutely massive
-                Vector3 fakeTarget = new Vector3(target.position.x, target.position.y + 3f, target.position.z);
+                Vector3 fakeTarget = new Vector3(target.position.x, target.position.y + 1f, target.position.z);
 
                 desiredPosition = ((targets[targetIndex].transform.position /*.normalized * -radius*/));
                 //desiredPosition = ((target.position.normalized * -radius));
-                transform.position = fakeTarget + Vector3.Slerp(transform.position - fakeTarget, desiredPosition - fakeTarget, 1);
+                transform.position = fakeTarget + Vector3.Slerp(transform.position - fakeTarget, desiredPosition - fakeTarget, lerpVal);
                 transform.position = fakeTarget + (fakeTarget - transform.position).normalized * 10f;
-                transform.LookAt(targets[targetIndex].transform.position);
+
+                //if (flickTimer < 20)
+                //{
+                    
+                    Vector3 old = transform.forward;
+                    transform.LookAt(targets[targetIndex].transform.position);
+                    Vector3 curr = transform.forward;
+                    transform.forward = Vector3.Lerp(old, curr, lerpVal);
+                    //flickTimer++;
+                //}
+                //else
+                //{
+                    //transform.LookAt(targets[targetIndex].transform.position);
+                //}
+                
+
                 float closestYaw = 0;
                 float closestPos = 100000;
                 for(float i = 0; i <=360; i+= 10)
