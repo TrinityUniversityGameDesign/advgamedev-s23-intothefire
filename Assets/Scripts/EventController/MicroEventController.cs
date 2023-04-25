@@ -46,6 +46,7 @@ public class MicroEventController : MonoBehaviour
         {
             case MicroEvents.Meteor:
                 spawnedMeteorController = Instantiate(meteorControllerPrefab, this.transform);
+                GameManager.Instance.CurrentEvent = GameEvents.Meteor;
                 break;
             default:
                 break;
