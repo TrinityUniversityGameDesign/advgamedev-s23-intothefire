@@ -60,14 +60,11 @@ public class GameManager : MonoBehaviour
     [Tooltip("Internal state the game manager is currently in.")]
     private GameState _state = GameState.Lobby;
 
-    [Tooltip("Simple timer for testing purposes")]
-    private GameObject timerTextObj;
 
     [Tooltip("Represents the number of seconds since the game has started.")]
-    float Timer = 0;
-    float secondsOfGameTime = 0;
+    public float Timer = 0;
+    public float secondsOfGameTime = 0;
 
-    private TMP_Text timer;
     private bool gameInProgress = false;
 
     #endregion
@@ -90,7 +87,7 @@ public class GameManager : MonoBehaviour
     float timeLeftInMicroEvent;
 
     float timeUntilNextSideEvent;
-    float timeLeftInSideEvent;
+    public float timeLeftInSideEvent;
 
     bool microEventInProgress = false;
     #endregion
@@ -203,14 +200,6 @@ public class GameManager : MonoBehaviour
             //Debug.LogError("Could not find UI Prefab named MainCanvas");
         }
 
-        timerTextObj = GameObject.Find("Timer");
-        timer = timerTextObj?.GetComponent<TMP_Text>();
-
-        if (!timer)
-        {
-            //Debug.LogError("Could not find a TMP_Text component on a GameObject named Timer. Are you missing the UI?");
-        }
-
         if (!GameObject.Find("DungeonGenerator"))
         {
             //Debug.LogError("Could not find Dungeon Generator. Are you missing it in the scene?");
@@ -319,8 +308,6 @@ public class GameManager : MonoBehaviour
                 //Currently this will reset the timings of Side Events and Micro Events which I think is fine for now....
 
                 Timer += Time.deltaTime;
-                int seconds = (int)((secondsOfGameTime - Timer) % 60);
-                if (timer != null) { timer.text = string.Format("{0}:{1}", (int)((secondsOfGameTime - Timer) / 60), seconds < 10 ? "0" + seconds : seconds); }
 
                 //Micro events and side events happen differently because micro events are concurrent and side events are disruptive
                 if (!microEventInProgress) timeUntilNextMicroEvent -= Time.deltaTime;
