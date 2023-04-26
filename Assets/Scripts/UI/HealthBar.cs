@@ -38,9 +38,9 @@ public class HealthBar : MonoBehaviour
     ///  Update the player's max health
     /// </summary>
     /// <param name="maxHealth">player max health</param>
-    public void UpdateMaxHealth(float maxHealth)
+    public void UpdateMaxHealth(float health, float maxHealth)
     {
-        StartCoroutine(ScaleMaxHealthWidth(maxHealth));
+        StartCoroutine(ScaleMaxHealthWidth(health, maxHealth));
     }
     
     /// <summary>
@@ -82,7 +82,7 @@ public class HealthBar : MonoBehaviour
         }
     }
     
-    IEnumerator ScaleMaxHealthWidth(float maxHealth)
+    IEnumerator ScaleMaxHealthWidth(float health, float maxHealth)
     {
         float elapsedTime = 0f;
         while (elapsedTime < animationSpeed)
@@ -104,5 +104,6 @@ public class HealthBar : MonoBehaviour
             _text.text = $"{_currentHealth}/{Mathf.Round(_currentMaxHealth)}";
             yield return null;
         }
+        UpdateHealth(health);
     }
 }

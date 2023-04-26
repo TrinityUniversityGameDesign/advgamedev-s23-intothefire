@@ -25,30 +25,32 @@ public enum GameEvents
 {
     Meteor,
     Spleef,
-    Miniboss
+    Miniboss,
+    Explore,
+    Showdown
 }
 
 public static class GameManagerGlobalStatics
 {
-    //Events
-    public static string SpleefTitle = "Spleef";
-    public static string SpleefText = "Keep moving! Avoid falling through the holes in the floor! Knock your enemies through them!";
+    public struct GameEvent
+    {
+        public readonly string Title;
+        public readonly string Text;
 
-    public static string MiniBossTitle = "Rampant Mummy";
-    public static string MiniBossText = "Damage the mummy!";
-
-    public static string MeteorTitle = "Meteors!";
-    public static string MeteorText = "Avoid the rocks falling from the sky.";
-
-    //Labyrinth Related
-    public static string LabyrinthTitle = "Out of the Fyring Pan";
-    public static string LabyrinthText = "Explore the labyrinth, collect rewards. Beware the Minotaur";
-
-    public static string ShowdownTitle = "Into the Fire";
-    public static string ShowdownText = "Destroy your opponents, whatever means necessary.";
-
-
-
+        public GameEvent(string title, string text)
+        {
+            Title = title;
+            Text = text;
+        }
+    }
+    public static readonly Dictionary<GameEvents, GameEvent> Events = new Dictionary<GameEvents, GameEvent>
+    {
+        { GameEvents.Meteor, new GameEvent("Meteors!", "Avoid the rocks falling from the sky.") },
+        { GameEvents.Miniboss, new GameEvent("Rampant Mummy", "Damage the mummy!") },
+        { GameEvents.Spleef, new GameEvent("Spleef", "Keep moving! Avoid falling through the holes in the floor! Knock your enemies through them!") },
+        { GameEvents.Explore, new GameEvent("Out of the Frying Pan", "Explore the labyrinth, collect rewards. Beware the Minotaur") },
+        { GameEvents.Showdown, new GameEvent("Into the Fire", "Destroy your opponents, whatever means necessary.") }
+    };
 }
 
 public class GameManager : MonoBehaviour

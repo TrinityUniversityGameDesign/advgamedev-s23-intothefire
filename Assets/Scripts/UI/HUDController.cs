@@ -30,6 +30,7 @@ public class HUDController : MonoBehaviour
         GameManager.Instance?.StartupNewGameBegin.AddListener(NotifyNewGame);
         GameManager.Instance?.MicroEventBegin.AddListener(NotifyMicroEvent);
         GameManager.Instance?.SideEventBegin.AddListener(NotifySideEvent);
+        GameManager.Instance?.ShowdownBegin.AddListener(NotifyShowdown);
     }
 
     // Start is called before the first frame update
@@ -65,56 +66,42 @@ public class HUDController : MonoBehaviour
         List<(string, float)> stats)
     {
         // Enable the canvas
-        Debug.Log("Loading HUD");
         _canvas.enabled = true;
-        Debug.Log("Canvas done");
         _healthBar.InitializeHealthBar(health, maxHealth);
-        Debug.Log("Healthbar done");
         _imageController.SetRawImageToSprite(playerIcon);
-        Debug.Log("Icon done");
-        _healthBar.UpdateMaxHealth(150);
-        Debug.Log("Max health update done");
-        _healthBar.UpdateHealth(80);
-        Debug.Log("Health update done");
         _quickView.InitializeItems(inventory, itemIconPrefab);
-        Debug.Log("Quickview items done");
         _inventory.InitializeItems(inventory, itemRowPrefab);
-        Debug.Log("Inventory items done");
         _stats.InitializeStats(stats, statPrefab);
-        Debug.Log("Stats done");
         ToggleInventory();
-        Debug.Log("Closing inventory done");
     }
     
     public void InitializePlayerHUD(Sprite playerIcon, float health, float maxHealth, List<ItemData> inventory,
         PlayerStats stats)
     {
         // Enable the canvas
-        Debug.Log("Loading HUD");
         _canvas.enabled = true;
-        Debug.Log("Canvas done");
         _healthBar.InitializeHealthBar(health, maxHealth);
-        Debug.Log("Healthbar done");
         _imageController.SetRawImageToSprite(playerIcon);
-        Debug.Log("Icon done");
-        _healthBar.UpdateMaxHealth(150);
-        Debug.Log("Max health update done");
-        _healthBar.UpdateHealth(80);
-        Debug.Log("Health update done");
         _quickView.InitializeItems(inventory, itemIconPrefab);
-        Debug.Log("Quickview items done");
         _inventory.InitializeItems(inventory, itemRowPrefab);
-        Debug.Log("Inventory items done");
         _stats.InitializeStats(stats, statPrefab);
-        Debug.Log("Stats done");
         ToggleInventory();
-        Debug.Log("Closing inventory done");
         InitializeNotifications();
     }
 
     private void InitializeNotifications()
     {
         _eventNotification.gameObject.SetActive(false);
+    }
+
+    public void UpdateHealth(float health)
+    {
+        _healthBar.UpdateHealth(health);
+    }
+
+    public void UpdateMaxHealth(float health, float maxHealth)
+    {
+        _healthBar.UpdateMaxHealth(health, maxHealth);
     }
 
     /// <summary>
@@ -143,22 +130,33 @@ public class HUDController : MonoBehaviour
 
     private void NotifyNewGame()
     {
-        _eventTitle.text = "A new fire burns...";
-        _eventInstructions.text = "Navigate the labyrinth, conquer rooms, and earn items";
+        GameManagerGlobalStatics.GameEvent gameEvent = GameManagerGlobalStatics.Events[GameEvents.Explore];
+        _eventTitle.text = gameEvent.Title;
+        _eventInstructions.text = gameEvent.Text;
+        StartCoroutine(DeliverNotification(notifDuration));
+    }
+    
+    private void NotifyShowdown()
+    {
+        GameManagerGlobalStatics.GameEvent gameEvent = GameManagerGlobalStatics.Events[GameEvents.Showdown];
+        _eventTitle.text = gameEvent.Title;
+        _eventInstructions.text = gameEvent.Text;
         StartCoroutine(DeliverNotification(notifDuration));
     }
 
     private void NotifySideEvent()
     {
-        _eventTitle.text = "Spleef";
-        _eventInstructions.text = "Shovel your way to victory but don't fall through";
+        GameManagerGlobalStatics.GameEvent gameEvent = GameManagerGlobalStatics.Events[GameManager.Instance.CurrentEvent];
+        _eventTitle.text = gameEvent.Title;
+        _eventInstructions.text = gameEvent.Text;
         StartCoroutine(DeliverNotification(notifDuration));
     }
 
     private void NotifyMicroEvent()
     {
-        _eventTitle.text = "Meteor shower";
-        _eventInstructions.text = "Dodge meteors";
+        GameManagerGlobalStatics.GameEvent gameEvent = GameManagerGlobalStatics.Events[GameManager.Instance.CurrentEvent];
+        _eventTitle.text = gameEvent.Title;
+        _eventInstructions.text = gameEvent.Text;
         StartCoroutine(DeliverNotification(notifDuration/2));
     }
 
@@ -192,8 +190,8 @@ public class HUDController : MonoBehaviour
     }
 
     private IEnumerator DeliverNotification (float duration = 2f) {
-        yield return StartCoroutine(FadeInText(duration / 2));
+        yield return StartCoroutine(FadeInText(duration * 4));
         yield return new WaitForSeconds(duration);
-        yield return StartCoroutine(FadeOutText(duration / 2));
+        yield return StartCoroutine(FadeOutText(duration * 2));
     }
 }
