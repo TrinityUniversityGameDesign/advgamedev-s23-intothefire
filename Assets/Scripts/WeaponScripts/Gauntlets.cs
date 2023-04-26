@@ -13,10 +13,13 @@ public class Gauntlets : Weapon
         description = "Punchy, Punchy, Go, Pow - Karate Joe";
         specialDuration = 18;
         specialTimer = 0;
+        specialKnockback = 70;
         lightDamage = 10;
         lightSpeed = 0.5f;
+        lightKnockback = 10;
         heavyDamage = 20;
         heavySpeed = 0.35f;
+        heavyKnockback = 20;
         canMove = true;
     }
     
