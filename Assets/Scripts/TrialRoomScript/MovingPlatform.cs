@@ -17,6 +17,9 @@ public class MovingPlatform : MonoBehaviour
 
     private Collider[] colliders;
 
+    [SerializeField]
+    private Transform children;
+
     void OnTriggerEnter(Collider target){
         // if(target.transform.tag == "Player"){
         //     target.transform.parent.transform.SetParent(transform);
@@ -25,16 +28,21 @@ public class MovingPlatform : MonoBehaviour
         //     target.transform.SetParent(transform);
         // }
         if(target.transform.tag == "Player" || target.transform.tag == "Object"){
-            target.transform.SetParent(transform);
+            target.transform.SetParent(children);
             // if(target.transform.tag == "Player"){
             //     Debug.Log("stay");
             // }
         }
+        
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        if(!children){
+            children = transform.parent.transform.Find("Children");
+            children.position = transform.position;
+        }
         transform.position = startNode.transform.position;
         nextNode = startNode.GetComponent<MovingPlatformNode>().nextNode;
         rb = GetComponent<Rigidbody>();
@@ -44,7 +52,8 @@ public class MovingPlatform : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        foreach(Transform child in transform){
+        children.position = transform.position;
+        foreach(Transform child in children){
             if(child.tag == "Player"){
                 //Debug.Log("player");
                 Collider col = child.GetComponent<Collider>();
@@ -79,9 +88,14 @@ public class MovingPlatform : MonoBehaviour
         // else if(target.transform.tag == "Object"){
         //     target.transform.SetParent(null);
         // }
-        if(target.transform.tag == "Player" || target.transform.tag == "Object"){
+        if(target.transform.tag == "Player"){
             target.transform.SetParent(null);
             //Debug.Log("left platform");
+        }
+        else if(target.transform.tag == "Object"){
+            if(target.GetComponent<Box>()){
+                target.transform.SetParent(target.GetComponent<Box>().hostRoom.transform);
+            }
         }
     }
 }

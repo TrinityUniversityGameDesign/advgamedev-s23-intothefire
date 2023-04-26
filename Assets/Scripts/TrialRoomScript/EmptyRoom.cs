@@ -24,7 +24,7 @@ public class EmptyRoom : MonoBehaviour
     }
 
     public void depsawnRoom(){
-        Destroy(room, 1f);
+        Destroy(room, 2f);
         state = EmptyRoomState.complete;
     }
 
