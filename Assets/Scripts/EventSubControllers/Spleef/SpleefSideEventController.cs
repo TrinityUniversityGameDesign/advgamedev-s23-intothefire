@@ -31,13 +31,8 @@ public class SpleefSideEventController : SideEventController_General
     ourY = gameObject.transform.position.y;
     ourZ = gameObject.transform.position.z;
 
-		//List<Transform> spawnPoints = new List<Transform>();
-		//spawnPoints.Add(P1SpawnPoint);
-		//spawnPoints.Add(P2SpawnPoint);
-		//spawnPoints.Add(P3SpawnPoint);
-		//spawnPoints.Add(P4SpawnPoint);
+		SpawnPlatforms();
 
-		//Teleporting players is handled by the event controller. 
 		for (int i = 0; i < 4; i++)
 		{
 		  if(i + 1 <= GameManager.Instance.players.Count)
@@ -45,9 +40,6 @@ public class SpleefSideEventController : SideEventController_General
         victors.Add(GameManager.Instance.players[i].GetComponent<PlayerData>().PlayerIndex);
 			}
 		}
-
-
-		SpawnPlatforms();
   }
 
   
