@@ -60,9 +60,10 @@ public class GameManager : MonoBehaviour
     [Tooltip("Internal state the game manager is currently in.")]
     private GameState _state = GameState.Lobby;
 
-
+    [HideInInspector]
     [Tooltip("Represents the number of seconds since the game has started.")]
     public float Timer = 0;
+    [HideInInspector]
     public float secondsOfGameTime = 0;
 
     private bool gameInProgress = false;
@@ -87,6 +88,7 @@ public class GameManager : MonoBehaviour
     float timeLeftInMicroEvent;
 
     float timeUntilNextSideEvent;
+    [HideInInspector]
     public float timeLeftInSideEvent;
 
     bool microEventInProgress = false;
