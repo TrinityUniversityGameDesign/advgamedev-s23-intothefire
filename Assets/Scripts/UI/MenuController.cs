@@ -18,7 +18,11 @@ public class MenuController : MonoBehaviour
         {
             SceneManager.LoadScene("Gabriel_Test_Scene 1", LoadSceneMode.Single);
         };
-        _root.Q<Button>("Start-Button").Focus();
+        _root.Q<Button>("Quit-Button").clicked += () =>
+        {
+            Application.Quit();
+        };
+        //_root.Q<Button>("Start-Button").Focus();
     }
 
     // Update is called once per frame
