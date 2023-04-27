@@ -510,6 +510,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("New Player Joined");
         Instance.LastJoinedPlayer = newPlayer.playerIndex;
         newPlayer.gameObject.name = ("Player" + newPlayer.playerIndex);
+        newPlayer.gameObject.GetComponent<PlayerData>().PlayerIndex = newPlayer.playerIndex;
         Instance.players.Add(newPlayer.gameObject);
 
         GameObject newUI = Instantiate(lobbyUI, GameObject.Find("PlayerLobby" + newPlayer.playerIndex + "UI").transform);
@@ -542,7 +543,7 @@ public class GameManager : MonoBehaviour
     public void AwardRandomItem(int victor)
     {
         Item newItem = Item.GrantNewRandomItem();
-        if(newItem != null || victor < 0 || victor >= Instance.players.Count) players[victor].GetComponent<JacksonCharacterMovement>().AddItem(newItem);
+        if(newItem != null && !(victor < 0 || victor > Instance.players.Count-1)) players[victor].GetComponent<JacksonCharacterMovement>().AddItem(newItem);
     }
 
     void TeleportPlayersToSpawnPoints()
