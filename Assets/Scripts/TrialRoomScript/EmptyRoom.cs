@@ -28,16 +28,11 @@ public class EmptyRoom : MonoBehaviour
         state = EmptyRoomState.complete;
     }
 
-    void OnTriggerEnter(Collider target){
-        if(target.transform.tag == "Player" && state == EmptyRoomState.empty){
-            if(roomPrefab){
-                room = Instantiate(roomPrefab, transform.position, transform.rotation);
-                room.GetComponent<TrialRoomScript>().hostEmpty = this;
-                state = EmptyRoomState.spawned;
-            }
-            
+    public void StartTrial() {
+        if(roomPrefab && state == EmptyRoomState.empty){
+            room = Instantiate(roomPrefab, transform.position, transform.rotation);
+            room.GetComponent<TrialRoomScript>().hostEmpty = this;
+            state = EmptyRoomState.spawned;
         }
     }
-
-
 }
