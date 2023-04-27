@@ -35,4 +35,10 @@ public class EmptyRoom : MonoBehaviour
             state = EmptyRoomState.spawned;
         }
     }
+
+    void OnTriggerEnter(Collider target){
+        if(target.transform.tag == "Player"){
+            StartTrial();
+        }
+    }
 }

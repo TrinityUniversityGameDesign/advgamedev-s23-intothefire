@@ -61,9 +61,6 @@ public class TrialRoomScript : MonoBehaviour
 		//Debug.Log("Room Closed");
 
 		//Spawn Startpad in appropriate room location
-
-		if(hostEmpty){StartTrial();}
-		else{PlaceStartPad();}
 	}
 	protected void SetDoorPresence(bool doorsEnabled)
 	{
@@ -71,17 +68,18 @@ public class TrialRoomScript : MonoBehaviour
 
 		foreach (Transform childObject in doors)
 		{
-			MeshRenderer meshRenderer = childObject.GetComponent<MeshRenderer>();
-			if (meshRenderer != null)
-			{
-				meshRenderer.enabled = doorsEnabled;
-			}
+			childObject.gameObject.SetActive(doorsEnabled);
+			// MeshRenderer meshRenderer = childObject.GetComponent<MeshRenderer>();
+			// if (meshRenderer != null)
+			// {
+			// 	meshRenderer.enabled = doorsEnabled;
+			// }
 
-			MeshCollider boxCollider = childObject.GetComponent<MeshCollider>();
-			if (boxCollider != null)
-			{
-				boxCollider.enabled = doorsEnabled;
-			}
+			// MeshCollider boxCollider = childObject.GetComponent<MeshCollider>();
+			// if (boxCollider != null)
+			// {
+			// 	boxCollider.enabled = doorsEnabled;
+			// }
 		}
 	}
 	public virtual void PlaceStartPad()
