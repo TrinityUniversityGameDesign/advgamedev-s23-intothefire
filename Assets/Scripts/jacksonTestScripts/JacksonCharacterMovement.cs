@@ -655,19 +655,13 @@ public class JacksonCharacterMovement : MonoBehaviour
         Debug.Log("Starting player: " + gameObject.name);
         state = PlayerState.idle;
         AddItem(new DamageItem());
-        Debug.Log("Items added");
         AddItem(new KnockbackResistanceItem());
-        Debug.Log("Items added");
         AddItem(new KnockbackItem());
-        Debug.Log("Items added");
         AddItem(new DamageOverTimeItem());
-        Debug.Log("Items added");
         AddItem(new AttackSpeedItem());
-        Debug.Log("Items added");
         AddItem(new ArmorItem());
-        Debug.Log("Items last added");
-        Debug.Log("Before HUD");
         _hud.InitializePlayerHUD(icon, health, maxHealth, GetInventory(), GetInventoryStats());
+        _hud.ToggleMinimap();
     }
     public void MovementManagement(float horizontal, float vertical)
     {

@@ -132,7 +132,11 @@
 }
 
 .place-icon {
-    flex-grow: 0;
-    width: 25%;
+    flex-grow: 1;
     background-image: url('project://database/Packages/com.unity.collab-proxy/Editor/PlasticSCM/Assets/Images/d_colorbuhoshechristmas.png?fileID=2800000&guid=ec03f79379868c642b48ae5ddc821b6d&type=3#d_colorbuhoshechristmas');
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.place-items {
+    flex-grow: 2;
 }
