@@ -11,7 +11,7 @@ public class SpleefPlatform : MonoBehaviour
 
 	private void Start()
 	{
-		thisRenderer = gameObject.GetComponent<MeshRenderer>();
+		thisRenderer = gameObject.transform.GetChild(0).GetComponent<MeshRenderer>();
 	}
 
 
@@ -23,7 +23,7 @@ public class SpleefPlatform : MonoBehaviour
 		}
 	}
 
-	float duration = 1.5f;
+	float duration = 0.75f;
 	private float time = 0;
 
 	void Update()
