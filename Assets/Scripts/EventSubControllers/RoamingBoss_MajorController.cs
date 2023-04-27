@@ -28,7 +28,7 @@ public class RoamingBoss_MajorController : MonoBehaviour
         NavMeshPath path = new NavMeshPath();
         if (agent.CalculatePath(randomPoint, path))
         {
-            animator.SetBool("IsMoving", true); // set IsMoving to true
+            animator.SetBool("IsWalking", true); // set IsMoving to true
             // Set the NavMeshAgent destination to the random point
             agent.SetPath(path);
             StartCoroutine(WaitForDestination()); // wait for the agent to reach the destination
@@ -47,7 +47,7 @@ public class RoamingBoss_MajorController : MonoBehaviour
         {
             yield return null;
         }
-        animator.SetBool("IsMoving", false); // set IsMoving to false
+        animator.SetBool("IsWalking", false); // set IsMoving to false
         MoveToRandomPoint(); // move to another random point
     }
 

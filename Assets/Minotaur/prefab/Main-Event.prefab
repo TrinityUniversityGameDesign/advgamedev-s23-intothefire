@@ -1209,7 +1209,6 @@ GameObject:
   - component: {fileID: 3852045324045704718}
   - component: {fileID: 5625241788369997834}
   - component: {fileID: 8897007547987805341}
-  - component: {fileID: 405361906221261135}
   m_Layer: 0
   m_Name: Minotaur
   m_TagString: Untagged
@@ -1270,7 +1269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bea8b8d212dceb34d83d12dd092d4f3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 15
 --- !u!195 &8897007547987805341
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1293,18 +1292,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &405361906221261135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3852045324045704723}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2cc9684f26cfac4b8578ed782e4c047, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3852045324053444489
 GameObject:
   m_ObjectHideFlags: 0
