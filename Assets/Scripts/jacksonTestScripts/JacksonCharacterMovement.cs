@@ -27,7 +27,10 @@ public class JacksonCharacterMovement : MonoBehaviour
     float gravMult = 1f;
     private LineRenderer lr;
     GameObject enemy = null;
-    List<Item> inventory = new List<Item>();
+    
+    public List<Item> inventory = new List<Item>();
+    
+    
     List<Item> Moveinventory = new List<Item>();
     List<Item> Jumpinventory = new List<Item>();
     List<Item> Lightinventory = new List<Item>();
@@ -35,7 +38,8 @@ public class JacksonCharacterMovement : MonoBehaviour
     List<Item> Specialinventory = new List<Item>();
     List<Item> Cooldowninventory = new List<Item>();
 
-    Animation anim;
+    Animator anim;
+    string attackAnim = "";
     float gravity = 1f;
     float jumpPress = 0f;
     bool jumpHold = false;
@@ -55,6 +59,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     float burnTime = 0f;
     Weapon weapon = new FryingPan();
     GameObject lastDam;
+    float deadTick = 0;
 
 
     //Here's a list of all the stats a player can obtain / items can modify:
@@ -64,7 +69,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     int damTime = 0;
     float maxSpeed = 20f;
     float damage = 0f;
-    float attackSpeed = 0f;
+    float attackSpeed = 1f;
     float critRate = 0.1f;
     float armor = 0f;
     float lifesteal = 0f;
@@ -97,12 +102,10 @@ public class JacksonCharacterMovement : MonoBehaviour
     
     float timer = 0;
     GameObject player;
-    
-    // UI Variables
-    public Sprite icon;
+    //private QuickView ////_quickView;
+    //private InventoryView _inventoryView;
+    public Sprite Icon { get; private set; }
     private Camera _minicam;
-    private HUDController _hud;
-    
     private void Awake()
     {
         GameManager.Instance?.StartupNewGameBegin.AddListener(StartPlayer);
@@ -133,22 +136,15 @@ public class JacksonCharacterMovement : MonoBehaviour
 
         cam.transform.parent = null;
         cc = gameObject.GetComponent<CharacterController>();
-
-        // Other variables
+        ////_quickView = transform.GetComponentInChildren<QuickView>();
+        //_inventoryView = transform.GetComponentInChildren<InventoryView>();
+        _minicam = GetComponentInChildren<Camera>();
+        Icon = Resources.Load<Sprite>("Sprites/test-icon");
         sword = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
-        
         //anim = GetComponent<Animation>();
         lr = GetComponent<LineRenderer>();
         
         weapon.AssignPlayer(this.gameObject);
-        
-        // UI Controllers
-        _hud = GetComponentInChildren<HUDController>();
-        // _minicam = GetComponentInChildren<Camera>();
-        _minicam = GameObject.FindGameObjectWithTag("MinimapCamera").GetComponent<Camera>();
-        Debug.Log(_minicam.name);
-        // UI Variables
-        icon = Resources.Load<Sprite>("Sprites/gun");
     }
 
     private void UpdateMinimap()
@@ -241,11 +237,12 @@ public class JacksonCharacterMovement : MonoBehaviour
     }
     public void ToggleInventory(InputAction.CallbackContext ctx)
     {
-        if (ctx.started) _hud.ToggleInventory();
+        //if (ctx.started) //_inventoryView.ToggleUI();
     }
     // Update is called once per frame
     void Update()
     {
+        UpdateHealthBar();
         //jumpHold = inputs.Jump.ReadValue<float>() > 0.1f;
         // lightHold = inputs.LightAttack.ReadValue<float>() > 0.1f;
         //heavyHold = inputs.HeavyAttack.ReadValue<float>() > 0.1f;
@@ -274,7 +271,7 @@ public class JacksonCharacterMovement : MonoBehaviour
             dodgePress = 3;
         }
         */
-        // UpdateMinimap();
+        UpdateMinimap();
 
     }
 
@@ -284,6 +281,10 @@ public class JacksonCharacterMovement : MonoBehaviour
         //Debug.Log(ul);
         //Debug.Log(health);
         grounded = cc.isGrounded;
+        if (anim != null)
+        {
+            anim.SetBool("isGrounded", grounded);
+        }
         h = ul.x;
         v = ul.y;
         if(damTime == 0)
@@ -298,11 +299,14 @@ public class JacksonCharacterMovement : MonoBehaviour
 
         if(Magnitude() < 1f)
         {
-            //anim.Play("idle");
+            if (anim != null)
+            {
+                anim.SetBool("isRunning", false);
+            }
         }
         else
         {
-            //anim.Play("run");
+            anim.SetBool("isRunning", true);
         }
         if(velocity.y > 0)
         {
@@ -357,6 +361,20 @@ public class JacksonCharacterMovement : MonoBehaviour
         {
             repeatTimer++;
         }
+        if (transform.position.y < -40f || (state == PlayerState.dead && deadTick > 40))
+        {
+            Debug.Log("player is reset");
+            health = maxHealth;
+            velocity = Vector3.zero;
+            deadTick = 0;
+            if(currSword != null)
+            {
+                Destroy(currSword);
+            }
+            state = PlayerState.idle;
+            GameManager.Instance?.TeleportPlayerToSpawn(gameObject);
+        }
+        
         //Debug.Log("grounded: " + grounded);
         switch (state)
         {
@@ -381,6 +399,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                         state = PlayerState.dead;
                     }
                     velocity = velocity + (new Vector3(0f, -1f, 0f) * (gravMult * gravity));
+                   
                     //rb.AddForce(new Vector3(0f, -1f, 0f) * (gravMult*gravity));
                     MovementManagement(h, v);
                     if (lightPress > 0)
@@ -402,13 +421,26 @@ public class JacksonCharacterMovement : MonoBehaviour
                         {
                             currSword.GetComponent<DamageScript>().DoLifesteal(this.gameObject);
                         }
-                        
+                        anim.SetTrigger("lightAttack");
+                        Transform [] plz = GetComponentsInChildren<Transform>();
+                        foreach(Transform t in plz)
+                        {
+                            if(t.name == "SwordHand")
+                            {
+                                currSword.transform.parent = t;
+                            }
+                        }
+                        attackAnim = "Light Attack";
+                        //Debug.Log("swords parent is: " + currSword.transform.parent.name);
                         //currSword.transform.rotation = Quaternion.AngleAxis(90f, Vector3.right) * transform.rotation;// * Quaternion.Euler(0f, 0f, 90f);
-                        timer = 30f;
+                        timer = 0f;
                         // currSword.transform.localRotation = transform.rotation * Quaternion.Euler(0f, 0f, 90f);
-                        targetRot = currSword.transform.localRotation * Quaternion.AngleAxis(-45f, Vector3.up); //* currSword.transform.localRotation;
-                        currSword.transform.localRotation = currSword.transform.localRotation * Quaternion.AngleAxis(45f, Vector3.up); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);
-                        lerpTime = weapon.lightSpeed + attackSpeed;
+                        //targetRot = currSword.transform.localRotation * Quaternion.AngleAxis(-45f, Vector3.up); //* currSword.transform.localRotation;
+                        //currSword.transform.localRotation = currSword.transform.localRotation * Quaternion.AngleAxis(45f, Vector3.up); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);
+                        currSword.transform.rotation = currSword.transform.parent.rotation;
+                        anim.SetFloat("Speed", attackSpeed);
+                        currSword.transform.localPosition = Vector3.zero;
+                        currSword.transform.rotation = Quaternion.AngleAxis(-45f, Vector3.right) * currSword.transform.rotation;
                     }
                     if(heavyPress > 0)
                     {
@@ -430,15 +462,26 @@ public class JacksonCharacterMovement : MonoBehaviour
                         {
                             currSword.GetComponent<DamageScript>().DoLifesteal(this.gameObject);
                         }
+                        anim.SetTrigger("heavyAttack");
+                        attackAnim = "Heavy Attack";
+                        Transform[] plz = GetComponentsInChildren<Transform>();
+                        foreach (Transform t in plz)
+                        {
+                            if (t.name == "SwordHand")
+                            {
+                                currSword.transform.parent = t;
+                            }
+                        }
                         //currSword.transform.rotation = Quaternion.AngleAxis(90f, Vector3.right) * transform.rotation;// * Quaternion.Euler(0f, 0f, 90f);
-                        timer = 30f;
+                        timer = 0f;
                         // currSword.transform.localRotation = transform.rotation * Quaternion.Euler(0f, 0f, 90f);
                         targetRot = currSword.transform.localRotation;  //* currSword.transform.localRotation;
-                        currSword.transform.localRotation = currSword.transform.localRotation * Quaternion.AngleAxis(-90f, Vector3.right); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);                       
+                        //currSword.transform.localRotation = currSword.transform.localRotation * Quaternion.AngleAxis(-90f, Vector3.right); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);                       
                            // GameObject bullet = Instantiate(Resources.Load("Prefabs/IceBullet") as GameObject, transform.position + transform.forward * 2f, transform.rotation);
                             //bullet.GetComponent<Rigidbody>().velocity = transform.forward * 15f;
+                       currSword.transform.localPosition = Vector3.zero;
                        
-                        lerpTime = weapon.heavySpeed + attackSpeed;
+                        anim.SetFloat("Speed", attackSpeed);
                     }
                     if(jumpPress > 0 && currJumps >0)
                     {
@@ -454,6 +497,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                             velocity = new Vector3(velocity.x, 0f, velocity.z);
                         }
                         velocity = velocity + new Vector3(0f, jumpHeight, 0f);
+                        anim.SetTrigger("jump");
                         //rb.AddRelativeForce(new Vector3(0, jumpHeight, 0f), ForceMode.VelocityChange);
                     }
                     else if (jumpPress > 0 && currJumps == 0)
@@ -538,22 +582,23 @@ public class JacksonCharacterMovement : MonoBehaviour
                     velocity = velocity + (new Vector3(0f, -1f, 0f) * gravity);
 
                     //combat shit
-                    currSword.transform.localRotation = Quaternion.Lerp(currSword.transform.localRotation, targetRot, lerpTime) ;
-                    if(currSword.transform.localRotation == targetRot || timer < 0)
+                    //currSword.transform.localRotation = Quaternion.Lerp(currSword.transform.localRotation, targetRot, lerpTime) ;
+                    
+                    if (!anim.GetCurrentAnimatorStateInfo(0).IsName(attackAnim) && timer > 30)
                     {
                         Destroy(currSword);
                         if (h != 0f || v != 0f)
                         {
-                            velocity = new Vector3(oldSpeed.x, velocity.y, oldSpeed.z);
+                            //velocity = new Vector3(oldSpeed.x, velocity.y, oldSpeed.z);
+                            MovementManagement(h, v);
                         }
-                        MovementManagement(h, v);
                         oldSpeed = Vector3.zero;
                         airStrike = false;
                         state = PlayerState.idle;
                     }
                     else
                     {
-                        timer--;
+                        timer++;
                     }
                     //Movement shit
                     
@@ -562,7 +607,7 @@ public class JacksonCharacterMovement : MonoBehaviour
             case PlayerState.special:
                 {
                     weapon.AssignHitbox(currSword);
-                    Debug.Log("currently in the special state");
+                    //Debug.Log("currently in the special state");
                     bool ahhh = weapon.SpecialAttack(h,v);
                     if (ahhh)
                     {
@@ -614,8 +659,9 @@ public class JacksonCharacterMovement : MonoBehaviour
                 break;
             case PlayerState.dead:
                 {
-                    gravity = -30;
-                    velocity = velocity + (new Vector3(0f, -1f, 0f) * gravity);
+                    //gravity = -30;
+                    velocity = velocity + (new Vector3(0f, -1f, 0f) * -30f);
+                    deadTick++;
                     //rb.AddForce(new Vector3(0f, -1f, 0f) * gravity);
                 }
                 break;
@@ -652,22 +698,16 @@ public class JacksonCharacterMovement : MonoBehaviour
     }
     public void StartPlayer()
     {
-        Debug.Log("Starting player: " + gameObject.name);
         state = PlayerState.idle;
         AddItem(new DamageItem());
-        Debug.Log("Items added");
         AddItem(new KnockbackResistanceItem());
-        Debug.Log("Items added");
         AddItem(new KnockbackItem());
-        Debug.Log("Items added");
         AddItem(new DamageOverTimeItem());
-        Debug.Log("Items added");
         AddItem(new AttackSpeedItem());
-        Debug.Log("Items added");
         AddItem(new ArmorItem());
-        Debug.Log("Items last added");
-        Debug.Log("Before HUD");
-        _hud.InitializePlayerHUD(icon, health, maxHealth, GetInventory(), GetInventoryStats());
+        anim = GetComponentInChildren<Animator>();
+        //_quickView.ToggleUI();
+        //_quickView.LoadUI();
     }
     public void MovementManagement(float horizontal, float vertical)
     {
@@ -692,11 +732,11 @@ public class JacksonCharacterMovement : MonoBehaviour
                 {
                     velocity = Magnitude() * transform.forward + new Vector3(0f, velocity.y, 0f); ;
                     //rb.AddRelativeForce(new Vector3(0, 0, 2f), ForceMode.VelocityChange);
-                    velocity = velocity + (transform.forward.normalized * 2f);
+                    velocity = velocity + (transform.forward.normalized * 1f);
                 }
                 else if (Magnitude() >= maxSpeed)
                 {
-                    velocity = Magnitude() * transform.forward + new Vector3(0f, velocity.y, 0f);
+                    velocity = maxSpeed * .95f * transform.forward + new Vector3(0f, velocity.y, 0f);
                 }
             }
             else
@@ -704,7 +744,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                 if(Magnitude() < maxSpeed)
                 {
                     //rb.AddRelativeForce(new Vector3(0, 0, 2f), ForceMode.VelocityChange);
-                    velocity = velocity + (transform.forward.normalized * 2f);
+                    velocity = velocity + (transform.forward.normalized * 1f);
                 }
                 else
                 {
@@ -771,7 +811,7 @@ public class JacksonCharacterMovement : MonoBehaviour
 
         // Create a rotation that is an increment closer to the target rotation from the player's rotation.
         //Quaternion newRotation = Quaternion.Lerp(GetComponent<Rigidbody>().rotation, targetRotation, turnSmoothing * Time.deltaTime);
-        Quaternion newRotation = Quaternion.Lerp(transform.rotation, targetRotation, 1);
+        Quaternion newRotation = Quaternion.Lerp(transform.rotation, targetRotation, 0.6f);
 
         // Change the players rotation to t$$anonymous$$s new rotation.
         
@@ -839,12 +879,13 @@ public class JacksonCharacterMovement : MonoBehaviour
         state = PlayerState.hitstun;
         transform.LookAt(new Vector3(other.transform.position.x, transform.position.y - 1f, other.transform.position.z));
         stunValue = kb;
-        kb *= -20;
+        kb *= -1;
         grounded = false;
         transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
         stunTimer = 10f;
         velocity = kb * transform.forward;
         Destroy(currSword);
+        UpdateInventoryUI();
     }
 
     public List<Item> GetInventory()
@@ -854,19 +895,17 @@ public class JacksonCharacterMovement : MonoBehaviour
 
     public void AddItem(Item i)
     {
-        Debug.Log("Attempt to add item");
-        i.AssignPlayer(gameObject);
-        Debug.Log("Assigned player as: " + gameObject);
+        i.AssignPlayer(this.gameObject);
         i.ItemPickup();
-        Debug.Log("Pickup confirmed");
         inventory.Add(i);
-        Debug.Log("Added to inventory: " + inventory);
         if (i.ItemLight()) { Lightinventory.Add(i); }
         if (i.ItemHeavy()) { Heavyinventory.Add(i); }
         if (i.ItemJump()) { Jumpinventory.Add(i); }
         if (i.ItemMove()) { Moveinventory.Add(i); }
         if (i.ItemCooldown()) { Cooldowninventory.Add(i); }
         if (i.ItemSpecial()) { Specialinventory.Add(i); }
+        UpdateInventoryUI();
+
     }
     public void AssignWeapon(Weapon w)
     {
@@ -949,8 +988,8 @@ public class JacksonCharacterMovement : MonoBehaviour
     public List<(string, float)> GetInventoryStats()
     {
         List<(string, float)> temp = new List<(string, float)>();
-        //temp.Add(("Max Health", maxHealth));
-        //temp.Add(("Current Health", health));
+        temp.Add(("Max Health", maxHealth));
+        temp.Add(("Current Health", health));
         temp.Add(("Max Speed", maxSpeed));
         temp.Add(("Damage", damage));
         temp.Add(("Attack Speed", attackSpeed));
@@ -960,7 +999,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         temp.Add(("Lifegain", lifegain));
         temp.Add(("Damage Over Time", damageOverTime));
         temp.Add(("Knockback", knockback));
-        temp.Add(("Knockback Resist", KnockbackResistance));
+        temp.Add(("Knockback Resistance", KnockbackResistance));
         temp.Add(("Max Air Specials", maxSpecials));
         temp.Add(("Max Jumps", maxJumps));
         temp.Add(("Jump Height", jumpHeight));
@@ -983,6 +1022,17 @@ public class JacksonCharacterMovement : MonoBehaviour
     public float GetMaxJumps() { return maxJumps; }
     public float GetJumpHeight() { return jumpHeight; }
 
+    private void UpdateInventoryUI()
+    {
+        //_quickView.UpdateUI();
+        //_inventoryView.UpdateUI();
+    }
+
+    private void UpdateHealthBar()
+    {
+        //_quickView.UpdateHealth();
+    }
+
     private void DisableInvincible()
     {
         invincible = false;
@@ -992,8 +1042,13 @@ public class JacksonCharacterMovement : MonoBehaviour
         invincible = true;
     }
 
-    private void ToggleInventory()
+    bool AnimatorIsPlaying()
     {
-        _hud.ToggleInventory();
+        return anim.GetCurrentAnimatorStateInfo(0).length >
+               anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
+    }
+    bool AnimatorIsPlaying(string stateName)
+    {
+        return AnimatorIsPlaying() && anim.GetCurrentAnimatorStateInfo(0).IsName(stateName);
     }
 }
