@@ -16,13 +16,13 @@ public class CameraCylinder : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        transform.rotation = rot;
+        //transform.rotation = rot;
     }
 
     private void OnTriggerExit(Collider other)
     {
         //Debug.Log("cylinder exit");
-        if(other.gameObject.tag == "Player" && noGo != other.gameObject)
+        if(other.gameObject.tag == "Player" && noGo != other.gameObject && other.gameObject != null)
         {
 
             cam.RemoveTarget(other.gameObject);

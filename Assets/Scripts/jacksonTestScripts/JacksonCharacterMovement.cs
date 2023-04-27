@@ -437,6 +437,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                         // currSword.transform.localRotation = transform.rotation * Quaternion.Euler(0f, 0f, 90f);
                         //targetRot = currSword.transform.localRotation * Quaternion.AngleAxis(-45f, Vector3.up); //* currSword.transform.localRotation;
                         //currSword.transform.localRotation = currSword.transform.localRotation * Quaternion.AngleAxis(45f, Vector3.up); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);
+                        currSword.transform.rotation = currSword.transform.parent.rotation;
                         anim.SetFloat("Speed", attackSpeed);
                         currSword.transform.localPosition = Vector3.zero;
                         currSword.transform.rotation = Quaternion.AngleAxis(-45f, Vector3.right) * currSword.transform.rotation;
