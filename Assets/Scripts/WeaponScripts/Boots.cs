@@ -14,10 +14,13 @@ public class Boots : Weapon
         description = "Ground Pfound";
         specialDuration = 10000;
         specialTimer = 0;
+        specialKnockback = 25;
         lightDamage = 15;
         lightSpeed = 0.35f;
+        lightKnockback = 15;
         heavyDamage = 30;
         heavySpeed = 0.25f;
+        heavyKnockback = 25;
         canMove = true;
     }
     
