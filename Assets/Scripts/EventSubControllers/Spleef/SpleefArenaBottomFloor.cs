@@ -14,6 +14,7 @@ public class SpleefArenaBottomFloor : MonoBehaviour
 			if(other.transform.tag == "Player")
 			{
 				other.transform.position = new Vector3(other.transform.position.x, gameObject.transform.position.y + 81, other.transform.position.z);
+				controller.removeVictor(other.gameObject);
 			}
 		
 	}

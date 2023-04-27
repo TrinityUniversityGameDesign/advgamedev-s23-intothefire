@@ -27,18 +27,18 @@ public class SpleefSideEventController : SideEventController_General
   // Start is called before the first frame update
   void Start()
   {
+
+    victors = new List<int>(GameManager.Instance.players.Count);
+
     ourX = gameObject.transform.position.x;
     ourY = gameObject.transform.position.y;
     ourZ = gameObject.transform.position.z;
 
 		SpawnPlatforms();
 
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < GameManager.Instance.players.Count; i++)
 		{
-		  if(i + 1 <= GameManager.Instance.players.Count)
-			{
         victors.Add(GameManager.Instance.players[i].GetComponent<PlayerData>().PlayerIndex);
-			}
 		}
   }
 

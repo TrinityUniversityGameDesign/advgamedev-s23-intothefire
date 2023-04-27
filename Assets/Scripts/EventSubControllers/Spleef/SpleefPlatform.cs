@@ -23,7 +23,7 @@ public class SpleefPlatform : MonoBehaviour
 		}
 	}
 
-	float duration = 1.5f;
+	float duration = 0.75f;
 	private float time = 0;
 
 	void Update()
