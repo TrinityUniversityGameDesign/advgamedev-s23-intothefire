@@ -1270,12 +1270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bea8b8d212dceb34d83d12dd092d4f3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patrolPoints: []
-  moveSpeed: 0
-  attackRadius: 0
-  roamingBossPrefab: {fileID: 3852045324045704723}
-  maxAngle: 45
-  idleTime: 10
+  speed: 3
 --- !u!195 &8897007547987805341
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1305,12 +1300,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3852045324045704723}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2cc9684f26cfac4b8578ed782e4c047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goal: {fileID: 0}
 --- !u!1 &3852045324053444489
 GameObject:
   m_ObjectHideFlags: 0

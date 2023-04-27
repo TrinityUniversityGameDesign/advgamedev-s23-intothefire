@@ -5,66 +5,70 @@ using UnityEngine.AI;
 
 public class RoamingBoss_MajorController : MonoBehaviour
 {
-    /*
-    public float speed;
-    public float range; // the range within which to choose a random point
-    public float angularSpeed;
-    public GameObject roamingBossPrefab;
-    public GameObject destination;
+    private NavMeshAgent agent;
+    private Animator animator;
+    public float speed = 3f;
 
-    private NavMeshAgent navAgent; // reference to the NavMeshAgent component
-    Animator _anim;
-    //GameObject _damager;
-    GameObject _navSphere;
-
-    //List<float> damageTracker;
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        navAgent = GetComponent<NavMeshAgent>(); // get reference to the NavMeshAgent component
-        navAgent.speed = speed;
-        navAgent.angularSpeed = angularSpeed;
-        _navSphere = transform.GetChild(0).gameObject;
-        _navSphere.transform.parent = null;
-        SetRandomDestination(); // set initial random destination
-
-        
-        _anim = roamingBossPrefab.GetComponent<Animator>();
-        //_damager = transform.GetChild(1).gameObject;
-        //damageTracker = new List<float>(GameManager.Instance.players.Count) { 0 };
-
+        // Get reference to NavMeshAgent component
+        agent = GetComponent<NavMeshAgent>();
+        agent.speed = speed;
+        animator = GetComponent<Animator>();
+        // Start moving to a random point on the NavMesh
+        MoveToRandomPoint();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void MoveToRandomPoint()
     {
-        // if the NavMeshAgent has reached its destination, set a new random destination
-        if (navAgent.remainingDistance <= navAgent.stoppingDistance)
+        // Get a random point on the NavMesh surface
+        Vector3 randomPoint = RandomNavMeshLocation(10000f);
+
+        // Check if the random point is reachable
+        NavMeshPath path = new NavMeshPath();
+        if (agent.CalculatePath(randomPoint, path))
         {
-            SetRandomDestination();
+            animator.SetBool("IsMoving", true); // set IsMoving to true
+            // Set the NavMeshAgent destination to the random point
+            agent.SetPath(path);
+            StartCoroutine(WaitForDestination()); // wait for the agent to reach the destination
+        }
+        else
+        {
+            // If the random point is not reachable, try again
+            MoveToRandomPoint();
         }
     }
 
-    // sets a random destination within the range
-    void SetRandomDestination()
+    private IEnumerator WaitForDestination()
     {
-        // choose a random point within the range
-        Vector3 randomPoint = transform.position + Random.insideUnitSphere * range;
+        // Wait for the agent to reach the destination
+        while (agent.pathPending || agent.remainingDistance > 0.1f)
+        {
+            yield return null;
+        }
+        animator.SetBool("IsMoving", false); // set IsMoving to false
+        MoveToRandomPoint(); // move to another random point
+    }
 
-        // find the nearest point on the NavMesh to the random point
+    private Vector3 RandomNavMeshLocation(float radius)
+    {
+        // Get a random point inside a circle of the given radius
+        Vector3 randomDirection = Random.insideUnitSphere * radius;
+        randomDirection += transform.position;
+
+        // Project the point onto the NavMesh surface
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomPoint, out hit, range, NavMesh.AllAreas))
-        {
-            // set the NavMeshAgent's destination to the nearest point on the NavMesh
-            navAgent.destination = destination.transform.position;
-            navAgent.SetDestination(hit.position);
-            _navSphere.transform.position = hit.position;
-            _anim.SetBool("IsWalking", false);
-        }
+        NavMesh.SamplePosition(randomDirection, out hit, radius, NavMesh.AllAreas);
+
+        Debug.Log("Hit Position for Minotaur" + hit.position);
+        return hit.position;
     }
 
-    */
+
+
+
+    /*
     public List<Transform> patrolPoints;
     public float moveSpeed;
     public float attackRadius;
@@ -248,7 +252,7 @@ private bool IsHitPointBehindWall(Vector3 hitPoint)
     }
 
 
-
+*/
 
 }
 

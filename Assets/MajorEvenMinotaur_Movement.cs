@@ -5,27 +5,23 @@ using UnityEngine.AI;
 
 public class MajorEvenMinotaur_Movement : MonoBehaviour
 {
-    // Reference to the destination point where the object will move
-    [SerializeField] Transform goal;
-
     // Reference to the NavMeshAgent component
-    UnityEngine.AI.NavMeshAgent agent;
+    NavMeshAgent agent;
 
     void Awake()
     {
         // Get a reference to the NavMeshAgent component
-        agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
     }
 
     // Use this for initialization
     void Start()
     {
-        // Find the destination point inside the scene
-        goal = GameObject.FindGameObjectWithTag("Destination").transform;
-        Debug.Log("Found Destination: " + goal.position);
-
-        // Set the destination of the NavMeshAgent to the goal position
-        agent.destination = goal.position;
+        // Generate a random position on the NavMesh surface
+        NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 10f, NavMesh.AllAreas);
+        Debug.Log("SamplePositions: " + hit.position);
+        // Set the destination of the NavMeshAgent to the random position
+        agent.SetDestination(hit.position);
     }
 
     // Update is called once per frame
