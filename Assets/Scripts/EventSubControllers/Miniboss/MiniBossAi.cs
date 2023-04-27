@@ -179,19 +179,18 @@ public class MiniBossAi : MonoBehaviour
         }
     }
 
-    public int GetWinner()
+  public int GetWinner()
+  {
+    float maxVal = 0;
+    int player = 0;
+    for (int i = 0; i < damageTracker.Count; i++)
     {
-        float maxVal = 0;
-        int player = 0;
-        for(int i = 0; i < damageTracker.Count; i++)
-        {
-            if(damageTracker[i] > maxVal)
-            {
-                maxVal = damageTracker[i];
-                player = i;
-            }
-        }
-
-        return player;
+      if (damageTracker[i] > maxVal)
+      {
+        maxVal = damageTracker[i];
+        player = i;
+      }
+    }
+    return player;
     }
 }
