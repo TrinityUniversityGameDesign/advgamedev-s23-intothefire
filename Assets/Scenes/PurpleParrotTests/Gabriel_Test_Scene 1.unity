@@ -109,8 +109,8 @@ NavMeshSettings:
     agentRadius: 0.5
     agentHeight: 2
     agentSlope: 45
-    agentClimb: 0.4
-    ledgeDropHeight: 0
+    agentClimb: 0.38
+    ledgeDropHeight: 1.02
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
@@ -274,6 +274,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3430062973120331862, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5147701913855847209, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7466906755869850125, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
