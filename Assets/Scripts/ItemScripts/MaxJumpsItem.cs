@@ -10,14 +10,17 @@ public class MaxJumpsItem : Item
     public MaxJumpsItem()
     {
         value = 1;
-        icon = Resources.Load("Textures/ItemIcons/floor") as Sprite;
+        
+        Texture2D texture = Resources.Load("Textures/ItemIcons/floor") as Texture2D;
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "Invisible Floor";
         description = "you find another invisible floor so you can jump " + value as string + "more times";
     }
     public MaxJumpsItem(float val)
     {
         value = val;
-        icon = Resources.Load("Textures/ItemIcons/floor") as Sprite;
+        Texture2D texture = Resources.Load("Textures/ItemIcons/floor") as Texture2D;
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "Invisible Floor";
         description = "you find another invisible floor so you can jump " + value as string + "more times";
     }

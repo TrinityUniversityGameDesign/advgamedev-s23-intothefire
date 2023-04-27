@@ -5,9 +5,17 @@ using UnityEngine;
 public class DamageScript : MonoBehaviour
 {
     // Start is called before the first frame update
+
+    [SerializeField]
     float damage = 0f;
+
+    [SerializeField]
     float dot = 0f;
+
+    [SerializeField]
     float knockback = 5f;
+
+    [SerializeField]
     bool lifesteal = false;
     float lifestealVal = 0;
     float health = 5f;
@@ -16,7 +24,7 @@ public class DamageScript : MonoBehaviour
     float currBurn;
     float burnTime = 0;
     float lifegain = 0;
-    bool isKnockback = false;
+    bool canBeKnockedback = false;
     float knockbackResist = 0;
     float armor = 0;
     GameObject parent;
@@ -152,7 +160,7 @@ public class DamageScript : MonoBehaviour
         //grounded = false;
         transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
         //stunTimer = 10f;
-        if (isKnockback)
+        if (canBeKnockedback)
         {
             float kb = temp.GetKnockback() - knockbackResist;
             if (kb < 1) { kb = 1f; }
@@ -167,7 +175,7 @@ public class DamageScript : MonoBehaviour
     }
     public void TakeKnockback(bool b)
     {
-        isKnockback = b;
+        canBeKnockedback = b;
     }
     public void SetLifegain(float l)
     {

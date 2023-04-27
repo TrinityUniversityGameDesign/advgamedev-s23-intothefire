@@ -27,7 +27,10 @@ public class JacksonCharacterMovement : MonoBehaviour
     float gravMult = 1f;
     private LineRenderer lr;
     GameObject enemy = null;
-    List<Item> inventory = new List<Item>();
+    
+    public List<Item> inventory = new List<Item>();
+    
+    
     List<Item> Moveinventory = new List<Item>();
     List<Item> Jumpinventory = new List<Item>();
     List<Item> Lightinventory = new List<Item>();
@@ -35,7 +38,8 @@ public class JacksonCharacterMovement : MonoBehaviour
     List<Item> Specialinventory = new List<Item>();
     List<Item> Cooldowninventory = new List<Item>();
 
-    Animation anim;
+    Animator anim;
+    string attackAnim = "";
     float gravity = 1f;
     float jumpPress = 0f;
     bool jumpHold = false;
@@ -55,6 +59,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     float burnTime = 0f;
     Weapon weapon = new FryingPan();
     GameObject lastDam;
+    float deadTick = 0;
 
 
     //Here's a list of all the stats a player can obtain / items can modify:
@@ -64,7 +69,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     int damTime = 0;
     float maxSpeed = 20f;
     float damage = 0f;
-    float attackSpeed = 0f;
+    float attackSpeed = 1f;
     float critRate = 0.1f;
     float armor = 0f;
     float lifesteal = 0f;
@@ -79,6 +84,8 @@ public class JacksonCharacterMovement : MonoBehaviour
     float currSpecials = 1f;
     float jumpHeight = 20f;
     float repeatTimer = 0f;
+
+    bool invincible = false;
 
 
     Vector3 oldSpeed = Vector3.zero;
@@ -95,13 +102,15 @@ public class JacksonCharacterMovement : MonoBehaviour
     
     float timer = 0;
     GameObject player;
-    private QuickView _quickview;
-    private InventoryView _inventoryView;
+    //private QuickView ////_quickView;
+    //private InventoryView _inventoryView;
     public Sprite Icon { get; private set; }
     private Camera _minicam;
     private void Awake()
     {
         GameManager.Instance?.StartupNewGameBegin.AddListener(StartPlayer);
+        GameManager.Instance?.EnablePlayerInvincibility.AddListener(EnableInvincible);
+        GameManager.Instance?.DisablePlayerInvincibility.AddListener(DisableInvincible);
     }
     void Start()
     {
@@ -109,9 +118,9 @@ public class JacksonCharacterMovement : MonoBehaviour
 
         if(plsWork == null)
         {
-            Debug.Log("there's no game logic");
+            //Debug.Log("there's no game logic");
             GameObject.Find("HUD").SetActive(false);
-            Debug.Log("yerr a wizard marry");
+            //Debug.Log("yerr a wizard marry");
             transform.GetChild(1).gameObject.SetActive(false);
             damnYouGabriel = true;
             transform.position = GameObject.Find("PlayerInputManager").transform.position;
@@ -127,8 +136,8 @@ public class JacksonCharacterMovement : MonoBehaviour
 
         cam.transform.parent = null;
         cc = gameObject.GetComponent<CharacterController>();
-        _quickview = transform.GetComponentInChildren<QuickView>();
-        _inventoryView = transform.GetComponentInChildren<InventoryView>();
+        ////_quickView = transform.GetComponentInChildren<QuickView>();
+        //_inventoryView = transform.GetComponentInChildren<InventoryView>();
         _minicam = GetComponentInChildren<Camera>();
         Icon = Resources.Load<Sprite>("Sprites/test-icon");
         sword = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
@@ -140,7 +149,6 @@ public class JacksonCharacterMovement : MonoBehaviour
 
     private void UpdateMinimap()
     {
-        Debug.Log("player z: " + transform.rotation.z);
         Transform camTransform = _minicam.transform;
         camTransform.position = new Vector3(transform.position.x, camTransform.position.y, transform.position.z);
         camTransform.eulerAngles = new Vector3(90f, 0f, 0f) ;
@@ -229,7 +237,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     }
     public void ToggleInventory(InputAction.CallbackContext ctx)
     {
-        if (ctx.started) _inventoryView.ToggleUI();
+        //if (ctx.started) //_inventoryView.ToggleUI();
     }
     // Update is called once per frame
     void Update()
@@ -273,6 +281,10 @@ public class JacksonCharacterMovement : MonoBehaviour
         //Debug.Log(ul);
         //Debug.Log(health);
         grounded = cc.isGrounded;
+        if (anim != null)
+        {
+            anim.SetBool("isGrounded", grounded);
+        }
         h = ul.x;
         v = ul.y;
         if(damTime == 0)
@@ -287,11 +299,14 @@ public class JacksonCharacterMovement : MonoBehaviour
 
         if(Magnitude() < 1f)
         {
-            //anim.Play("idle");
+            if (anim != null)
+            {
+                anim.SetBool("isRunning", false);
+            }
         }
         else
         {
-            //anim.Play("run");
+            anim.SetBool("isRunning", true);
         }
         if(velocity.y > 0)
         {
@@ -346,6 +361,20 @@ public class JacksonCharacterMovement : MonoBehaviour
         {
             repeatTimer++;
         }
+        if (transform.position.y < -40f || (state == PlayerState.dead && deadTick > 40))
+        {
+            Debug.Log("player is reset");
+            health = maxHealth;
+            velocity = Vector3.zero;
+            deadTick = 0;
+            if(currSword != null)
+            {
+                Destroy(currSword);
+            }
+            state = PlayerState.idle;
+            GameManager.Instance?.TeleportPlayerToSpawn(gameObject);
+        }
+        
         //Debug.Log("grounded: " + grounded);
         switch (state)
         {
@@ -370,6 +399,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                         state = PlayerState.dead;
                     }
                     velocity = velocity + (new Vector3(0f, -1f, 0f) * (gravMult * gravity));
+                   
                     //rb.AddForce(new Vector3(0f, -1f, 0f) * (gravMult*gravity));
                     MovementManagement(h, v);
                     if (lightPress > 0)
@@ -391,13 +421,26 @@ public class JacksonCharacterMovement : MonoBehaviour
                         {
                             currSword.GetComponent<DamageScript>().DoLifesteal(this.gameObject);
                         }
-                        
+                        anim.SetTrigger("lightAttack");
+                        Transform [] plz = GetComponentsInChildren<Transform>();
+                        foreach(Transform t in plz)
+                        {
+                            if(t.name == "SwordHand")
+                            {
+                                currSword.transform.parent = t;
+                            }
+                        }
+                        attackAnim = "Light Attack";
+                        //Debug.Log("swords parent is: " + currSword.transform.parent.name);
                         //currSword.transform.rotation = Quaternion.AngleAxis(90f, Vector3.right) * transform.rotation;// * Quaternion.Euler(0f, 0f, 90f);
-                        timer = 30f;
+                        timer = 0f;
                         // currSword.transform.localRotation = transform.rotation * Quaternion.Euler(0f, 0f, 90f);
-                        targetRot = currSword.transform.localRotation * Quaternion.AngleAxis(-45f, Vector3.up); //* currSword.transform.localRotation;
-                        currSword.transform.localRotation = currSword.transform.localRotation * Quaternion.AngleAxis(45f, Vector3.up); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);
-                        lerpTime = weapon.lightSpeed + attackSpeed;
+                        //targetRot = currSword.transform.localRotation * Quaternion.AngleAxis(-45f, Vector3.up); //* currSword.transform.localRotation;
+                        //currSword.transform.localRotation = currSword.transform.localRotation * Quaternion.AngleAxis(45f, Vector3.up); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);
+                        currSword.transform.rotation = currSword.transform.parent.rotation;
+                        anim.SetFloat("Speed", attackSpeed);
+                        currSword.transform.localPosition = Vector3.zero;
+                        currSword.transform.rotation = Quaternion.AngleAxis(-45f, Vector3.right) * currSword.transform.rotation;
                     }
                     if(heavyPress > 0)
                     {
@@ -419,15 +462,26 @@ public class JacksonCharacterMovement : MonoBehaviour
                         {
                             currSword.GetComponent<DamageScript>().DoLifesteal(this.gameObject);
                         }
+                        anim.SetTrigger("heavyAttack");
+                        attackAnim = "Heavy Attack";
+                        Transform[] plz = GetComponentsInChildren<Transform>();
+                        foreach (Transform t in plz)
+                        {
+                            if (t.name == "SwordHand")
+                            {
+                                currSword.transform.parent = t;
+                            }
+                        }
                         //currSword.transform.rotation = Quaternion.AngleAxis(90f, Vector3.right) * transform.rotation;// * Quaternion.Euler(0f, 0f, 90f);
-                        timer = 30f;
+                        timer = 0f;
                         // currSword.transform.localRotation = transform.rotation * Quaternion.Euler(0f, 0f, 90f);
                         targetRot = currSword.transform.localRotation;  //* currSword.transform.localRotation;
-                        currSword.transform.localRotation = currSword.transform.localRotation * Quaternion.AngleAxis(-90f, Vector3.right); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);                       
+                        //currSword.transform.localRotation = currSword.transform.localRotation * Quaternion.AngleAxis(-90f, Vector3.right); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);                       
                            // GameObject bullet = Instantiate(Resources.Load("Prefabs/IceBullet") as GameObject, transform.position + transform.forward * 2f, transform.rotation);
                             //bullet.GetComponent<Rigidbody>().velocity = transform.forward * 15f;
+                       currSword.transform.localPosition = Vector3.zero;
                        
-                        lerpTime = weapon.heavySpeed + attackSpeed;
+                        anim.SetFloat("Speed", attackSpeed);
                     }
                     if(jumpPress > 0 && currJumps >0)
                     {
@@ -443,6 +497,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                             velocity = new Vector3(velocity.x, 0f, velocity.z);
                         }
                         velocity = velocity + new Vector3(0f, jumpHeight, 0f);
+                        anim.SetTrigger("jump");
                         //rb.AddRelativeForce(new Vector3(0, jumpHeight, 0f), ForceMode.VelocityChange);
                     }
                     else if (jumpPress > 0 && currJumps == 0)
@@ -527,22 +582,23 @@ public class JacksonCharacterMovement : MonoBehaviour
                     velocity = velocity + (new Vector3(0f, -1f, 0f) * gravity);
 
                     //combat shit
-                    currSword.transform.localRotation = Quaternion.Lerp(currSword.transform.localRotation, targetRot, lerpTime) ;
-                    if(currSword.transform.localRotation == targetRot || timer < 0)
+                    //currSword.transform.localRotation = Quaternion.Lerp(currSword.transform.localRotation, targetRot, lerpTime) ;
+                    
+                    if (!anim.GetCurrentAnimatorStateInfo(0).IsName(attackAnim) && timer > 30)
                     {
                         Destroy(currSword);
                         if (h != 0f || v != 0f)
                         {
-                            velocity = new Vector3(oldSpeed.x, velocity.y, oldSpeed.z);
+                            //velocity = new Vector3(oldSpeed.x, velocity.y, oldSpeed.z);
+                            MovementManagement(h, v);
                         }
-                        MovementManagement(h, v);
                         oldSpeed = Vector3.zero;
                         airStrike = false;
                         state = PlayerState.idle;
                     }
                     else
                     {
-                        timer--;
+                        timer++;
                     }
                     //Movement shit
                     
@@ -551,7 +607,7 @@ public class JacksonCharacterMovement : MonoBehaviour
             case PlayerState.special:
                 {
                     weapon.AssignHitbox(currSword);
-                    Debug.Log("currently in the special state");
+                    //Debug.Log("currently in the special state");
                     bool ahhh = weapon.SpecialAttack(h,v);
                     if (ahhh)
                     {
@@ -603,8 +659,9 @@ public class JacksonCharacterMovement : MonoBehaviour
                 break;
             case PlayerState.dead:
                 {
-                    gravity = -30;
-                    velocity = velocity + (new Vector3(0f, -1f, 0f) * gravity);
+                    //gravity = -30;
+                    velocity = velocity + (new Vector3(0f, -1f, 0f) * -30f);
+                    deadTick++;
                     //rb.AddForce(new Vector3(0f, -1f, 0f) * gravity);
                 }
                 break;
@@ -643,13 +700,14 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         state = PlayerState.idle;
         AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        AddItem(new DamageItem());
-        _quickview.ToggleUI();
-        _quickview.LoadUI();
+        AddItem(new KnockbackResistanceItem());
+        AddItem(new KnockbackItem());
+        AddItem(new DamageOverTimeItem());
+        AddItem(new AttackSpeedItem());
+        AddItem(new ArmorItem());
+        anim = GetComponentInChildren<Animator>();
+        //_quickView.ToggleUI();
+        //_quickView.LoadUI();
     }
     public void MovementManagement(float horizontal, float vertical)
     {
@@ -674,11 +732,11 @@ public class JacksonCharacterMovement : MonoBehaviour
                 {
                     velocity = Magnitude() * transform.forward + new Vector3(0f, velocity.y, 0f); ;
                     //rb.AddRelativeForce(new Vector3(0, 0, 2f), ForceMode.VelocityChange);
-                    velocity = velocity + (transform.forward.normalized * 2f);
+                    velocity = velocity + (transform.forward.normalized * 1f);
                 }
                 else if (Magnitude() >= maxSpeed)
                 {
-                    velocity = Magnitude() * transform.forward + new Vector3(0f, velocity.y, 0f);
+                    velocity = maxSpeed * .95f * transform.forward + new Vector3(0f, velocity.y, 0f);
                 }
             }
             else
@@ -686,7 +744,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                 if(Magnitude() < maxSpeed)
                 {
                     //rb.AddRelativeForce(new Vector3(0, 0, 2f), ForceMode.VelocityChange);
-                    velocity = velocity + (transform.forward.normalized * 2f);
+                    velocity = velocity + (transform.forward.normalized * 1f);
                 }
                 else
                 {
@@ -753,7 +811,7 @@ public class JacksonCharacterMovement : MonoBehaviour
 
         // Create a rotation that is an increment closer to the target rotation from the player's rotation.
         //Quaternion newRotation = Quaternion.Lerp(GetComponent<Rigidbody>().rotation, targetRotation, turnSmoothing * Time.deltaTime);
-        Quaternion newRotation = Quaternion.Lerp(transform.rotation, targetRotation, 1);
+        Quaternion newRotation = Quaternion.Lerp(transform.rotation, targetRotation, 0.6f);
 
         // Change the players rotation to t$$anonymous$$s new rotation.
         
@@ -805,19 +863,23 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         DamageScript temp = other.GetComponent<DamageScript>();
         float hurts = Mathf.Max(0f, (temp.GetDamage() - armor));
-        health -= hurts;
-        float kb = temp.GetKnockback() - KnockbackResistance;
-        currBurn = temp.GetDamageOverTime();
-        burnTime = 10;
-        if (temp.GetLifesteal())
+
+        if (!invincible)
         {
-            other.GetComponentInParent<JacksonCharacterMovement>().StealLife(hurts);
+            health -= hurts;
+            currBurn = temp.GetDamageOverTime();
+            if (temp.GetLifesteal())
+            {
+                other.GetComponentInParent<JacksonPlayerMovement>().StealLife(hurts);
+            }
         }
+
+        float kb = temp.GetKnockback() - KnockbackResistance;
         if (kb < 1) { kb = 1f; }
         state = PlayerState.hitstun;
         transform.LookAt(new Vector3(other.transform.position.x, transform.position.y - 1f, other.transform.position.z));
         stunValue = kb;
-        kb *= -20;
+        kb *= -1;
         grounded = false;
         transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
         stunTimer = 10f;
@@ -843,6 +905,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         if (i.ItemCooldown()) { Cooldowninventory.Add(i); }
         if (i.ItemSpecial()) { Specialinventory.Add(i); }
         UpdateInventoryUI();
+
     }
     public void AssignWeapon(Weapon w)
     {
@@ -871,7 +934,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         if(other.gameObject.tag == "Damage" && other.gameObject != lastDam && this.gameObject != other.gameObject.GetComponent<DamageScript>().GetParent())
         {
-            Debug.Log("ow damage");
+            //Debug.Log("ow damage");
             lastDam = other.gameObject;
             damTime = 60;
             HurtPlayer(other.gameObject);
@@ -883,7 +946,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         if (other.gameObject.tag == "Damage" && other.gameObject != lastDam && this.gameObject != other.gameObject.GetComponent<DamageScript>().GetParent())
         {
-            Debug.Log("ow damage");
+            //Debug.Log("ow damage");
             lastDam = other.gameObject;
             damTime = 60;
             HurtPlayer(other.gameObject);
@@ -961,13 +1024,31 @@ public class JacksonCharacterMovement : MonoBehaviour
 
     private void UpdateInventoryUI()
     {
-        _quickview.UpdateUI();
-        _inventoryView.UpdateUI();
+        //_quickView.UpdateUI();
+        //_inventoryView.UpdateUI();
     }
 
     private void UpdateHealthBar()
     {
-        _quickview.UpdateHealth();
+        //_quickView.UpdateHealth();
     }
-    
+
+    private void DisableInvincible()
+    {
+        invincible = false;
+    }
+    private void EnableInvincible()
+    {
+        invincible = true;
+    }
+
+    bool AnimatorIsPlaying()
+    {
+        return anim.GetCurrentAnimatorStateInfo(0).length >
+               anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
+    }
+    bool AnimatorIsPlaying(string stateName)
+    {
+        return AnimatorIsPlaying() && anim.GetCurrentAnimatorStateInfo(0).IsName(stateName);
+    }
 }

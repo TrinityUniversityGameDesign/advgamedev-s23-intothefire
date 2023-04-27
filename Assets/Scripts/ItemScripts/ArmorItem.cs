@@ -10,14 +10,16 @@ public class ArmorItem : Item
     public ArmorItem()
     {
         value = 2;
-        icon = Resources.Load("Textures/ItemIcons/beans") as Sprite;
+        Texture2D texture = Resources.Load("Textures/ItemIcons/beans") as Texture2D;
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "Can of Beans";
         description = "Have you ever tried to dent a can of beans? you take " + value as string + "less damage";
     }
     public ArmorItem(float val)
     {
         value = val;
-        icon = Resources.Load("Textures/ItemIcons/beans") as Sprite;
+        Texture2D texture = Resources.Load("Textures/ItemIcons/beans") as Texture2D;
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "Can of Beans";
         description = "Have you ever tried to dent a can of beans? you take " + value as string + "less damage";
     }

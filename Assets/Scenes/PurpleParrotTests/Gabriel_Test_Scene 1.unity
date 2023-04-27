@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -215,42 +215,39 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1001 &1121182613979484107
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 841344935257735975, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1121182613394760745, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
-      propertyPath: MaxSecondsBetweenSideEvents
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
-      propertyPath: MinSecondsBetweenSideEvents
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1831125836570860741, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
-      propertyPath: m_JoinBehavior
+      propertyPath: players.Array.size
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1831125836570860741, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
-      propertyPath: m_PlayerPrefab
+    - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: playableCharacters.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: playableCharacters.Array.data[0]
       value: 
-      objectReference: {fileID: 8629840565660342266, guid: 3ef60ba90caac4508b8102e94f66c290, type: 3}
+      objectReference: {fileID: 4506805462427713629, guid: 38f8da5ed5039e549a2100ada16daec4, type: 3}
+    - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: playableCharacters.Array.data[1]
+      value: 
+      objectReference: {fileID: 7823829716659266038, guid: ee92db0fd00779745b950926ed7c6669, type: 3}
+    - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: playableCharacters.Array.data[2]
+      value: 
+      objectReference: {fileID: 919132149155446097, guid: dcf29a6e8c78acf41bfe6d11103eb4a6, type: 3}
     - target: {fileID: 3430062973120331862, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3430062973120331862, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
       propertyPath: m_LocalPosition.x
@@ -292,9 +289,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4206242978843695156, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: orthographic size
+      value: 346.673
+      objectReference: {fileID: 0}
     - target: {fileID: 7466906755869850125, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
       propertyPath: m_Name
       value: GameLogicDriver
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}

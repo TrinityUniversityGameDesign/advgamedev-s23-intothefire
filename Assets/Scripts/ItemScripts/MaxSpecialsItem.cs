@@ -10,14 +10,17 @@ public class MaxSpecialsItem : Item
     public MaxSpecialsItem()
     {
         value = 1;
-        icon = Resources.Load("Textures/ItemIcons/dragon") as Sprite;
+        
+        Texture2D texture = Resources.Load("Textures/ItemIcons/dragon") as Texture2D;
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "Dragon Sphere";
         description = "You find a non tv show specific sphere which lets you use your special " + value as string + "more times";
     }
     public MaxSpecialsItem(float val)
     {
         value = val;
-        icon = Resources.Load("Textures/ItemIcons/dragon") as Sprite;
+        Texture2D texture = Resources.Load("Textures/ItemIcons/dragon") as Texture2D;
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "Dragon Sphere";
         description = "You find a non tv show specific sphere which lets you use your special " + value as string + "more times";
     }

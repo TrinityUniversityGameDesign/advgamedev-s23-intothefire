@@ -85,6 +85,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ToggleLock",
+                    "type": "Value",
+                    "id": "9987e65c-9420-487b-a96b-365ea7cecc52",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -311,7 +320,7 @@
                 {
                     "name": "",
                     "id": "0f07c91d-58ba-479c-81cc-01397e8ec400",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<Gamepad>/select",
                     "interactions": "",
                     "processors": "",
                     "groups": "controller",
@@ -327,6 +336,28 @@
                     "processors": "",
                     "groups": "Keyboard and Mouse",
                     "action": "ToggleInventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d3b335c6-b05e-4726-9b28-1c4a8f0b3233",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "controller",
+                    "action": "ToggleLock",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5f792ad0-a6f9-4ef6-9ec9-d3f59c599543",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "ToggleLock",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

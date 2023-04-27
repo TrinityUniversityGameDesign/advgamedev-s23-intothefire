@@ -10,14 +10,17 @@ public class HealthItem : Item
     public HealthItem()
     {
         value = 10;
-        icon = Resources.Load("Textures/ItemIcons/torso") as Sprite;
+        
+        Texture2D texture = Resources.Load("Textures/ItemIcons/torso") as Texture2D;
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "Torso";
         description = "you get more torso meaning more blood and places to take damage so you can take more. gain " + value as string + "more max health";
     }
     public HealthItem(float val)
     {
         value = val;
-        icon = Resources.Load("Textures/ItemIcons/torso") as Sprite;
+        Texture2D texture = Resources.Load("Textures/ItemIcons/torso") as Texture2D;
+        icon = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
         name = "Torso";
         description = "you get more torso meaning more blood and places to take damage so you can take more. gain " + value as string + "more max health";
     }
