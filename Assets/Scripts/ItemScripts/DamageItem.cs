@@ -26,11 +26,7 @@ public class DamageItem : Item
     // Update is called once per frame
    public override bool ItemPickup()
     {
-        Debug.Log("Attempt to change value of damage for player; " + player.name);
-        JacksonCharacterMovement jcm = player.GetComponent<JacksonCharacterMovement>();
-        Debug.Log("Got jcm? " + (jcm != null));
-        jcm.ChangeDamage(value);
-        Debug.Log("Changed damage value for player");
+        player.GetComponent<JacksonCharacterMovement>().ChangeDamage(value);
         return true;
     }
 }

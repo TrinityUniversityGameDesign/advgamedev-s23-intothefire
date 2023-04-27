@@ -61,11 +61,9 @@ public class SideEventController : MonoBehaviour
         {
             case SideEvents.Spleef:
                 spawnedSpleefController = Instantiate(spleefControllerPrefab, this.transform);
-                GameManager.Instance.CurrentEvent = GameEvents.Spleef;
                 break;
             case SideEvents.Miniboss:
                 spawnedMinibossController = Instantiate(miniBossControllerPrefab, transform);
-                GameManager.Instance.CurrentEvent = GameEvents.Miniboss;
                 break;
             default:
                 break;
@@ -82,8 +80,8 @@ public class SideEventController : MonoBehaviour
 
     void EndCurrentSideEvent()
     {
-        int victor = svc.ComputeVictor();
-        AwardPlayer(victor);
+        //int victor = svc.ComputeVictor();
+        AwardPlayer(1);
 
         //Debug.Log("Ending SideEvent from SideEventController");
 
