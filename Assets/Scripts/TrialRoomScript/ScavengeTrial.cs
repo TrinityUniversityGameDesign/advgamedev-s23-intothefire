@@ -92,6 +92,7 @@ public class ScavengeTrial : TrialRoomScript
 			//Debug.Log("Player found for this room");
 			RoomClose();
 			playerRef = other.gameObject;
+            StartTrial();
 		}
 		//Debug.Log(doors);
 	}

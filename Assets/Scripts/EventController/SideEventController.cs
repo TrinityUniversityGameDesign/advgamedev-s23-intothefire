@@ -80,8 +80,8 @@ public class SideEventController : MonoBehaviour
 
     void EndCurrentSideEvent()
     {
-        int victor = svc.ComputeVictor();
-        AwardPlayer(victor);
+        //int victor = svc.ComputeVictor();
+        AwardPlayer(1);
 
         //Debug.Log("Ending SideEvent from SideEventController");
 
@@ -110,6 +110,6 @@ public class SideEventController : MonoBehaviour
 
     void AwardPlayer(int victor)
     {
-        //Debug.Log("Awarding player " + victor);
+        GameManager.Instance.AwardRandomItem(victor);
     }
 }

@@ -24,6 +24,7 @@ public class DungeonGeneration : MonoBehaviour
     public GameObject crossRoomHallway;
     public GameObject centerRoomHallwayNegative;
     public GameObject centerRoomHallwayPositive;
+    public GameObject spawnRoom;
 
     [HideInInspector]
     public Transform GeometryHolder;
@@ -32,6 +33,8 @@ public class DungeonGeneration : MonoBehaviour
     public List<GameObject> roomList = new List<GameObject>();
     public List<GameObject> crossRoomHallwayList = new List<GameObject>();
     public List<GameObject> intersectionHallwayList = new List<GameObject>();
+
+    public List<GameObject> spawnPoints;
 
     private void Awake()
     {
@@ -85,10 +88,13 @@ public class DungeonGeneration : MonoBehaviour
 
         //spawn intersection hallways
         GenerateIntersectionHallways();
+
+        GameManager.Instance.DungeonGenerationComplete.Invoke();
     }
 
     private void GenerateRooms()
     {
+        int k = 0;
         for (int i = 0; i < labyrinthSize; i++)
         {
             for (int j = 0; j < labyrinthSize; j++)
@@ -101,7 +107,16 @@ public class DungeonGeneration : MonoBehaviour
                 new Vector3(i * distanceApart, 0, j * distanceApart),
                 Quaternion.Euler(0, 0, 0));
                 roomList.Add(centerRoom);
+            
             }
+            //If we are at one of the corners
+            else if ((i == labyrinthSize-1 && j == labyrinthSize-1) || (i == 0 && j == 0) || (i == 0 && j == labyrinthSize-1) || (i == labyrinthSize-1 && j == 0))
+            {
+                    GameObject newRoom = Instantiate(spawnRoom, new Vector3(i * distanceApart, 0, j * distanceApart), Quaternion.identity, GeometryHolder.transform);
+                    roomList.Add(newRoom);
+                    spawnPoints[k].transform.position = new Vector3(newRoom.transform.position.x, 3, newRoom.transform.position.z);
+                    k++;
+            } 
             else
             {
                 //spawn prefabs at set intervals
