@@ -542,7 +542,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9197745677413393964}
+      - m_Target: {fileID: 6308927208391729790}
         m_TargetAssemblyTypeName: RotatingSelectScript, Assembly-CSharp
         m_MethodName: Rotator
         m_Mode: 1
@@ -1386,8 +1386,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7506880910947477254}
-  - component: {fileID: 7840747349483703688}
-  - component: {fileID: 9197745677413393964}
+  - component: {fileID: 1741610082326036047}
+  - component: {fileID: 6308927208391729790}
   m_Layer: 0
   m_Name: RotatingWeapon
   m_TagString: Untagged
@@ -1418,7 +1418,7 @@ Transform:
   m_Father: {fileID: 8481381117106147651}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7840747349483703688
+--- !u!114 &1741610082326036047
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1427,11 +1427,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2841194423096051490}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b5750fd7f97249fe956f8e6d23fbc60, type: 3}
+  m_Script: {fileID: 11500000, guid: 9381b53a18b604629ba5d6f942424ea5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 100
---- !u!114 &9197745677413393964
+--- !u!114 &6308927208391729790
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1440,7 +1440,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2841194423096051490}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fb3c9eb20c404a51843fd509ec739c8, type: 3}
+  m_Script: {fileID: 11500000, guid: 87ac8ab5590bf409c875dcd0df7d6d47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isCharacter: 0
@@ -1701,7 +1701,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5209793233049232966}
+      - m_Target: {fileID: 184561268491823551}
         m_TargetAssemblyTypeName: RotatingSelectScript, Assembly-CSharp
         m_MethodName: Rotator
         m_Mode: 1
@@ -2707,8 +2707,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2601318519856313988}
-  - component: {fileID: 505947702167537765}
-  - component: {fileID: 5209793233049232966}
+  - component: {fileID: 184561268491823551}
+  - component: {fileID: 8465223327018920177}
   m_Layer: 5
   m_Name: RotatingCharacter
   m_TagString: Untagged
@@ -2728,8 +2728,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3547093270633093019}
   - {fileID: 3025107884134237437}
+  - {fileID: 3547093270633093019}
   - {fileID: 1830949592234366750}
   m_Father: {fileID: 8481381117106147651}
   m_RootOrder: 2
@@ -2739,7 +2739,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 120}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &505947702167537765
+--- !u!114 &184561268491823551
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2748,11 +2748,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5918333493553521789}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fb3c9eb20c404a51843fd509ec739c8, type: 3}
+  m_Script: {fileID: 11500000, guid: 87ac8ab5590bf409c875dcd0df7d6d47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isCharacter: 1
---- !u!114 &5209793233049232966
+--- !u!114 &8465223327018920177
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2761,7 +2761,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5918333493553521789}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b5750fd7f97249fe956f8e6d23fbc60, type: 3}
+  m_Script: {fileID: 11500000, guid: 9381b53a18b604629ba5d6f942424ea5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 100
@@ -3930,7 +3930,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: de42d2bacc15f1a47a020bf2226ecb3e, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: de42d2bacc15f1a47a020bf2226ecb3e, type: 3}
       propertyPath: m_LocalScale.x
@@ -4346,7 +4346,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7526837956055964967, guid: 38f8da5ed5039e549a2100ada16daec4, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7526837956055964967, guid: 38f8da5ed5039e549a2100ada16daec4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4387,6 +4387,10 @@ PrefabInstance:
     - target: {fileID: 7526837956055964967, guid: 38f8da5ed5039e549a2100ada16daec4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526837956055964967, guid: 38f8da5ed5039e549a2100ada16daec4, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38f8da5ed5039e549a2100ada16daec4, type: 3}
