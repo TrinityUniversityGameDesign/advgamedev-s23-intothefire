@@ -86,17 +86,16 @@ public class GameManager : MonoBehaviour
     private int minPlayerCount = 1;
 
     public GameObject lobbyUI;
-
-    public GameEvents CurrentEvent;
     #endregion
 
     #region Private Fields
     [Tooltip("Internal state the game manager is currently in.")]
     private GameState _state = GameState.Lobby;
 
-
+    [HideInInspector]
     [Tooltip("Represents the number of seconds since the game has started.")]
     public float Timer = 0;
+    [HideInInspector]
     public float secondsOfGameTime = 0;
 
     private bool gameInProgress = false;
@@ -121,6 +120,7 @@ public class GameManager : MonoBehaviour
     float timeLeftInMicroEvent;
 
     float timeUntilNextSideEvent;
+    [HideInInspector]
     public float timeLeftInSideEvent;
 
     bool microEventInProgress = false;
@@ -542,6 +542,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("New Player Joined");
         Instance.LastJoinedPlayer = newPlayer.playerIndex;
         newPlayer.gameObject.name = ("Player" + newPlayer.playerIndex);
+        newPlayer.gameObject.GetComponent<PlayerData>().PlayerIndex = newPlayer.playerIndex;
         Instance.players.Add(newPlayer.gameObject);
 
         GameObject newUI = Instantiate(lobbyUI, GameObject.Find("PlayerLobby" + newPlayer.playerIndex + "UI").transform);
@@ -574,7 +575,7 @@ public class GameManager : MonoBehaviour
     public void AwardRandomItem(int victor)
     {
         Item newItem = Item.GrantNewRandomItem();
-        if(newItem != null || victor < 0 || victor >= Instance.players.Count) players[victor].GetComponent<JacksonCharacterMovement>().AddItem(newItem);
+        if(newItem != null && !(victor < 0 || victor > Instance.players.Count-1)) players[victor].GetComponent<JacksonCharacterMovement>().AddItem(newItem);
     }
 
     void TeleportPlayersToSpawnPoints()
