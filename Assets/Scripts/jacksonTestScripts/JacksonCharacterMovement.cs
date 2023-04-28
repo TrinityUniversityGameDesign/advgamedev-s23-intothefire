@@ -35,7 +35,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     List<Item> Specialinventory = new List<Item>();
     List<Item> Cooldowninventory = new List<Item>();
     
-    Animation anim;
+    Animator anim;
     string attackAnim = "";
     float gravity = 1f;
     float jumpPress = 0f;

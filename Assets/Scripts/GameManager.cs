@@ -86,6 +86,8 @@ public class GameManager : MonoBehaviour
     private int minPlayerCount = 1;
 
     public GameObject lobbyUI;
+    
+    public GameEvents CurrentEvent;
     #endregion
 
     #region Private Fields
