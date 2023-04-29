@@ -30,6 +30,8 @@ public enum GameEvents
     Showdown
 }
 
+// Maybe use this if you want to pass messages to players. You can also use the notif system for rooms,
+// though figuring out how to send that through from the rooms to the players may be tricky
 public static class GameManagerGlobalStatics
 {
     public struct GameEvent

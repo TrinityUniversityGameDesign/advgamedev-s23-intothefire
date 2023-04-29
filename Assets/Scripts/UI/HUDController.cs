@@ -18,6 +18,8 @@ public class HUDController : MonoBehaviour
     private Inventory _inventory;
     private Minimap _minimap;
     private InventoryContainer _inventoryContainer;
+    private TextController _timer;
+    
 
     private Image _eventNotification;
     private TMP_Text _eventTitle;
@@ -44,6 +46,7 @@ public class HUDController : MonoBehaviour
         _inventory = GetComponentInChildren<Inventory>();
         _inventoryContainer = GetComponentInChildren<InventoryContainer>();
         _minimap = GetComponentInChildren<Minimap>();
+        _timer = GetComponentInChildren<TextController>();
 
         _eventNotification = transform.Find("Notification").GetComponent<Image>();
         _eventTitle = _eventNotification.transform.Find("Event Title").GetComponent<TMP_Text>();
@@ -113,6 +116,13 @@ public class HUDController : MonoBehaviour
     {
         _inventory.AddItem(item);
         _quickView.AddItem(item);
+    }
+
+    public void UpdateTimer()
+    {
+        int duration = (int)(GameManager.Instance.secondsOfGameTime - GameManager.Instance.Timer);
+        int seconds = duration % 60;
+        _timer.UpdateText(string.Format("{0}:{1}", duration / 60, seconds < 10 ? "0" + seconds : seconds)); 
     }
 
     /// <summary>

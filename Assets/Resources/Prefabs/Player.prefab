@@ -594,6 +594,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 9987e65c-9420-487b-a96b-365ea7cecc52
     m_ActionName: jacksonControls/ToggleLock[/Keyboard/leftCtrl]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 14e499d2-d038-4839-9e4f-75cee6430a35
+    m_ActionName: UI/Navigate In-Game[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: jacksonControls
@@ -930,10 +934,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 62.368988
       objectReference: {fileID: 0}
-    - target: {fileID: 1254202216651083550, guid: 003decb78118441deb75e98859920f87, type: 3}
-      propertyPath: animationSpeed
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 1271757585865937218, guid: 003decb78118441deb75e98859920f87, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 68.203995
@@ -1122,12 +1122,20 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7331627599604854836, guid: 003decb78118441deb75e98859920f87, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.00067612756
+      objectReference: {fileID: 0}
     - target: {fileID: 7554958827279034075, guid: 003decb78118441deb75e98859920f87, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7554958827279034075, guid: 003decb78118441deb75e98859920f87, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7554958827279034075, guid: 003decb78118441deb75e98859920f87, type: 3}
+      propertyPath: m_AnchorMin.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7700519132218581019, guid: 003decb78118441deb75e98859920f87, type: 3}
@@ -1139,8 +1147,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7976211750895125306, guid: 003decb78118441deb75e98859920f87, type: 3}
+      propertyPath: m_Size
+      value: 0.99994266
+      objectReference: {fileID: 0}
+    - target: {fileID: 7976211750895125306, guid: 003decb78118441deb75e98859920f87, type: 3}
       propertyPath: m_Value
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8624585772173617699, guid: 003decb78118441deb75e98859920f87, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1169,24 +1181,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3682048754220902125, guid: 003decb78118441deb75e98859920f87, type: 3}
   m_PrefabInstance: {fileID: 4259449074705620812}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &4731011898607282383 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8843789960370976643, guid: 003decb78118441deb75e98859920f87, type: 3}
-  m_PrefabInstance: {fileID: 4259449074705620812}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7997886462841056790
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4731011898607282383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50585183f494341bdaeded868f7e09a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  darker: 0
 --- !u!1 &4902332525306331364 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9156960610734022568, guid: 003decb78118441deb75e98859920f87, type: 3}

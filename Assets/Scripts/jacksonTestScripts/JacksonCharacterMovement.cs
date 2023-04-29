@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Animations;
+using UnityEngine.InputSystem.UI;
 
 public class JacksonCharacterMovement : MonoBehaviour
 {
@@ -105,8 +106,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     private MiniCam _minicam;
     private HUDController _hud;
     private PlayerData _playerData;
-    private MinimapArrow _minimapArrow;
-    
+
     private void Awake()
     {
         GameManager.Instance?.StartupNewGameBegin.AddListener(StartPlayer);
@@ -150,22 +150,18 @@ public class JacksonCharacterMovement : MonoBehaviour
         _hud = GetComponentInChildren<HUDController>();
         // _minicam = GetComponentInChildren<Camera>();
         _minicam = transform.GetComponentInChildren<MiniCam>();
-        _minimapArrow = transform.GetComponentInChildren<MinimapArrow>();
         // UI Variables
         Icon = Resources.Load<Sprite>("Sprites/gun");
         _playerData = GetComponent<PlayerData>();
     }
     
-    private void UpdateMinimap()
+    private void UpdateUIBindings()
     {
-        _minicam.UpdatePosition(transform);
-        _minimapArrow.Rotate(transform);
+        var inputSystem = GetComponentInChildren<InputSystemUIInputModule>();
+        var playerInput = GetComponent<PlayerInput>();
+        inputSystem.move = InputActionReference.Create(playerInput.actions["Navigate In-Game"]);
     }
     
-    private void OnEnable()
-    {
-        
-    }
     public void JumpInput(InputAction.CallbackContext ctx)
     {
         
@@ -278,8 +274,13 @@ public class JacksonCharacterMovement : MonoBehaviour
          dodgePress = 3;
          }
          */
-        UpdateMinimap();
         
+        // Minicam update to fix rotation
+        _minicam.UpdatePosition(transform);
+        
+        // Timer added to screen
+        _hud.UpdateTimer();
+
     }
     private void FixedUpdate()
     {
@@ -725,6 +726,8 @@ public class JacksonCharacterMovement : MonoBehaviour
         AddItem(new HealthItem());
         AddItem(new HealthItem());
         AddItem(new HealthItem());
+        
+        UpdateUIBindings();
     }
     public void MovementManagement(float horizontal, float vertical)
     {
