@@ -34,8 +34,7 @@ public class TrialRoomScript : MonoBehaviour
 		//doors = transform.GetChild(0).transform.GetComponentsInChildren<Transform>();
 		SetDoorPresence(false);
 		currRoomState = RoomState.empty;
-
-
+	
 		//if this room is an empty room, don't turn it into a combat or platforming room
 	}
 
@@ -62,7 +61,6 @@ public class TrialRoomScript : MonoBehaviour
 		//Debug.Log("Room Closed");
 
 		//Spawn Startpad in appropriate room location
-		PlaceStartPad();
 	}
 	protected void SetDoorPresence(bool doorsEnabled)
 	{
@@ -70,17 +68,18 @@ public class TrialRoomScript : MonoBehaviour
 
 		foreach (Transform childObject in doors)
 		{
-			MeshRenderer meshRenderer = childObject.GetComponent<MeshRenderer>();
-			if (meshRenderer != null)
-			{
-				meshRenderer.enabled = doorsEnabled;
-			}
+			childObject.gameObject.SetActive(doorsEnabled);
+			// MeshRenderer meshRenderer = childObject.GetComponent<MeshRenderer>();
+			// if (meshRenderer != null)
+			// {
+			// 	meshRenderer.enabled = doorsEnabled;
+			// }
 
-			MeshCollider boxCollider = childObject.GetComponent<MeshCollider>();
-			if (boxCollider != null)
-			{
-				boxCollider.enabled = doorsEnabled;
-			}
+			// MeshCollider boxCollider = childObject.GetComponent<MeshCollider>();
+			// if (boxCollider != null)
+			// {
+			// 	boxCollider.enabled = doorsEnabled;
+			// }
 		}
 	}
 	public virtual void PlaceStartPad()
@@ -117,7 +116,7 @@ public class TrialRoomScript : MonoBehaviour
 		DespawnTrialGeometry();
 		GivePlayerLoot();
 		currRoomState = RoomState.completed;
-		Debug.Log("Room Completed");
+		//Debug.Log("Room Completed");
 		SetDoorPresence(false);
 		if(hostEmpty){
 			hostEmpty.depsawnRoom();
@@ -138,6 +137,4 @@ public class TrialRoomScript : MonoBehaviour
 	{
 		//use playerRef to give loot
 	}
-
-
 }

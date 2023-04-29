@@ -21,36 +21,6 @@ public enum GameState
     Startup_New_Game
 }
 
-public enum GameEvents
-{
-    Meteor,
-    Spleef,
-    Miniboss
-}
-
-public static class GameManagerGlobalStatics
-{
-    //Events
-    public static string SpleefTitle = "Spleef";
-    public static string SpleefText = "Keep moving! Avoid falling through the holes in the floor! Knock your enemies through them!";
-
-    public static string MiniBossTitle = "Rampant Mummy";
-    public static string MiniBossText = "Damage the mummy!";
-
-    public static string MeteorTitle = "Meteors!";
-    public static string MeteorText = "Avoid the rocks falling from the sky.";
-
-    //Labyrinth Related
-    public static string LabyrinthTitle = "Out of the Fyring Pan";
-    public static string LabyrinthText = "Explore the labyrinth, collect rewards. Beware the Minotaur";
-
-    public static string ShowdownTitle = "Into the Fire";
-    public static string ShowdownText = "Destroy your opponents, whatever means necessary.";
-
-
-
-}
-
 public class GameManager : MonoBehaviour
 {
     #region Public Fields
@@ -84,17 +54,16 @@ public class GameManager : MonoBehaviour
     private int minPlayerCount = 1;
 
     public GameObject lobbyUI;
-
-    public GameEvents CurrentEvent;
     #endregion
 
     #region Private Fields
     [Tooltip("Internal state the game manager is currently in.")]
     private GameState _state = GameState.Lobby;
 
-
+    [HideInInspector]
     [Tooltip("Represents the number of seconds since the game has started.")]
     public float Timer = 0;
+    [HideInInspector]
     public float secondsOfGameTime = 0;
 
     private bool gameInProgress = false;
@@ -119,6 +88,7 @@ public class GameManager : MonoBehaviour
     float timeLeftInMicroEvent;
 
     float timeUntilNextSideEvent;
+    [HideInInspector]
     public float timeLeftInSideEvent;
 
     bool microEventInProgress = false;
@@ -540,6 +510,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("New Player Joined");
         Instance.LastJoinedPlayer = newPlayer.playerIndex;
         newPlayer.gameObject.name = ("Player" + newPlayer.playerIndex);
+        newPlayer.gameObject.GetComponent<PlayerData>().PlayerIndex = newPlayer.playerIndex;
         Instance.players.Add(newPlayer.gameObject);
 
         GameObject newUI = Instantiate(lobbyUI, GameObject.Find("PlayerLobby" + newPlayer.playerIndex + "UI").transform);
@@ -572,7 +543,7 @@ public class GameManager : MonoBehaviour
     public void AwardRandomItem(int victor)
     {
         Item newItem = Item.GrantNewRandomItem();
-        if(newItem != null || victor < 0 || victor >= Instance.players.Count) players[victor].GetComponent<JacksonCharacterMovement>().AddItem(newItem);
+        if(newItem != null && !(victor < 0 || victor > Instance.players.Count-1)) players[victor].GetComponent<JacksonCharacterMovement>().AddItem(newItem);
     }
 
     void TeleportPlayersToSpawnPoints()

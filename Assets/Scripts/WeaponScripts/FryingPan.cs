@@ -13,10 +13,13 @@ public class FryingPan : Weapon
         description = "Tangled is better than Frozen";
         specialDuration = 30;
         specialTimer = 0;
+        specialKnockback = 45;
         lightDamage = 15;
+        lightKnockback = 25;
         lightSpeed = 0.35f;
         heavyDamage = 30;
         heavySpeed = 0.2f;
+        heavyKnockback = 35;
         canMove = true;
     }
     

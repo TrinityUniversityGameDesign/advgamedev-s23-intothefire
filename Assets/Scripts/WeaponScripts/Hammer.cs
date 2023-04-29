@@ -12,10 +12,13 @@ public class Hammer : Weapon
         description = "Heavy slow big hammer, with a very powerful charge";
         specialDuration = 10000;
         specialTimer = 0;
+        specialKnockback = 80;
         lightDamage = 15;
         lightSpeed = 0.35f;
+        lightKnockback = 30;
         heavyDamage = 30;
         heavySpeed = 0.2f;
+        heavyKnockback = 45;
         canMove = true;
     }
     

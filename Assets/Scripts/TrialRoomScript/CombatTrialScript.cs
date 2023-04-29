@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class CombatTrialScript : TrialRoomScript
 {
@@ -79,6 +80,7 @@ public class CombatTrialScript : TrialRoomScript
                 thing.SetActive(true);
             }
         }
+        //transform.Find("NavMeshGeometry").GetComponent<NavMeshSurface>().BuildNavMesh();
         if (currRoomState == RoomState.closed) {
             enemyCount = 0;
             currRoomState = RoomState.trialing;
@@ -94,4 +96,18 @@ public class CombatTrialScript : TrialRoomScript
             }
         }
     }
+
+    new public void OnTriggerEnter(Collider other)
+	{
+		//Debug.Log(currRoomState);
+		//Debug.Log("Collided with: " + other);
+		if(other.transform.tag == "Player" && currRoomState == RoomState.empty)
+		{
+			//Debug.Log("Player found for this room");
+			RoomClose();
+			playerRef = other.gameObject;
+            StartTrial();
+		}
+		//Debug.Log(doors);
+	}
 }
