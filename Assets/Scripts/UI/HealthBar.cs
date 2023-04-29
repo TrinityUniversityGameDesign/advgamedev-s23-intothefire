@@ -35,6 +35,7 @@ public class HealthBar : MonoBehaviour
     /// <param name="maxHealth">max health of player</param>
     public void InitializeHealthBar(float health, float maxHealth)
     {
+        //Debug.Log("Init: " + health + ", " + maxHealth);
         // Set health values
         _currentHealth = health;
         _currentMaxHealth = maxHealth;
@@ -72,6 +73,7 @@ public class HealthBar : MonoBehaviour
 
     private IEnumerator ScaleHealthBar(float health)
     {
+        //Debug.Log("Pre Health: curr: " + _currentHealth + ", Health: " + health);
         float elapsedTime = 0f;
         while (elapsedTime < animationSpeed)
         {
@@ -86,10 +88,12 @@ public class HealthBar : MonoBehaviour
             
             yield return null;
         }
+        //Debug.Log("Post Health: curr: " + _currentHealth);
     }
     
     private IEnumerator ScaleMaxHealthWidth(float health, float maxHealth)
     {
+        //Debug.Log("Pre Max: curr: " + _currentHealth + ", health: " + health);
         var elapsedTime = 0f;
         var finalBarWidth = maxHealth * barWidthMultiplier;
         while (elapsedTime < animationSpeed)
@@ -119,5 +123,6 @@ public class HealthBar : MonoBehaviour
             // Return the coroutine
             yield return null;
         }
+        //Debug.Log("Post Max: curr: " + _currentMaxHealth);
     }
 }

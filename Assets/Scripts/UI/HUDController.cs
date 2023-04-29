@@ -72,7 +72,7 @@ public class HUDController : MonoBehaviour
         _inventory.Initialize(inventory, itemRowPrefab);
         _quickView.Initialize(inventory, itemIconPrefab);
         _stats.InitializeStats(stats, statPrefab);
-        foreach (var componentsInChild in GetComponentsInChildren<ColorController>())
+        foreach (var componentsInChild in transform.parent.GetComponentsInChildren<ColorController>())
         {
             componentsInChild.SetImageColor(color);
         }

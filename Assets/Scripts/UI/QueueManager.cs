@@ -8,9 +8,7 @@ public class QueueManager : MonoBehaviour
     private Coroutine coordinator = null;
     public void AddToQueue(IEnumerator coroutine)
     {
-        Debug.Log("Adding to queue");
         _coroutineQueue.Enqueue(coroutine);
-        Debug.Log(_coroutineQueue);
         if (coordinator == null) coordinator = StartCoroutine(CoroutineCoordinator());
     }
  
@@ -18,7 +16,6 @@ public class QueueManager : MonoBehaviour
     {
         while (_coroutineQueue.Count > 0)
         {
-            Debug.Log("Dequeing and running: ");
             yield return _coroutineQueue.Dequeue();
         }
         coordinator = null;

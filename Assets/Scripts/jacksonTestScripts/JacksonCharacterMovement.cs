@@ -102,9 +102,10 @@ public class JacksonCharacterMovement : MonoBehaviour
     
     // UI Variables
     public Sprite Icon { get; private set; }
-    private Camera _minicam;
+    private MiniCam _minicam;
     private HUDController _hud;
     private PlayerData _playerData;
+    private MinimapArrow _minimapArrow;
     
     private void Awake()
     {
@@ -148,8 +149,8 @@ public class JacksonCharacterMovement : MonoBehaviour
         // UI Controllers
         _hud = GetComponentInChildren<HUDController>();
         // _minicam = GetComponentInChildren<Camera>();
-        _minicam = GameObject.FindGameObjectWithTag("MinimapCamera").GetComponent<Camera>();
-        Debug.Log(_minicam.name);
+        _minicam = transform.GetComponentInChildren<MiniCam>();
+        _minimapArrow = transform.GetComponentInChildren<MinimapArrow>();
         // UI Variables
         Icon = Resources.Load<Sprite>("Sprites/gun");
         _playerData = GetComponent<PlayerData>();
@@ -157,9 +158,8 @@ public class JacksonCharacterMovement : MonoBehaviour
     
     private void UpdateMinimap()
     {
-        Transform camTransform = _minicam.transform;
-        camTransform.position = new Vector3(transform.position.x, camTransform.position.y, transform.position.z);
-        camTransform.eulerAngles = new Vector3(90f, 0f, 0f) ;
+        _minicam.UpdatePosition(transform);
+        _minimapArrow.Rotate(transform);
     }
     
     private void OnEnable()
@@ -278,7 +278,7 @@ public class JacksonCharacterMovement : MonoBehaviour
          dodgePress = 3;
          }
          */
-        // UpdateMinimap();
+        UpdateMinimap();
         
     }
     private void FixedUpdate()
@@ -1071,7 +1071,6 @@ public class JacksonCharacterMovement : MonoBehaviour
 
     private void UpdateHealth()
     {
-        Debug.Log("JCM Health / Max health: " + health + ", " + maxHealth);
         _hud.UpdateHealth(health);
     }
 

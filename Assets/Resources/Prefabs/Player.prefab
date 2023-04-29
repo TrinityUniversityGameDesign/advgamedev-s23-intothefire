@@ -12,13 +12,13 @@ GameObject:
   - component: {fileID: 6061132469083624351}
   - component: {fileID: 3836979112092879069}
   - component: {fileID: 7349848033665293523}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Minimap Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3401023167691162891
 RectTransform:
   m_ObjectHideFlags: 0
@@ -37,7 +37,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 10}
   m_SizeDelta: {x: 1024, y: 1024}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &6061132469083624351
@@ -111,8 +111,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5999389810336768184}
   - component: {fileID: 1831892683020602644}
-  - component: {fileID: 4466669286283712107}
-  m_Layer: 5
+  - component: {fileID: 3291015069680960537}
+  - component: {fileID: 4620518319643310471}
+  m_Layer: 6
   m_Name: Minimap Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,10 +135,10 @@ RectTransform:
   m_Father: {fileID: 8751923745478524991}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 200}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1831892683020602644
 CanvasRenderer:
@@ -147,7 +148,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1563837049534341416}
   m_CullTransparentMesh: 1
---- !u!114 &4466669286283712107
+--- !u!114 &3291015069680960537
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -156,24 +157,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 1563837049534341416}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.97776234, b: 0.051886797, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 628b365774ebe4229abbee9edf44f89a, type: 3}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4620518319643310471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1563837049534341416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50585183f494341bdaeded868f7e09a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  darker: 0
 --- !u!1 &2832623258001407692
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,8 +203,8 @@ GameObject:
   - component: {fileID: 171371572746781591}
   - component: {fileID: 5128159825646477010}
   - component: {fileID: 8313100810730378339}
-  m_Layer: 5
-  m_Name: Mask
+  m_Layer: 6
+  m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -212,7 +229,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 200}
+  m_SizeDelta: {x: 128, y: 128}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &171371572746781591
 CanvasRenderer:
@@ -242,7 +259,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b5efcfa73bdf94a38bd8939b7257cd77, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 832a8060f2fa742ebb72129c27cdd7b2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -737,6 +754,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4610418055755810656}
   - component: {fileID: 1904342439909753290}
+  - component: {fileID: 5222501785104186088}
   m_Layer: 0
   m_Name: Minimap Camera
   m_TagString: MinimapCamera
@@ -802,6 +820,19 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &5222501785104186088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9133687961696741547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48feab327fde342f186ca7a4c732b449, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  height: 150
 --- !u!1001 &2847694293117631371
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1103,6 +1134,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 4789341166248396756}
+    - target: {fileID: 7857292822995360160, guid: 003decb78118441deb75e98859920f87, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7976211750895125306, guid: 003decb78118441deb75e98859920f87, type: 3}
       propertyPath: m_Value
       value: 0
