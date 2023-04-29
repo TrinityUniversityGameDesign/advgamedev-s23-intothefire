@@ -1,37 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    [SerializeField] private bool quickView = false;
+    private bool _initialized = false;
+    private GameObject _rowPrefab;
+    
     /// <summary>
     /// Initialize items in the inventory window
     /// </summary>
     /// <param name="items">list of items from player</param>
-    /// <param name="itemPrefab">prefab to use for item rows</param>
-    public void InitializeItems(List<Item> items, GameObject itemPrefab)
+    /// <param name="rowPrefab">prefab to use for item rows</param>
+    /// /// <param name="iconPrefab">prefab to use for item icons</param>
+    public void Initialize(List<Item> items, GameObject rowPrefab)
     {
-        for (int i = 0; i < items.Count; i++)
-        {
-            GameObject newObject = Instantiate(itemPrefab, transform);
-            Debug.Log("Made object from prefab: " + newObject.name);
-            var imageComponent = newObject.gameObject.GetComponentInChildren<ImageController>();
-            Debug.Log("Got the image component: " + (imageComponent != null));
-            imageComponent.SetImageToSprite(items[i].icon);
-            newObject.transform.Find("name").GetComponent<TMP_Text>().text = items[i].name;
-            newObject.transform.Find("desc").GetComponent<TMP_Text>().text = items[i].description;
-        }
+        _rowPrefab = rowPrefab;
+        _initialized = true;
+        LoadItems(items);
     }
     
-    public void InitializeItems(List<ItemData> items, GameObject itemPrefab)
+    private void LoadItems(List<Item> items)
     {
-        for (int i = 0; i < items.Count; i++)
+        foreach (var t in items)
         {
-            GameObject newObject = Instantiate(itemPrefab, transform);
-            newObject.gameObject.GetComponentInChildren<ImageController>().SetImageToSprite(items[i].icon);
-            newObject.transform.Find("name").GetComponent<TMP_Text>().text = items[i].name;
-            newObject.transform.Find("desc").GetComponent<TMP_Text>().text = items[i].description;
+            Add(t);
         }
+    }
+
+    public void AddItem(Item item)
+    {
+        if (!_initialized) Debug.LogError("You must initialize inventory before adding to it");
+        else Add(item);
+    }
+
+    private void Add(Item t)
+    {
+        GameObject newObject = Instantiate(_rowPrefab, transform);
+        var imageComponent = newObject.gameObject.GetComponentInChildren<ImageController>();
+        imageComponent.SetImageToSprite(t.icon);
+        newObject.transform.Find("Container").transform.Find("name").GetComponent<TMP_Text>().text = t.name;
+        newObject.transform.Find("Container").transform.Find("desc").GetComponent<TMP_Text>().text = t.description;
     }
 }

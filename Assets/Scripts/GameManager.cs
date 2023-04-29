@@ -545,6 +545,7 @@ public class GameManager : MonoBehaviour
         Instance.LastJoinedPlayer = newPlayer.playerIndex;
         newPlayer.gameObject.name = ("Player" + newPlayer.playerIndex);
         newPlayer.gameObject.GetComponent<PlayerData>().PlayerIndex = newPlayer.playerIndex;
+        newPlayer.gameObject.GetComponent<PlayerData>().playerColor = colors[newPlayer.playerIndex];
         Instance.players.Add(newPlayer.gameObject);
 
         GameObject newUI = Instantiate(lobbyUI, GameObject.Find("PlayerLobby" + newPlayer.playerIndex + "UI").transform);

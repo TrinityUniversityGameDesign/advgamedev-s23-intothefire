@@ -58,36 +58,41 @@ public class HUDController : MonoBehaviour
     ///  Initialize the HUD at the start of the game
     /// </summary>
     /// <param name="playerIcon">sprite from player controller</param>
+    /// /// <param name="color">color for player</param>
     /// <param name="health">heatlh status of player</param>
     /// <param name="maxHealth">max health status of player</param>
     /// <param name="inventory">list of inventory items</param>
     /// <param name="stats">list of player stats</param>
-    public void InitializePlayerHUD(Sprite playerIcon, float health, float maxHealth, List<Item> inventory,
-        List<(string, float)> stats)
+    public void InitializePlayerHUD(Sprite playerIcon, Color color, float health, float maxHealth, List<Item> inventory, List<(string, float)> stats)
     {
         // Enable the canvas
         _canvas.enabled = true;
         _healthBar.InitializeHealthBar(health, maxHealth);
         _imageController.SetRawImageToSprite(playerIcon);
-        _quickView.InitializeItems(inventory, itemIconPrefab);
-        _inventory.InitializeItems(inventory, itemRowPrefab);
+        _inventory.Initialize(inventory, itemRowPrefab);
+        _quickView.Initialize(inventory, itemIconPrefab);
         _stats.InitializeStats(stats, statPrefab);
+        foreach (var componentsInChild in GetComponentsInChildren<ColorController>())
+        {
+            componentsInChild.SetImageColor(color);
+        }
+        InitializeNotifications();
         ToggleInventory();
     }
     
-    public void InitializePlayerHUD(Sprite playerIcon, float health, float maxHealth, List<ItemData> inventory,
-        PlayerStats stats)
-    {
-        // Enable the canvas
-        _canvas.enabled = true;
-        _healthBar.InitializeHealthBar(health, maxHealth);
-        _imageController.SetRawImageToSprite(playerIcon);
-        _quickView.InitializeItems(inventory, itemIconPrefab);
-        _inventory.InitializeItems(inventory, itemRowPrefab);
-        _stats.InitializeStats(stats, statPrefab);
-        ToggleInventory();
-        InitializeNotifications();
-    }
+    //public void InitializePlayerHUD(Sprite playerIcon, float health, float maxHealth, List<ItemData> inventory,
+    //    PlayerStats stats)
+    //{
+    //    // Enable the canvas
+    //    _canvas.enabled = true;
+    //    _healthBar.InitializeHealthBar(health, maxHealth);
+    //    _imageController.SetRawImageToSprite(playerIcon);
+    //    _quickView.InitializeItems(inventory, itemIconPrefab);
+    //    _inventory.InitializeItems(inventory, itemRowPrefab);
+    //    _stats.InitializeStats(stats, statPrefab);
+    //    ToggleInventory();
+    //    InitializeNotifications();
+    //}
 
     private void InitializeNotifications()
     {
@@ -102,6 +107,12 @@ public class HUDController : MonoBehaviour
     public void UpdateMaxHealth(float health, float maxHealth)
     {
         _healthBar.UpdateMaxHealth(health, maxHealth);
+    }
+
+    public void AddItem(Item item)
+    {
+        _inventory.AddItem(item);
+        _quickView.AddItem(item);
     }
 
     /// <summary>

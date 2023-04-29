@@ -104,6 +104,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     public Sprite Icon { get; private set; }
     private Camera _minicam;
     private HUDController _hud;
+    private PlayerData _playerData;
     
     private void Awake()
     {
@@ -151,6 +152,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         Debug.Log(_minicam.name);
         // UI Variables
         Icon = Resources.Load<Sprite>("Sprites/gun");
+        _playerData = GetComponent<PlayerData>();
     }
     
     private void UpdateMinimap()
@@ -377,6 +379,7 @@ public class JacksonCharacterMovement : MonoBehaviour
             }
             state = PlayerState.idle;
             GameManager.Instance?.TeleportPlayerToSpawn(gameObject);
+            UpdateHealth();
         }
         
         //Debug.Log("grounded: " + grounded);
@@ -703,14 +706,25 @@ public class JacksonCharacterMovement : MonoBehaviour
     public void StartPlayer()
     {
         state = PlayerState.idle;
+        anim = GetComponentInChildren<Animator>();
+        _hud.InitializePlayerHUD(Icon, _playerData.playerColor, health, maxHealth, inventory, GetInventoryStats());
+        
+        // Demo Code
         AddItem(new DamageItem());
         AddItem(new KnockbackResistanceItem());
         AddItem(new KnockbackItem());
         AddItem(new DamageOverTimeItem());
         AddItem(new AttackSpeedItem());
         AddItem(new ArmorItem());
-        anim = GetComponentInChildren<Animator>();
-        _hud.InitializePlayerHUD(Icon, health, maxHealth, GetInventory(), GetInventoryStats());
+        AddItem(new DamageItem());
+        AddItem(new KnockbackResistanceItem());
+        AddItem(new KnockbackItem());
+        AddItem(new DamageOverTimeItem());
+        AddItem(new AttackSpeedItem());
+        AddItem(new ArmorItem());
+        AddItem(new HealthItem());
+        AddItem(new HealthItem());
+        AddItem(new HealthItem());
     }
     public void MovementManagement(float horizontal, float vertical)
     {
@@ -861,6 +875,8 @@ public class JacksonCharacterMovement : MonoBehaviour
         {
             health = maxHealth;
         }
+
+        UpdateHealth();
     }
     public void HurtPlayer(GameObject other)
     {
@@ -888,6 +904,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         stunTimer = 10f;
         velocity = kb * transform.forward;
         Destroy(currSword);
+        UpdateHealth();
     }
     
     public List<Item> GetInventory()
@@ -906,6 +923,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         if (i.ItemMove()) { Moveinventory.Add(i); }
         if (i.ItemCooldown()) { Cooldowninventory.Add(i); }
         if (i.ItemSpecial()) { Specialinventory.Add(i); }
+        _hud.AddItem(i);
     }
     public void AssignWeapon(Weapon w)
     {
@@ -967,8 +985,13 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         return specialHold;
     }
-    
-    public void ChangeHealth(float f) { maxHealth += f; health += f; }
+
+    public void ChangeHealth(float f)
+    {
+        maxHealth += f; 
+        health += f;
+        UpdateMaxHealth();
+    }
     public void ChangeSpeed(float f) { maxSpeed += f; }
     public void ChangeDamage(float f) { damage += f; }
     public void ChangeAttackSpeed(float f) { attackSpeed += f; }
@@ -1044,5 +1067,16 @@ public class JacksonCharacterMovement : MonoBehaviour
     private void ToggleInventory()
     {
         _hud.ToggleInventory();
+    }
+
+    private void UpdateHealth()
+    {
+        Debug.Log("JCM Health / Max health: " + health + ", " + maxHealth);
+        _hud.UpdateHealth(health);
+    }
+
+    private void UpdateMaxHealth()
+    {
+        _hud.UpdateMaxHealth(health, maxHealth);
     }
 }
