@@ -150,6 +150,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         _hud = GetComponentInChildren<HUDController>();
         // _minicam = GetComponentInChildren<Camera>();
         _minicam = transform.GetComponentInChildren<MiniCam>();
+        Debug.Log(_minicam.transform.parent.name);
         // UI Variables
         Icon = Resources.Load<Sprite>("Sprites/gun");
         _playerData = GetComponent<PlayerData>();
@@ -277,10 +278,10 @@ public class JacksonCharacterMovement : MonoBehaviour
         
         // Minicam update to fix rotation
         _minicam.UpdatePosition(transform);
+        _minicam.SetIndexTexture(_playerData.PlayerIndex);
         
         // Timer added to screen
-        _hud.UpdateTimer();
-
+        if (state != PlayerState.spawn) _hud.UpdateTimer();
     }
     private void FixedUpdate()
     {
@@ -708,7 +709,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     {
         state = PlayerState.idle;
         anim = GetComponentInChildren<Animator>();
-        _hud.InitializePlayerHUD(Icon, _playerData.playerColor, health, maxHealth, inventory, GetInventoryStats());
+        _hud.InitializePlayerHUD(_playerData.PlayerIndex, Icon, _playerData.playerColor, health, maxHealth, inventory, GetInventoryStats());
         
         // Demo Code
         AddItem(new DamageItem());

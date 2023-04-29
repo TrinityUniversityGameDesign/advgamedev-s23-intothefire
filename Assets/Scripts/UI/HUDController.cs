@@ -66,7 +66,7 @@ public class HUDController : MonoBehaviour
     /// <param name="maxHealth">max health status of player</param>
     /// <param name="inventory">list of inventory items</param>
     /// <param name="stats">list of player stats</param>
-    public void InitializePlayerHUD(Sprite playerIcon, Color color, float health, float maxHealth, List<Item> inventory, List<(string, float)> stats)
+    public void InitializePlayerHUD(int index, Sprite playerIcon, Color color, float health, float maxHealth, List<Item> inventory, List<(string, float)> stats)
     {
         // Enable the canvas
         _canvas.enabled = true;
@@ -75,6 +75,7 @@ public class HUDController : MonoBehaviour
         _inventory.Initialize(inventory, itemRowPrefab);
         _quickView.Initialize(inventory, itemIconPrefab);
         _stats.InitializeStats(stats, statPrefab);
+        _minimap.SetIndexTexture(index);
         foreach (var componentsInChild in transform.parent.GetComponentsInChildren<ColorController>())
         {
             componentsInChild.SetImageColor(color);
@@ -122,7 +123,7 @@ public class HUDController : MonoBehaviour
     {
         int duration = (int)(GameManager.Instance.secondsOfGameTime - GameManager.Instance.Timer);
         int seconds = duration % 60;
-        _timer.UpdateText(string.Format("{0}:{1}", duration / 60, seconds < 10 ? "0" + seconds : seconds)); 
+        _timer.UpdateText($"{duration / 60}:{(seconds < 10 ? "0" + seconds : seconds)}"); 
     }
 
     /// <summary>

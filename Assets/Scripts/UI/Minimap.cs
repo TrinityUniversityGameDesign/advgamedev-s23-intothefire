@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Minimap : MonoBehaviour
 {
@@ -10,5 +11,11 @@ public class Minimap : MonoBehaviour
     public void ToggleMinimap()
     {
         gameObject.SetActive(!gameObject.activeSelf);
+    }
+
+    public void SetIndexTexture(int index)
+    {
+        Debug.Log(index);
+        GetComponentInChildren<RawImage>().texture = Resources.Load<RenderTexture>($"Textures/Minimap{index}");
     }
 }

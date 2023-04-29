@@ -11,4 +11,9 @@ public class MiniCam : MonoBehaviour
         transform.position = new Vector3(playerPosition.x, height, playerPosition.z);
         transform.eulerAngles = new Vector3(90f, 0f, 0f) ;
     }
+
+    public void SetIndexTexture(int index)
+    {
+        GetComponent<Camera>().targetTexture = Resources.Load<RenderTexture>($"Textures/Minimap{index}");
+    }
 }
