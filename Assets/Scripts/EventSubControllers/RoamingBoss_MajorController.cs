@@ -7,13 +7,14 @@ public class RoamingBoss_MajorController : MonoBehaviour
 {
     private NavMeshAgent agent;
     private Animator animator;
-    private DamageScript damageScript;
+    //private DamageScript damageScript;
     public float speed = 3f;
 
     public float viewDistance = 30f; // the maximum distance the game object can "see"
     public float fieldOfViewAngle = 90f; // the field of view angle in degrees
     public float followDistance = 30f; // the distance at which the object will stop following the player
     public string[] floorObjectNames; // the names of the objects on which the object can move
+    public float randomPointRadius = 100f;
 
     private bool isAttacking = false;
 
@@ -28,7 +29,7 @@ public class RoamingBoss_MajorController : MonoBehaviour
         // Start moving to a random point on the NavMesh
         MoveToRandomPoint();
 
-        damageScript = gameObject.GetComponent<DamageScript>();
+        //damageScript = gameObject.GetComponent<DamageScript>();
 
     }
 
@@ -56,7 +57,7 @@ public class RoamingBoss_MajorController : MonoBehaviour
     while (!foundPath)
     {
         // Get a random point on the NavMesh surface
-        Vector3 randomPoint = RandomNavMeshLocation(100f);
+        Vector3 randomPoint = RandomNavMeshLocation(randomPointRadius);
 
         // Check if the random point is reachable
         if (agent.CalculatePath(randomPoint, path))
@@ -175,25 +176,17 @@ private IEnumerator WaitForChargeAndAttack(Vector3 targetPosition)
     isAttacking = true;
     speed = speed / 2;
     animator.SetTrigger("Attack"); 
-    gameObject.GetComponent<DamageScript>().SetDamage(30f);
+    //gameObject.GetComponent<DamageScript>().SetDamage(30f);
     yield return new WaitForSeconds(1f);
     StartCoroutine(WaitForAttack());
 
 }
 
-private IEnumerator WaitForAttack()
-{
-    yield return new WaitForSeconds(1f);
-    animator.SetBool("IsWalking", true);
-    isAttacking = false;
-}
-
-public void OnCollisionEnter(Collision col)
+    private IEnumerator WaitForAttack()
     {
-        if (col.gameObject.CompareTag("Player"))
-        {
-            damageScript.SetDamage(30f);
-        }
+        yield return new WaitForSeconds(1f);
+        animator.SetBool("IsWalking", true);
+        isAttacking = false;
     }
 
 }
