@@ -381,6 +381,7 @@ public class JacksonCharacterMovement : MonoBehaviour
             }
             state = PlayerState.idle;
             GameManager.Instance?.TeleportPlayerToSpawn(gameObject);
+            Debug.Log("Health from character movement: " + health);
             UpdateHealth();
         }
         
@@ -1075,7 +1076,7 @@ public class JacksonCharacterMovement : MonoBehaviour
 
     private void UpdateHealth()
     {
-        _hud.UpdateHealth(health);
+        _hud.UpdateHealth(Mathf.Max(health, 0));
     }
 
     private void UpdateMaxHealth()

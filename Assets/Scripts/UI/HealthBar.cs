@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class HealthBar : MonoBehaviour
 {
     [SerializeField] private float barWidthMultiplier = 3f;
-    [SerializeField] private float animationSpeed = 0.5f;
+    [SerializeField] private float animationSpeed = 0.2f;
 
     private float _currentMaxHealth;
     private float _currentHealth;
@@ -58,7 +58,16 @@ public class HealthBar : MonoBehaviour
     /// <param name="health">player health</param>
     public void UpdateHealth(float health)
     {
-        if (_initialized) _queueManager.AddToQueue(ScaleHealthBar(health));
+        Debug.Log("Passed-in player health:" + health);
+        if (_initialized)
+        {
+            if (Mathf.Approximately(health, _currentMaxHealth))
+            {
+                _currentHealth = health;
+                _slider.value = _currentHealth/_currentMaxHealth;
+                _text.text = $"{Mathf.Round(_currentHealth)} / {Mathf.Round(_currentMaxHealth)}";
+            } else _queueManager.AddToQueue(ScaleHealthBar(health));
+        }
     }
     
     /// <summary>
@@ -73,21 +82,28 @@ public class HealthBar : MonoBehaviour
 
     private IEnumerator ScaleHealthBar(float health)
     {
-        //Debug.Log("Pre Health: curr: " + _currentHealth + ", Health: " + health);
+        float timeRatio = 0f;
+        Debug.Log("Pre Health: curr: " + _currentHealth + ", Health: " + health);
         float elapsedTime = 0f;
         while (elapsedTime < animationSpeed)
         {
             // Set elapsed time for animation
             elapsedTime += Time.deltaTime;
-            var changeRatio = elapsedTime / animationSpeed / barWidthMultiplier;
+            var changeRatio = elapsedTime / animationSpeed;
+            timeRatio = changeRatio;
+            //Debug.Log("Percent complete: " + changeRatio);
 
             // Set health value
             _currentHealth = Mathf.MoveTowards(_currentHealth, health, changeRatio);
+            //Debug.Log(_currentHealth + ", " + _currentMaxHealth);
             _slider.value = _currentHealth/_currentMaxHealth;
             _text.text = $"{Mathf.Round(_currentHealth)} / {Mathf.Round(_currentMaxHealth)}";
             
             yield return null;
         }
+        Debug.Log("Time ratio: " + timeRatio);
+        Debug.Log("Final updated player health:" + _currentHealth + " an max health:" + _currentMaxHealth);
+        Debug.Log("Original intended value: " + health);
         //Debug.Log("Post Health: curr: " + _currentHealth);
     }
     

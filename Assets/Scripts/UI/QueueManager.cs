@@ -8,6 +8,7 @@ public class QueueManager : MonoBehaviour
     private Coroutine coordinator = null;
     public void AddToQueue(IEnumerator coroutine)
     {
+        Debug.Log("Adding to coroutine: " + coroutine);
         _coroutineQueue.Enqueue(coroutine);
         if (coordinator == null) coordinator = StartCoroutine(CoroutineCoordinator());
     }
