@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 582682666417472264}
   - component: {fileID: 582682666417472267}
+  - component: {fileID: 2280469896017637720}
   m_Layer: 0
   m_Name: Global_GameManager
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &582682666417472267
 MonoBehaviour:
@@ -51,7 +52,8 @@ MonoBehaviour:
   playableCharacters:
   - {fileID: 4506805462427713629, guid: 38f8da5ed5039e549a2100ada16daec4, type: 3}
   - {fileID: 7823829716659266038, guid: ee92db0fd00779745b950926ed7c6669, type: 3}
-  - {fileID: 919132149155446097, guid: dcf29a6e8c78acf41bfe6d11103eb4a6, type: 3}
+  - {fileID: 4411933327062738419, guid: bf98e0f772931da4dbdc1bf88c7c6953, type: 3}
+  - {fileID: 8666379500712055900, guid: 025aeaa04393ad94da17adfbfb0807d2, type: 3}
   playableWeapons: []
   LastJoinedPlayer: 0
   minPlayerCount: 1
@@ -138,3 +140,18 @@ MonoBehaviour:
   DungeonGenerationComplete:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2280469896017637720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582682666417472266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 866a52d1728f43044bad229e59aab9dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pooledObjects: []
+  objectToPool: {fileID: 5287079693563789104, guid: 2abcf723ca656824eafcbfd3923ee302, type: 3}
+  amountToPool: 30

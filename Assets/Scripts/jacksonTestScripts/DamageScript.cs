@@ -48,6 +48,17 @@ public class DamageScript : MonoBehaviour
             if (currBurn > 0)
             {
                 health -= Mathf.Ceil(currBurn / 10f);
+
+                GameObject text = ObjectPooler.SharedInstance.GetPooledObject();
+                if (text != null)
+                {
+                    text.transform.parent = gameObject.transform;
+                    text.transform.position = transform.position;
+                    text.GetComponent<TextMesh>().text = Mathf.Ceil(currBurn / 10f).ToString();
+                    text.SetActive(true);
+                }
+
+
                 //burnTime--;
                 currBurn -= Mathf.Ceil(currBurn / 10f);
                 if (currBurn <= 0)
@@ -151,6 +162,15 @@ public class DamageScript : MonoBehaviour
             {
                 other.GetComponent<DamageScript>().StealLife(hurts);
             }
+        }
+
+        GameObject text = ObjectPooler.SharedInstance.GetPooledObject();
+        if (text != null)
+        {
+            text.transform.parent = gameObject.transform;
+            text.transform.position = transform.position;
+            text.GetComponent<TextMesh>().text = hurts.ToString();
+            text.SetActive(true);
         }
         
         
