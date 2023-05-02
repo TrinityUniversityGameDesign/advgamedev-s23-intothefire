@@ -61,6 +61,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     float specialTimerVal = 50;
     Weapon weapon = new Weapon();
     GameObject lastDam;
+    GameObject spark;
     float deadTick = 0;
 
 
@@ -143,6 +144,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         _minicam = GetComponentInChildren<Camera>();
         Icon = Resources.Load<Sprite>("Sprites/test-icon");
         sword = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
+        spark = Resources.Load("Prefabs/TempJacksonPrefabs/PressurisedSteam") as GameObject;
         //anim = GetComponent<Animation>();
         lr = GetComponent<LineRenderer>();
         
@@ -891,6 +893,9 @@ public class JacksonCharacterMovement : MonoBehaviour
     }
     public void HurtPlayer(GameObject other)
     {
+        GameObject ll = Instantiate(spark, transform.position, transform.rotation);
+        ll.GetComponent<SparkScript>().SetParent(this.gameObject);
+        ll.GetComponent<SparkScript>().SetSender(other);
         DamageScript temp = other.GetComponent<DamageScript>();
         float hurts = Mathf.Max(0f, (temp.GetDamage() - armor));
 
