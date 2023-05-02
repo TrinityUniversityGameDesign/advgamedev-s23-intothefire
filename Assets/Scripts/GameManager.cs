@@ -428,6 +428,9 @@ public class GameManager : MonoBehaviour
             if (pair.Key < Instance.players.Count)
             {
                 Instantiate(Instance.playableCharacters[pair.Value], Instance.players[pair.Key].transform);
+                Outline temp = Instance.players[pair.Key].gameObject.AddComponent<Outline>();
+                temp.OutlineColor = colors[pair.Key];
+                temp.OutlineWidth = 8;
             }
         }
 
@@ -515,7 +518,7 @@ public class GameManager : MonoBehaviour
 
         GameObject newUI = Instantiate(lobbyUI, GameObject.Find("PlayerLobby" + newPlayer.playerIndex + "UI").transform);
         newUI.name = "Player" + newPlayer.playerIndex + "Canvas";
-        newUI.transform.GetChild(1).GetComponent<Outline>().effectColor = colors[newPlayer.playerIndex];
+        newUI.transform.GetChild(1).GetComponent<UnityEngine.UI.Outline>().effectColor = colors[newPlayer.playerIndex];
 
         newPlayer.GetComponent<PlayerInput>().uiInputModule = newUI.transform.GetChild(0).GetComponent<InputSystemUIInputModule>();
 
