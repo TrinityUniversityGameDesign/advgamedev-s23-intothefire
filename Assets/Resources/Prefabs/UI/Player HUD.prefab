@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.117177226, y: 0.65429944}
   m_AnchorMax: {x: 0.117177226, y: 0.65429944}
-  m_AnchoredPosition: {x: 68.204, y: -60}
+  m_AnchoredPosition: {x: 68.203125, y: -60}
   m_SizeDelta: {x: 631.2388, y: 60}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &1160386810533668970
@@ -657,11 +657,11 @@ RectTransform:
   m_Father: {fileID: 3682048754220902125}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.115833335, y: 0.8944823}
-  m_AnchorMax: {x: 0.115833335, y: 0.8944823}
-  m_AnchoredPosition: {x: -129.8, y: 62.369}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 9.19989, y: -8.6310425}
   m_SizeDelta: {x: 808.993, y: 147.87}
-  m_Pivot: {x: 0.000000044703484, y: 1.0000002}
+  m_Pivot: {x: 0, y: 1.0000002}
 --- !u!222 &120315655460791883
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1982,7 +1982,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   barWidthMultiplier: 3
-  animationSpeed: 0.5
 --- !u!1 &6700214596489407559
 GameObject:
   m_ObjectHideFlags: 0
@@ -3113,7 +3112,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8423487382441879069}
   m_HandleRect: {fileID: 7554958827279034075}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3865,12 +3864,12 @@ Canvas:
   m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 1
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: -1
   m_SortingLayerID: 0
   m_SortingOrder: 1000
   m_TargetDisplay: 0
