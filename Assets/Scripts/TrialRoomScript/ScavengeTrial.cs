@@ -36,18 +36,21 @@ public class ScavengeTrial : TrialRoomScript
 
     void FixedUpdate()
     {
-        List<Transform> copy = new List<Transform>(playerList);
-        if(playerList.Count > 0){
-            foreach(Transform thing in playerList)
-            {
-                if(thing && !thing.GetComponent<Collider>().bounds.Intersects(transform.GetComponent<Collider>().bounds)){
-                    copy.Remove(thing);
+        if(currRoomState == RoomState.trialing){
+            List<Transform> copy = new List<Transform>(playerList);
+            if(playerList.Count > 0){
+                foreach(Transform thing in playerList)
+                {
+                    if(thing && !thing.GetComponent<Collider>().bounds.Intersects(transform.GetComponent<Collider>().bounds)){
+                        copy.Remove(thing);
+                    }
                 }
+                playerList = copy;
             }
-            playerList = copy;
+
+            SetDoorPresence(!(playerList.Count == 0));
         }
 
-        SetDoorPresence(!(playerList.Count == 0));
     }
 
     public override void PlaceStartPad(){
