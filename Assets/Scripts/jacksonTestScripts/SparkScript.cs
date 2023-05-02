@@ -35,9 +35,14 @@ public class SparkScript : MonoBehaviour
             //transform.localScale = new Vector3(blarg, blarg, blarg);
         }
         timer++;
-        if(timer > 25)
+        if(timer > 100)
         {
             Destroy(this.gameObject);
+        }
+        else if(timer > 25)
+        {
+
+            //this.GetComponent<ParticleSystem>().startColor = new Color(1f, 1f, 1f, (1f - timer / 50f));
         }
     }
 

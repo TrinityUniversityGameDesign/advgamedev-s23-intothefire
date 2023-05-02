@@ -695,7 +695,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                 }break;
             case PlayerState.hitstun:
                 {
-                    if(steamTick > 2)
+                    if(steamTick > 1)
                     {
                         Instantiate(spark, transform.position, transform.rotation);
                         steamTick = 0;
