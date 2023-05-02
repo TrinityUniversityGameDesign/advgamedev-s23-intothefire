@@ -18,10 +18,10 @@ public class Scythe : Weapon
         specialTimer = 0;
         specialKnockback = 60;
         lightDamage = 12;
-        lightSpeed = 0.7f;
+        lightSpeed = 1.0f;
         lightKnockback = 30;
         heavyDamage = 24;
-        heavySpeed = 0.7f;
+        heavySpeed = 1.1f;
         heavyKnockback = 60f;
         canMove = false;
     }

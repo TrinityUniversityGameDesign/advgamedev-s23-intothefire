@@ -15,10 +15,10 @@ public class Swords : Weapon
         specialTimer = 0;
         specialKnockback = 60;
         lightDamage = 10;
-        lightSpeed = 0.8f;
+        lightSpeed = 1.1f;
         lightKnockback = 30;
         heavyDamage = 15;
-        heavySpeed = 0.8f;
+        heavySpeed = 1.2f;
         heavyKnockback = 60f;
         canMove = false;
     }

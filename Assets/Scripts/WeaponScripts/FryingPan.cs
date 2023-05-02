@@ -18,9 +18,9 @@ public class FryingPan : Weapon
         specialKnockback = 45;
         lightDamage = 15;
         lightKnockback = 25;
-        lightSpeed = 0.6f;
+        lightSpeed = 0.9f;
         heavyDamage = 30;
-        heavySpeed = 0.6f;
+        heavySpeed = 1f;
         heavyKnockback = 35;
         canMove = true;
     }

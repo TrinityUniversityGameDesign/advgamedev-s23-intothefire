@@ -16,10 +16,10 @@ public class Hammer : Weapon
         specialTimer = 0;
         specialKnockback = 80;
         lightDamage = 20;
-        lightSpeed = 0.5f;
+        lightSpeed = 0.8f;
         lightKnockback = 30;
         heavyDamage = 40;
-        heavySpeed = 0.5f;
+        heavySpeed = 0.9f;
         heavyKnockback = 45;
         canMove = true;
     }

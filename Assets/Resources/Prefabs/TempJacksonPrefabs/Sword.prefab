@@ -112,6 +112,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfc98f4d60377f34b95e4ffc82ae074f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 0
+  dot: 0
+  knockback: 5
+  lifesteal: 0
 --- !u!1 &4966820984938951974
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,7 +178,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 73bb45a0f87ff6844adacc06c395c48a, type: 2}
+  - {fileID: 2100000, guid: cd7b65525e9662c4487df5b5007f7770, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
