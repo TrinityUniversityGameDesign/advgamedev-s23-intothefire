@@ -58,7 +58,7 @@ public class JacksonPlayerMovement : MonoBehaviour
     float lerpTime = 0.2f;
     float stunTimer = 0f;
     float stunValue = 0f;
-    Weapon weapon = new Swords();
+    Weapon weapon = new Weapon();
 
 
     //Here's a list of all the stats a player can obtain / items can modify:
