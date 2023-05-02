@@ -32,6 +32,7 @@ public class MovingPlatformDisable : SpecialDisable
             //nullParent(player);
             for(int i = 1000; i >= 0; i--){
                 player.parent = null;
+                DontDestroyOnLoad(player.gameObject);
             }
             //Debug.Log(player);
         }
@@ -46,11 +47,13 @@ public class MovingPlatformDisable : SpecialDisable
         {
             if(t && t.parent){
                 t.parent = null;
+                DontDestroyOnLoad(player.gameObject);
             }
             if(i == 1)
             {
                 if(t && t.parent){
                     t.parent = null;
+                    DontDestroyOnLoad(player.gameObject);
                 }
                 //gameObject.SetActive(false);
                 Destroy(gameObject);

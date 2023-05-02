@@ -51,7 +51,7 @@ public class DungeonSpikedPlatform : MonoBehaviour
 
     void OnTriggerEnter(Collider target){
         if(target.transform.tag == "Player"){
-            Debug.Log("spiked");
+            //Debug.Log("spiked");
         }
     }
 
