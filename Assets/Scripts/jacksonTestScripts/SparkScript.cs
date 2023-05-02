@@ -22,20 +22,20 @@ public class SparkScript : MonoBehaviour
     {
         if(woo != null)
         {
-            transform.position = woo.transform.position;
+            //transform.position = woo.transform.position;
         }
         if (walk != null)
         {
-            transform.LookAt(walk.transform);
+            //transform.LookAt(walk.transform);
         }
         if(woo != null && walk != null)
         {
             float blarg = Vector3.Distance(woo.transform.position, walk.transform.position);
             blarg = blarg / 2f;
-            transform.localScale = new Vector3(blarg, blarg, blarg);
+            //transform.localScale = new Vector3(blarg, blarg, blarg);
         }
         timer++;
-        if(timer > 50)
+        if(timer > 25)
         {
             Destroy(this.gameObject);
         }
