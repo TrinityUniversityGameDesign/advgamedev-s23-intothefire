@@ -95,6 +95,7 @@ public class OnCameraCameraController : MonoBehaviour
             }
             else
             {
+                
                 pitch = 60;
                 if(inputs.x > 0.5f && rightMove)
                 {
@@ -138,41 +139,51 @@ public class OnCameraCameraController : MonoBehaviour
                     lerpValPos = 1f;
                 }
                 Vector3 desiredPosition;
-                
-                // Calculate the desired position of the camera - You align the camera on the new player instead of the old player 
-                //Players never leave the selection radius - the cylinder is absolutely massive
-                Vector3 fakeTarget = new Vector3(target.position.x, target.position.y + 1f, target.position.z);
-                desiredPosition = new Vector3(targets[targetIndex].transform.position.x, target.position.y, targets[targetIndex].transform.position.z);
-                //desiredPosition = ((targets[targetIndex].transform.position /*.normalized * -radius*/));
-                //desiredPosition = ((target.position.normalized * -radius));
-                transform.position = fakeTarget + Vector3.Slerp(transform.position - fakeTarget, desiredPosition - fakeTarget, lerpValPos);
-                transform.position = fakeTarget + (fakeTarget - transform.position).normalized * 10f;
-
-                //if (flickTimer < 20)
-                //{
-
-                
-                //transform.LookAt(targets[targetIndex].transform.position);
-                //Vector3 curr = transform.forward;
-                Vector3 curr = targets[targetIndex].transform.position;
-                //transform.forward = Vector3.Lerp(old, curr, lerpValCam);
-                //old = Vector3.Lerp(target.position, curr, lerpValCam);
-                old = Vector3.Lerp(old, curr, lerpValCam);
-                transform.LookAt(old);
-
-                //Debug.Log("look at pos: " + old + "target pos " + curr);
-                if (lerpValCam < 1)
-                {
-                    lerpValCam += lerpVal;
-                }
-                else if (lerpValCam >= 1)
-                {
-                    lerpValCam = 1;
-                    lerpValPos = 1;
-                }
-                if (Mathf.Abs(target.position.y - targets[targetIndex].transform.position.y) > 20f)
+                if (targets[targetIndex] == null)
                 {
                     lockOn = false;
+                    targets[targetIndex] = target.gameObject;
+                }
+                else
+                {
+                    
+
+                    // Calculate the desired position of the camera - You align the camera on the new player instead of the old player 
+                    //Players never leave the selection radius - the cylinder is absolutely massive
+                    Vector3 fakeTarget = new Vector3(target.position.x, target.position.y + 1f, target.position.z);
+                    desiredPosition = new Vector3(targets[targetIndex].transform.position.x, target.position.y, targets[targetIndex].transform.position.z);
+                    //desiredPosition = ((targets[targetIndex].transform.position /*.normalized * -radius*/));
+                    //desiredPosition = ((target.position.normalized * -radius));
+                    transform.position = fakeTarget + Vector3.Slerp(transform.position - fakeTarget, desiredPosition - fakeTarget, lerpValPos);
+                    transform.position = fakeTarget + (fakeTarget - transform.position).normalized * 10f;
+
+                    //if (flickTimer < 20)
+                    //{
+
+
+                    //transform.LookAt(targets[targetIndex].transform.position);
+                    //Vector3 curr = transform.forward;
+                    Vector3 curr = targets[targetIndex].transform.position;
+                    //transform.forward = Vector3.Lerp(old, curr, lerpValCam);
+                    //old = Vector3.Lerp(target.position, curr, lerpValCam);
+                    old = Vector3.Lerp(old, curr, lerpValCam);
+                    transform.LookAt(old);
+
+                    //Debug.Log("look at pos: " + old + "target pos " + curr);
+                    if (lerpValCam < 1)
+                    {
+                        lerpValCam += lerpVal;
+                    }
+                    else if (lerpValCam >= 1)
+                    {
+                        lerpValCam = 1;
+                        lerpValPos = 1;
+                    }
+                    if (Mathf.Abs(target.position.y - targets[targetIndex].transform.position.y) > 20f)
+                    {
+                        lockOn = false;
+
+                    }
                 }
                 /*if (Vector3.Distance(old, curr) < 0.5f)
                 {
@@ -186,7 +197,10 @@ public class OnCameraCameraController : MonoBehaviour
                 //{
                 //transform.LookAt(targets[targetIndex].transform.position);
                 //}
-
+                if (!lockOn)
+                {
+                    targets.Clear();
+                }
 
                 float closestYaw = 0;
                 float closestPos = 100000;

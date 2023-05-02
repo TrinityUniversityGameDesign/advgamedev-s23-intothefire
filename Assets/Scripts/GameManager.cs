@@ -456,22 +456,7 @@ public class GameManager : MonoBehaviour
                 {
                     Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Scythe());
                 }
-                else if (pair.Value == 4)
-                {
-                    Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Boots());
-                }
-                else if (pair.Value == 5)
-                {
-                    Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Gauntlets());
-                }
-                else if (pair.Value == 6)
-                {
-                    Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Whip());
-                }
-                else if (pair.Value == 7)
-                {
-                    Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Jetpack());
-                }
+                
             }
         }
     }

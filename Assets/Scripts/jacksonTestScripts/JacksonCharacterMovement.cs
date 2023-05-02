@@ -57,7 +57,9 @@ public class JacksonCharacterMovement : MonoBehaviour
     float stunTimer = 0f;
     float stunValue = 0f;
     float burnTime = 0f;
-    Weapon weapon = new FryingPan();
+    float specialTimer = 100;
+    float specialTimerVal = 50;
+    Weapon weapon = new Weapon();
     GameObject lastDam;
     float deadTick = 0;
 
@@ -69,7 +71,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     int damTime = 0;
     float maxSpeed = 20f;
     float damage = 0f;
-    float attackSpeed = 1f;
+    float attackSpeed = 0f;
     float critRate = 0.1f;
     float armor = 0f;
     float lifesteal = 0f;
@@ -333,6 +335,11 @@ public class JacksonCharacterMovement : MonoBehaviour
             specialPress--;
         }
 
+        if(specialTimer <= specialTimerVal)
+        {
+            specialTimer++;
+        }
+        
         if(repeatTimer >= 50)
         {
             repeatTimer = 0;
@@ -421,7 +428,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                         lightPress = 0f;
                         state = PlayerState.attack;
                         //anim.Play("lightAttack");
-                        currSword = Instantiate(sword, transform.position, transform.rotation);
+                        currSword = Instantiate(weapon.weapon, transform.position, transform.rotation);
                         currSword.transform.parent = transform;
                         currSword.GetComponent<DamageScript>().SetParent(this.gameObject);
                         currSword.GetComponent<DamageScript>().SetDamage(CalculateDamage(weapon.lightDamage));
@@ -448,7 +455,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                         //targetRot = currSword.transform.localRotation * Quaternion.AngleAxis(-45f, Vector3.up); //* currSword.transform.localRotation;
                         //currSword.transform.localRotation = currSword.transform.localRotation * Quaternion.AngleAxis(45f, Vector3.up); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);
                         currSword.transform.rotation = currSword.transform.parent.rotation;
-                        anim.SetFloat("Speed", attackSpeed);
+                        anim.SetFloat("Speed", attackSpeed + weapon.lightSpeed);
                         currSword.transform.localPosition = Vector3.zero;
                         currSword.transform.rotation = Quaternion.AngleAxis(-45f, Vector3.right) * currSword.transform.rotation;
                     }
@@ -461,7 +468,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                         heavyPress = 0f;
                         state = PlayerState.attack;
                         //anim.Play("heavyAttack");
-                        currSword = Instantiate(sword, transform.position, transform.rotation);
+                        currSword = Instantiate(weapon.weapon, transform.position, transform.rotation);
                         
                         currSword.transform.parent = transform;
                         currSword.GetComponent<DamageScript>().SetParent(this.gameObject);
@@ -491,7 +498,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                             //bullet.GetComponent<Rigidbody>().velocity = transform.forward * 15f;
                        currSword.transform.localPosition = Vector3.zero;
                        
-                        anim.SetFloat("Speed", attackSpeed);
+                        anim.SetFloat("Speed", attackSpeed + weapon.heavySpeed);
                     }
                     if(jumpPress > 0 && currJumps >0)
                     {
@@ -522,8 +529,9 @@ public class JacksonCharacterMovement : MonoBehaviour
                         velocity = velocity + new Vector3(0f, jumpHeight / 2f, 0f);
 
                     }
-                    if(specialPress > 0 && currSpecials > 0)
+                    if(specialPress > 0 && currSpecials > 0 && ((grounded && specialTimer > specialTimerVal) || !grounded))
                     {
+                        specialTimer = 0;
                         foreach (Item it in Specialinventory)
                         {
                             it.ItemSpecial();
@@ -536,7 +544,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                         {
                             Rotating(h, v);
                         }
-                        currSword = Instantiate(sword, transform.position, transform.rotation);
+                        currSword = Instantiate(weapon.specialWeapon, transform.position, transform.rotation);
                         currSword.transform.parent = transform;
                         currSword.GetComponent<DamageScript>().SetParent(this.gameObject);
                         currSword.GetComponent<DamageScript>().SetDamage(CalculateDamage(weapon.specialDamage));
@@ -555,8 +563,14 @@ public class JacksonCharacterMovement : MonoBehaviour
                 break;
             case PlayerState.attack:
                 {
+                    //airStrike = false;
+                    
+                    if (h != 0 || v != 0)
+                    {
+                        Rotating(h, v);
+                    }
                     //Movement shit
-                    if ((grounded && !airStrike) || (h == 0f && v == 0f))
+                    if (grounded)
                     {
                         if (Magnitude() < 4f)
                         {
@@ -567,26 +581,23 @@ public class JacksonCharacterMovement : MonoBehaviour
                             Vector2 drag = new Vector2(velocity.x, velocity.z);
                             drag = drag.normalized;
                             Vector3 lazy = new Vector3(drag.x, 0f, drag.y);
-
-                            velocity = lazy * (Magnitude() - 3f) + new Vector3(0f, velocity.y, 0f);
+                            if (airStrike)
+                            {
+                                velocity = lazy * (Magnitude() - 1f) + new Vector3(0f, velocity.y, 0f);
+                            }
+                            else
+                            {
+                                velocity = lazy * (Magnitude() - 2f) + new Vector3(0f, velocity.y, 0f);
+                            }
                         }
                     }
-                    else if (!grounded)
+                    else
                     {
                         airStrike = true;
                     }
-                    if (airStrike)
-                    {
-                        if (ArbitraryMagnitude(oldSpeed) > Magnitude() && (h != 0 && v !=0))
-                        {
-                            velocity = new Vector3(oldSpeed.x, velocity.y, oldSpeed.z);
-                        }
-                    }
                     
-                    if (ArbitraryMagnitude(oldSpeed) < Magnitude())
-                    {
-                        oldSpeed = velocity;
-                    }
+                    
+                    
                         
                     //rb.AddForce(new Vector3(0f, -1f, 0f) * gravity);
                     velocity = velocity + (new Vector3(0f, -1f, 0f) * gravity);
@@ -616,6 +627,7 @@ public class JacksonCharacterMovement : MonoBehaviour
                 break;
             case PlayerState.special:
                 {
+                    specialTimer = 0;
                     weapon.AssignHitbox(currSword);
                     //Debug.Log("currently in the special state");
                     bool ahhh = weapon.SpecialAttack(h,v);
@@ -857,6 +869,14 @@ public class JacksonCharacterMovement : MonoBehaviour
         grounded = g;
     }
 
+    public void SetAnim(string s)
+    {
+        anim.SetTrigger(s);
+    }
+    public Animator GetAnim()
+    {
+        return anim;
+    }
     public bool GetGrounded()
     {
         return grounded;
@@ -904,6 +924,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
         stunTimer = 10f;
         velocity = kb * transform.forward;
+        //Debug.Log("we're hit");
         Destroy(currSword);
         UpdateInventoryUI();
     }
