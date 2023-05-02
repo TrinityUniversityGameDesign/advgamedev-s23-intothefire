@@ -11,9 +11,16 @@ public class MovingPlatformDisable : SpecialDisable
     Transform player;
 
     public override void disable(){
+        transform.parent = null;
         plat = transform.Find("Platform");
         children = transform.Find("Children");
         plat.GetComponent<MovingPlatform>().enabled = false;
+        plat.GetComponent<MeshRenderer>().enabled = false;
+        Collider[] colls = plat.GetComponents<Collider>();
+        foreach (Collider thing in colls)
+        {
+            thing.enabled = false;
+        }
         //plat.GetComponent<BoxCollider>().enabled = false;
         //Destroy(plat.GetComponent<BoxCollider>());
         foreach(Transform ch in children){
@@ -23,7 +30,9 @@ public class MovingPlatformDisable : SpecialDisable
         }
         if(player != null){
             //nullParent(player);
-            player.parent = null;
+            for(int i = 1000; i >= 0; i--){
+                player.parent = null;
+            }
             //Debug.Log(player);
         }
 
@@ -40,7 +49,11 @@ public class MovingPlatformDisable : SpecialDisable
             }
             if(i == 1)
             {
-                gameObject.SetActive(false);
+                if(t && t.parent){
+                    t.parent = null;
+                }
+                //gameObject.SetActive(false);
+                Destroy(gameObject);
             }
             yield return null;
         }
