@@ -9,6 +9,8 @@ public class FryingPan : Weapon
     Quaternion boomRot;
     public FryingPan()
     {
+        weapon = Resources.Load("Prefabs/Weapons/FryingPan") as GameObject;
+        specialWeapon = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
         name = "Frying Pan";
         description = "Tangled is better than Frozen";
         specialDuration = 30;
@@ -16,9 +18,9 @@ public class FryingPan : Weapon
         specialKnockback = 45;
         lightDamage = 15;
         lightKnockback = 25;
-        lightSpeed = 0.35f;
+        lightSpeed = 0.9f;
         heavyDamage = 30;
-        heavySpeed = 0.2f;
+        heavySpeed = 1f;
         heavyKnockback = 35;
         canMove = true;
     }
@@ -42,9 +44,9 @@ public class FryingPan : Weapon
             {
                 lazy.SetVelocity(lazy.GetVelocity() + player.transform.forward * 10f + new Vector3(0f, 20f, 0f));
             }
-            hitbox.transform.localRotation = hitbox.transform.localRotation * Quaternion.AngleAxis(-90f, Vector3.right);
+            //hitbox.transform.localRotation = hitbox.transform.localRotation * Quaternion.AngleAxis(-90f, Vector3.right);
             boomRot = hitbox.transform.localRotation;
-            hitbox.transform.localScale = new Vector3(3.5f, 3.5f, 3.5f);
+            //hitbox.transform.localScale = new Vector3(3.5f, 3.5f, 3.5f);
             hitbox.transform.position = new Vector3(hitbox.transform.position.x, hitbox.transform.position.y - 3f, hitbox.transform.position.z);
             boomPos = hitbox.transform.position;
         }
@@ -63,5 +65,10 @@ public class FryingPan : Weapon
             specialTimer++;
             return true;
         }
+    }
+
+    public override void LoadWeapon()
+    {
+        weapon = Resources.Load("Prefabs/Weapons/FryingPan") as GameObject;
     }
 }

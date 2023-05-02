@@ -60,9 +60,6 @@ public class MiniBossAI : MonoBehaviour
     // Called by the Animator when the attack animation finishes
     public void FinishAttack()
     {
-        isAttacking = false;
-        agent.speed = moveSpeed;
-
         stomp.SetActive(false);
         charge.SetActive(false);
 
