@@ -47,6 +47,8 @@ public class SideEventController : MonoBehaviour
     
         // Get the corresponding option from the enum
         _currentEvent = (SideEvents)randomIndex;
+
+        _currentEvent = SideEvents.Miniboss;
     
 
         //save copies of player position components before players are sent to side event
