@@ -1076,7 +1076,8 @@ public class JacksonCharacterMovement : MonoBehaviour
 
     private void UpdateHealth()
     {
-        _hud.UpdateHealth(Mathf.Max(health, 0));
+        Debug.Log("Sending health to healthbar: " + health);
+        _hud.UpdateHealth(health);
     }
 
     private void UpdateMaxHealth()
