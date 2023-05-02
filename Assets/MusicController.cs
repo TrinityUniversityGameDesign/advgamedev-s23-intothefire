@@ -26,41 +26,23 @@ public class MusicController : MonoBehaviour
 
 	private void Start()
 	{
-
     GameManager.Instance.StartupNewGameBegin.AddListener(playMainMenu);
+    
+    GameManager.Instance.LabyrinthExploreBegin.AddListener(playLabyrinth);
 
+    GameManager.Instance.SideEventBegin.AddListener(playSideEvent);
 
+    GameManager.Instance.SideEventEnd.AddListener(playLabyrinth);
 
-    //public UnityEvent LabyrinthExploreBegin; //play labyrinth
+    GameManager.Instance.ShowdownBegin.AddListener(playShowdown);
 
-    //public UnityEvent LabyrinthExploreEnd;
+    GameManager.Instance.PausedBegin.AddListener(audioSource.Pause);
 
-    //public UnityEvent SideEventBegin; //play side event
+    GameManager.Instance.PausedEnd.AddListener(audioSource.UnPause);
 
-    //public UnityEvent SideEventEnd; //resume labyrinth
+    GameManager.Instance.EndScreenBegin.AddListener(playVictory);
 
-
-
-
-    //public UnityEvent ShowdownBegin; //play showdown
-
-    //public UnityEvent ShowdownEnd;
-
-
-
-    //public UnityEvent PausedBegin; //pause current song
-
-    //public UnityEvent PausedEnd; //unpause current song
-
-
-
-
-    //public UnityEvent EndScreenBegin; //play victory
-
-    //public UnityEvent EndScreenEnd;  //play main menu???
-
-
-
+    GameManager.Instance.EndScreenEnd.AddListener(audioSource.Stop);
   }
 
   void playAudio(AudioClip audio)
@@ -69,6 +51,7 @@ public class MusicController : MonoBehaviour
     audioSource.clip = currentSong;
     audioSource.Play();
   }
+
 
   void playMainMenu()
 	{
@@ -80,6 +63,20 @@ public class MusicController : MonoBehaviour
     playAudio(labyrinth);
   }
 
+  void playSideEvent()
+	{
+    playAudio(sideEvent);
+	}
+
+  void playShowdown()
+  {
+    playAudio(showdown);
+  }
+
+  void playVictory()
+  {
+    playAudio(victory);
+  }
 
 
 
