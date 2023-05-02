@@ -27,7 +27,9 @@ public class MusicController : MonoBehaviour
 	private void Start()
 	{
     GameManager.Instance.StartupNewGameBegin.AddListener(playMainMenu);
-    
+
+    GameManager.Instance.LobbyBegin.AddListener(playMainMenu);    
+
     GameManager.Instance.LabyrinthExploreBegin.AddListener(playLabyrinth);
 
     GameManager.Instance.SideEventBegin.AddListener(playSideEvent);
@@ -47,9 +49,12 @@ public class MusicController : MonoBehaviour
 
   void playAudio(AudioClip audio)
 	{
-    currentSong = audio;
-    audioSource.clip = currentSong;
-    audioSource.Play();
+    if(currentSong != audio)
+		{
+      currentSong = audio;
+      audioSource.clip = currentSong;
+      audioSource.Play();
+		}
   }
 
 
