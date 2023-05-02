@@ -9,6 +9,8 @@ public class FryingPan : Weapon
     Quaternion boomRot;
     public FryingPan()
     {
+        weapon = Resources.Load("Prefabs/Weapons/FryingPan") as GameObject;
+        specialWeapon = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
         name = "Frying Pan";
         description = "Tangled is better than Frozen";
         specialDuration = 30;
@@ -16,9 +18,9 @@ public class FryingPan : Weapon
         specialKnockback = 45;
         lightDamage = 15;
         lightKnockback = 25;
-        lightSpeed = 0.35f;
+        lightSpeed = 0.6f;
         heavyDamage = 30;
-        heavySpeed = 0.2f;
+        heavySpeed = 0.6f;
         heavyKnockback = 35;
         canMove = true;
     }
@@ -63,5 +65,10 @@ public class FryingPan : Weapon
             specialTimer++;
             return true;
         }
+    }
+
+    public override void LoadWeapon()
+    {
+        weapon = Resources.Load("Prefabs/Weapons/FryingPan") as GameObject;
     }
 }

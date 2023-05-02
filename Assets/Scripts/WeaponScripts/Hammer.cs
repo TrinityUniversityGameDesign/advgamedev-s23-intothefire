@@ -8,16 +8,18 @@ public class Hammer : Weapon
     Vector3 boomPos;
     public Hammer()
     {
+        weapon = Resources.Load("Prefabs/Weapons/Hammer") as GameObject;
+        specialWeapon = Resources.Load("Prefabs/Weapons/Hammer") as GameObject;
         name = "Hammer";
         description = "Heavy slow big hammer, with a very powerful charge";
         specialDuration = 10000;
         specialTimer = 0;
         specialKnockback = 80;
-        lightDamage = 15;
-        lightSpeed = 0.35f;
+        lightDamage = 20;
+        lightSpeed = 0.5f;
         lightKnockback = 30;
-        heavyDamage = 30;
-        heavySpeed = 0.2f;
+        heavyDamage = 40;
+        heavySpeed = 0.5f;
         heavyKnockback = 45;
         canMove = true;
     }
@@ -27,7 +29,7 @@ public class Hammer : Weapon
         //Debug.Log("special timer: " +specialTimer + " special duration: " + specialDuration);
         if(specialTimer == 0)
         {
-            
+            hitbox.transform.localRotation = hitbox.transform.localRotation * Quaternion.AngleAxis(90f, Vector3.right);
             JacksonCharacterMovement lazy = player.GetComponent<JacksonCharacterMovement>();
             Vector3 tmp = lazy.GetVelocity();
             if(tmp.y < 0)
@@ -72,5 +74,9 @@ public class Hammer : Weapon
             }
             return true;
         }
+    }
+    public override void LoadWeapon()
+    {
+        weapon = Resources.Load("Prefabs/Weapons/Hammer") as GameObject;
     }
 }
