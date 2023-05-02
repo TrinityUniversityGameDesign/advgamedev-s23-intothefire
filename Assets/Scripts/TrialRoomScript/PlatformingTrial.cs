@@ -21,21 +21,39 @@ public class PlatformingTrial : TrialRoomScript
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+        List<Transform> copy = new List<Transform>(playerList);
+        if(playerList.Count > 0){
+            foreach(Transform thing in playerList)
+            {
+                if(thing && !thing.GetComponent<Collider>().bounds.Intersects(transform.GetComponent<Collider>().bounds)){
+                    copy.Remove(thing);
+                }
+            }
+            playerList = copy;
+        }
+
+        SetDoorPresence(!(playerList.Count == 0));
     }
 
     new public void OnTriggerEnter(Collider other)
 	{
 		//Debug.Log(currRoomState);
 		//Debug.Log("Collided with: " + other);
-		if(other.transform.tag == "Player" && currRoomState == RoomState.empty)
+		if(other.transform.tag == "Player")
 		{
-			//Debug.Log("Player found for this room");
-			RoomClose();
-			playerRef = other.gameObject;
-            StartTrial();
+            if(currRoomState == RoomState.empty){
+                //Debug.Log("Player found for this room");
+                RoomClose();
+                //playerRef = other.gameObject;
+                StartTrial();
+            }
+
+            if(!playerList.Contains(other.transform)){
+                playerList.Add(other.transform);
+            }
+			
 		}
 		//Debug.Log(doors);
 	}
