@@ -6,6 +6,8 @@ using UnityEngine.Events;
 public class ShowdownVictorScript : MonoBehaviour
 {
 	List<GameObject> survivors = new List<GameObject>();
+	List<GameObject> playersInOrderOfLoss = new List<GameObject>();
+
 
 	public UnityEvent ShowdownWinnerDecided = new UnityEvent();
 
@@ -34,6 +36,7 @@ public class ShowdownVictorScript : MonoBehaviour
 	{
 		if(survivors.Count == 1)
 		{
+			playersInOrderOfLoss.Add(survivors[0]);
 			GameManager.Instance.ExternalShowdownEnd.Invoke();
 		}
 
@@ -41,6 +44,7 @@ public class ShowdownVictorScript : MonoBehaviour
 		{
 			if(survivors[i].transform.position.y == 350f)
 			{
+				playersInOrderOfLoss.Add(survivors[i]);
 				survivors.Remove(survivors[i]);
 			}
 		}

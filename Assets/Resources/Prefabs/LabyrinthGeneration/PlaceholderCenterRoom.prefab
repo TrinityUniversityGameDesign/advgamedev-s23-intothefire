@@ -1576,6 +1576,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 829102989689652901}
     m_Modifications:
+    - target: {fileID: 384927388877930057, guid: 4a659a7cbfb5d5942ac92819e8f99c53, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 553211252410843212, guid: 4a659a7cbfb5d5942ac92819e8f99c53, type: 3}
       propertyPath: m_Name
       value: Axe (1)
@@ -9593,6 +9597,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8046894459456474251}
     m_Modifications:
+    - target: {fileID: 1547761078639940220, guid: 8131f69f01ff14c4aa1c15bdfdbfc253, type: 3}
+      propertyPath: isCenterBoss
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2381000845682810882, guid: 8131f69f01ff14c4aa1c15bdfdbfc253, type: 3}
       propertyPath: m_Name
       value: Miniboss
@@ -9641,21 +9649,49 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5167393408442213182, guid: 8131f69f01ff14c4aa1c15bdfdbfc253, type: 3}
+      propertyPath: damage
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5167393408442213182, guid: 8131f69f01ff14c4aa1c15bdfdbfc253, type: 3}
+      propertyPath: knockback
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 5381516099161740931, guid: 8131f69f01ff14c4aa1c15bdfdbfc253, type: 3}
+      propertyPath: m_Radius
+      value: 2.27
+      objectReference: {fileID: 0}
     - target: {fileID: 5381516099161740931, guid: 8131f69f01ff14c4aa1c15bdfdbfc253, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7778962690905272154, guid: 8131f69f01ff14c4aa1c15bdfdbfc253, type: 3}
+      propertyPath: damage
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8033916576483936244, guid: 8131f69f01ff14c4aa1c15bdfdbfc253, type: 3}
       propertyPath: damage
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8033916576483936244, guid: 8131f69f01ff14c4aa1c15bdfdbfc253, type: 3}
       propertyPath: knockback
-      value: 30
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9005872389670858027, guid: 8131f69f01ff14c4aa1c15bdfdbfc253, type: 3}
+      propertyPath: m_Height
+      value: 18.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 9005872389670858027, guid: 8131f69f01ff14c4aa1c15bdfdbfc253, type: 3}
+      propertyPath: m_Radius
+      value: 7.08
       objectReference: {fileID: 0}
     - target: {fileID: 9005872389670858027, guid: 8131f69f01ff14c4aa1c15bdfdbfc253, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9005872389670858027, guid: 8131f69f01ff14c4aa1c15bdfdbfc253, type: 3}
+      propertyPath: m_Center.y
+      value: 2.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8131f69f01ff14c4aa1c15bdfdbfc253, type: 3}

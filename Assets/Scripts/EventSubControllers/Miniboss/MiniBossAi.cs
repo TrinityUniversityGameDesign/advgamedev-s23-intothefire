@@ -9,6 +9,8 @@ public class MiniBossAi : MonoBehaviour
     public float moveSpeed = 10f; // Movement speed
     float turnSpeed = 3600f; // Rotation speed
 
+    public bool isCenterBoss = false; 
+
     private NavMeshAgent agent; // Reference to the NavMeshAgent component
     private Animator animator; // Reference to the Animator component
 
@@ -29,9 +31,11 @@ public class MiniBossAi : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         isAttacking = false;
 
+        damageTracker = new List<float> { 0, 0, 0, 0};
+    
         stomp = transform.GetChild(2).gameObject;
         charge = transform.GetChild(3).gameObject;
-        navSphere = transform.GetChild(4).gameObject;
+        navSphere = null;
         if(navSphere != null) navSphere.transform.parent = null;
 
         SetRandomDestination();
@@ -95,13 +99,29 @@ public class MiniBossAi : MonoBehaviour
 
         if (other.gameObject.tag == "Damage")
         {
-            int damageDealer = GameManager.Instance.players.IndexOf(other.gameObject.transform.parent.gameObject);
-            DamageScript otherScript = other.gameObject.GetComponent<DamageScript>();
+            Transform potentialParent = other.gameObject.transform;
+            while(potentialParent.parent != null)
+		        {
+              potentialParent = potentialParent.parent;
+		        }
 
+            //Debug.Log(potentialParent.name);
+            
+
+            int damageDealer = GameManager.Instance.players.IndexOf(potentialParent.gameObject);
+            DamageScript otherScript = other.gameObject.GetComponent<DamageScript>();
+            Debug.Log(damageDealer);
+            Debug.Log(damageTracker.Count);
             if (damageDealer != -1)
             {
                 //Get the damage total
                 damageTracker[damageDealer] += otherScript.GetDamage();
+                
+        
+                if(isCenterBoss)
+        				{
+                  transform.GetComponent<CenterBossScript>().UpdateDamageSum(damageDealer);
+				        }
 
                 //Compute the DOT
                 float dotAmt = otherScript.GetDamageOverTime();
