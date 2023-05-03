@@ -65,6 +65,7 @@ public class VictoryController : MonoBehaviour
             var iconContainer = _iconContainers[i];
             FillItemContainer(_itemContainers[i], jcm.inventory);
             FillIcon(_iconContainers[i], jcm.Icon);
+            jcm._renderCamera.gameObject.SetActive(true);
         }
     }
 
@@ -81,6 +82,7 @@ public class VictoryController : MonoBehaviour
     
     private void FillIcon(VisualElement iconContainer, Sprite icon)
     {
-        iconContainer.style.backgroundImage = new StyleBackground(icon);
+        //iconContainer.style.backgroundImage = new StyleBackground(icon);
+        //iconContainer.style.backgroundImage = new StyleBackground();
     }
 }
