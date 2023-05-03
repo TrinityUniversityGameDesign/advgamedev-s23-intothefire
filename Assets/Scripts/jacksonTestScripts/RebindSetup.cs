@@ -9,7 +9,7 @@ public class RebindSetup : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        findPlayer = transform.parent.parent.parent.name;
+        findPlayer = transform.parent.parent.parent.parent.name;
         if (findPlayer.Contains("0"))
         {
             player = GameObject.Find("Player0");
@@ -26,7 +26,7 @@ public class RebindSetup : MonoBehaviour
         {
             player = GameObject.Find("Player3");
         }
-        foreach (Transform child in transform)
+        foreach (Transform child in transform.GetChild(0))
         {
             if(child.gameObject.GetComponent<RebindScript>() != null)
             {
