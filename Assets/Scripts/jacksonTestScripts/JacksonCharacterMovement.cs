@@ -155,7 +155,8 @@ public class JacksonCharacterMovement : MonoBehaviour
         _hud = GetComponentInChildren<HUDController>();
         // _minicam = GetComponentInChildren<Camera>();
         _minicam = transform.GetComponentInChildren<MiniCam>();
-        _minicam.SetIndexTexture(_playerData.PlayerIndex);
+        Debug.Log("Got minicam?");
+        Debug.Log(_minicam.name);
         // UI Variables
         Icon = Resources.Load<Sprite>("Sprites/gun");
         _playerData = GetComponent<PlayerData>();
@@ -743,6 +744,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         state = PlayerState.idle;
         anim = GetComponentInChildren<Animator>();
         _hud.InitializePlayerHUD(_playerData.PlayerIndex, Icon, _playerData.playerColor, health, maxHealth, inventory, GetInventoryStats());
+        _minicam.SetIndexTexture(_playerData.PlayerIndex);
         
         // Demo Code
         AddItem(new DamageItem());
