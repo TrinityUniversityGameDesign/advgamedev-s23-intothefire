@@ -47,7 +47,8 @@ public class SideEventController : MonoBehaviour
     
         // Get the corresponding option from the enum
         _currentEvent = (SideEvents)randomIndex;
-    
+
+        _currentEvent = SideEvents.Miniboss;
 
         //save copies of player position components before players are sent to side event
         for (int i = 0; i < GameManager.Instance.players.Count; i++)
@@ -60,10 +61,12 @@ public class SideEventController : MonoBehaviour
         switch (_currentEvent)
         {
             case SideEvents.Spleef:
-                spawnedSpleefController = Instantiate(spleefControllerPrefab, this.transform);
+                spawnedSpleefController = Instantiate(spleefControllerPrefab, new Vector3(1000, 0, 1000), Quaternion.identity);
+                spawnedSpleefController.transform.parent = transform;
                 break;
             case SideEvents.Miniboss:
-                spawnedMinibossController = Instantiate(miniBossControllerPrefab, transform);
+                spawnedMinibossController = Instantiate(miniBossControllerPrefab, new Vector3(1000, 0, 1000), Quaternion.identity);
+                spawnedMinibossController.transform.parent = transform;
                 break;
             default:
                 break;
