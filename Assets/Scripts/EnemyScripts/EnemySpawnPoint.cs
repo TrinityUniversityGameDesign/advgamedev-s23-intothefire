@@ -13,7 +13,6 @@ public class EnemySpawnPoint : MonoBehaviour
     public int GetWaveNumber(){return waveNumber;}
 
     public GameObject SpawnEnemy(){
-        Destroy(gameObject);
         return Instantiate(GetEnemy(), transform.position, transform.rotation);
     }
 }

@@ -346,7 +346,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.EndScreen:
                 Instance.EndScreenBegin.Invoke();
-                SceneManager.LoadScene("Victory", LoadSceneMode.Additive);
+                //
                 gameInProgress = false;  //Get the victor of the game by doing victorScript.getVictor();
                 break;
             case GameState.Startup_New_Game:
@@ -624,6 +624,7 @@ public class GameManager : MonoBehaviour
     public void ExternalEndTheShowdown()
 	  {
       Instance.OnStateEnter(GameState.EndScreen);
+      //SceneManager.LoadScene("Victory", LoadSceneMode.Single);
 	  }
 
     #endregion

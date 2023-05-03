@@ -18,7 +18,7 @@ public class VictoryController : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        _survivors = GameManager.Instance.players;
+        _survivors = GameObject.Find("VictorWatcher").GetComponent<ShowdownVictorScript>().playersInOrderOfLoss;
     }
     private void OnEnable()
     {
@@ -61,6 +61,8 @@ public class VictoryController : MonoBehaviour
         for (int i = 0; i < _survivors.Count; i++)
         {
             var jcm = _survivors[i].GetComponent<JacksonCharacterMovement>();
+            var itemContainer = _itemContainers[i];
+            var iconContainer = _iconContainers[i];
             FillItemContainer(_itemContainers[i], jcm.inventory);
             FillIcon(_iconContainers[i], jcm.Icon);
         }
@@ -70,7 +72,7 @@ public class VictoryController : MonoBehaviour
     {
         foreach (var item in items)
         {
-            VisualElement itemEntry = new VisualElement();
+            VisualElement itemEntry = _itemTemplate.Instantiate();
             itemEntry.Q<VisualElement>("Item-Icon").style.backgroundImage = new StyleBackground(item.icon);
             itemEntry.Q<Label>("Item-Name").text = item.name;
             itemContainer.Add(itemEntry);
