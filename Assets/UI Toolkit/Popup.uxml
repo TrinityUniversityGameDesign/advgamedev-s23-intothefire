@@ -1,13 +1,18 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/menu.uss?fileID=7433441132597879392&amp;guid=68ae899bd11c945feace9450e11381fa&amp;type=3#menu" />
     <ui:VisualElement style="justify-content: center; align-items: center; flex-grow: 1;">
-        <ui:VisualElement style="width: 80%; height: 80%; background-color: rgba(0, 0, 0, 0.75);">
+        <ui:VisualElement style="width: 80%; height: 80%; background-color: rgba(0, 0, 0, 0.75); flex-grow: 1;">
             <ui:Label text="HOW TO PLAY" display-tooltip-when-elided="true" name="Title" style="font-size: 60px; -unity-font-style: bold; -unity-text-align: upper-center; padding-left: 0; padding-right: 0; padding-top: 10px; padding-bottom: 10px; color: rgb(209, 11, 11);" />
             <ui:VisualElement name="Instructions-Container" style="flex-grow: 1; padding-left: 50px; padding-right: 50px; padding-top: 0; padding-bottom: 0; color: rgb(255, 255, 255);">
-                <ui:Label text="The instrucitons for this gmae are are al;sfjaslfkajos;difja;sfhas;jkas;ld" display-tooltip-when-elided="true" name="Instructions" style="font-size: 28px; flex-grow: 1; white-space: normal;" />
+                <ui:VisualElement style="flex-grow: 0;">
+                    <ui:Label text="Traverse the labyrinth and complete trial rooms to earn power-ups." display-tooltip-when-elided="true" name="Instructions" style="font-size: 20px; flex-grow: 1; white-space: normal;" />
+                    <ui:Label text="There are combat rooms where you must defeat waves if enemies, platforming rooms where you must reach the goal (a black switch at the end), and scavenge hunt rooms where you must break boxes to find the treasure." display-tooltip-when-elided="true" name="Instructions" style="font-size: 20px; flex-grow: 1; white-space: normal;" />
+                    <ui:Label text="There is a central room to the labyrinth and a boss at the top. Defeat it to gain 5 additional power-ups!" display-tooltip-when-elided="true" name="Instructions" style="font-size: 20px; flex-grow: 1; white-space: normal;" />
+                    <ui:Label text="After 10 minutes, each player will be dropped into an arena to fight to be the last one standing!" display-tooltip-when-elided="true" name="Instructions" style="font-size: 20px; flex-grow: 1; white-space: normal;" />
+                </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement>
-                <ui:Button text="Close" display-tooltip-when-elided="true" name="Close-Button" class="menu-button" style="flex-grow: 0;" />
+            <ui:VisualElement style="flex-grow: 0;">
+                <ui:Button text="Close" display-tooltip-when-elided="true" name="Close-Button" class="menu-button" style="flex-grow: 1; flex-shrink: 1;" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

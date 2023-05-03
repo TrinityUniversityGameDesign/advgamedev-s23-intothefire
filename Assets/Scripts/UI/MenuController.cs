@@ -77,6 +77,7 @@ public class MenuController : MonoBehaviour
     {
         _defaultMenu.Clear();
         _defaultMenu.Add(_startButton);
+        _defaultMenu.Add(_instructionsButton);
         _defaultMenu.Add(_settingsButton);
         _defaultMenu.Add(_quitButton);
     }
