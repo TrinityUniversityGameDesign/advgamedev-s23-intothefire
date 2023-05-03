@@ -61,6 +61,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     float specialTimerVal = 50;
     Weapon weapon = new Weapon();
     GameObject lastDam;
+    GameObject spark;
     float deadTick = 0;
 
 
@@ -86,7 +87,7 @@ public class JacksonCharacterMovement : MonoBehaviour
     float currSpecials = 1f;
     float jumpHeight = 20f;
     float repeatTimer = 0f;
-
+    float steamTick = 0;
     bool invincible = false;
 
 
@@ -143,6 +144,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         _minicam = GetComponentInChildren<Camera>();
         Icon = Resources.Load<Sprite>("Sprites/test-icon");
         sword = Resources.Load("Prefabs/TempJacksonPrefabs/Sword") as GameObject;
+        spark = Resources.Load("Prefabs/TempJacksonPrefabs/Steam") as GameObject;
         //anim = GetComponent<Animation>();
         lr = GetComponent<LineRenderer>();
         
@@ -380,7 +382,6 @@ public class JacksonCharacterMovement : MonoBehaviour
         }
         if (transform.position.y < -40f || (state == PlayerState.dead && deadTick > 40))
         {
-            Debug.Log("player is reset");
             health = maxHealth;
             velocity = Vector3.zero;
             deadTick = 0;
@@ -693,6 +694,16 @@ public class JacksonCharacterMovement : MonoBehaviour
                 }break;
             case PlayerState.hitstun:
                 {
+                    if(steamTick > 1)
+                    {
+                        Instantiate(spark, transform.position, transform.rotation);
+                        steamTick = 0;
+                    }
+                    else
+                    {
+                        steamTick++;
+                    }
+                    //Instantiate(spark, transform.position, transform.rotation);
                     //rb.AddForce(new Vector3(0f, -1f, 0f) * gravity);
                     velocity = velocity + (new Vector3(0f, -1f, 0f) * gravity);
                     if ((grounded && stunTimer <= 0) || stunTimer < -80)
@@ -891,6 +902,10 @@ public class JacksonCharacterMovement : MonoBehaviour
     }
     public void HurtPlayer(GameObject other)
     {
+        steamTick = 0;
+        GameObject ll = Instantiate(spark, transform.position, transform.rotation);
+        ll.GetComponent<SparkScript>().SetParent(this.gameObject);
+        ll.GetComponent<SparkScript>().SetSender(other);
         DamageScript temp = other.GetComponent<DamageScript>();
         float hurts = Mathf.Max(0f, (temp.GetDamage() - armor));
 
