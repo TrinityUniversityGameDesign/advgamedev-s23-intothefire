@@ -6,6 +6,7 @@ public class Hammer : Weapon
 {
     // Start is called before the first frame update
     Vector3 boomPos;
+    bool canJump = true;
     public Hammer()
     {
         weapon = Resources.Load("Prefabs/Weapons/Hammer") as GameObject;
@@ -47,6 +48,7 @@ public class Hammer : Weapon
         {
 
             specialTimer = 0;
+            canJump = true;
             return false;
         }
         else
@@ -71,6 +73,11 @@ public class Hammer : Weapon
             if(!lazy.GetSpecialHold())
             {
                 specialTimer = specialDuration + 1;
+            }
+            if(lazy.GetJumpHold() && canJump)
+            {
+                canJump = false;
+                lazy.SetVelocity((lazy.Magnitude() * player.transform.forward) + new Vector3(0f, 10f, 0f));
             }
             return true;
         }

@@ -34,26 +34,8 @@ public class Scythe : Weapon
 
         if(specialTimer == 0)
         {
-            RaycastHit hit;
-            lazyLook = player.transform.position;
-            if (Physics.SphereCast(player.transform.position, 1f, player.transform.forward, out hit, 750f))
-            {
-                if (hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "Enemy")
-                {
-                    lazyLook = hit.transform.position;
-                }
-            }
-            Transform[] plz = player.GetComponentsInChildren<Transform>();
-            foreach (Transform t in plz)
-            {
-                if (t.name == "SwordHand")
-                {
-                   hitbox.transform.parent = t;
-                }
-            }
-            player.GetComponent<JacksonCharacterMovement>().SetVelocity(player.transform.forward * 750f);
-            player.GetComponent<JacksonCharacterMovement>().SetAnim("lightAttack");
-            player.GetComponent<JacksonCharacterMovement>().GetAnim().SetFloat("Speed", player.GetComponent<JacksonCharacterMovement>().GetAttackSpeed() +lightSpeed);
+            //specialTimer++;
+
             /*hitbox.transform.localRotation = hitbox.transform.localRotation * Quaternion.AngleAxis(90f, Vector3.right);
             
             targetRot = hitbox.transform.localRotation * Quaternion.AngleAxis(-45f, Vector3.forward); //* currSword.transform.localRotation;
@@ -67,6 +49,7 @@ public class Scythe : Weapon
             {
                 hitbox.GetComponent<DamageScript>().DoLifesteal(player);
             }*/
+            player.GetComponent<JacksonCharacterMovement>().SetVelocity(player.transform.up * 1f);
             specialTimer++;
             return true;
         }
@@ -78,11 +61,62 @@ public class Scythe : Weapon
         }
         else
         {
-            player.transform.LookAt(lazyLook);
-            hitbox.transform.localRotation = Quaternion.Lerp(hitbox.transform.localRotation, targetRot, lerpTime);
-            player.GetComponent<JacksonCharacterMovement>().SetVelocity(Vector3.zero);
-            specialTimer++;
-            return true;
+            if (specialTimer == 5)
+            {
+                
+                Transform[] plz = player.GetComponentsInChildren<Transform>();
+                foreach (Transform t in plz)
+                {
+                    if (t.name == "SwordHand")
+                    {
+                        hitbox.transform.parent = t;
+                    }
+                }
+                if (player.GetComponent<JacksonCharacterMovement>().GetJumpHold())
+                {
+                    RaycastHit hit;
+                    lazyLook = player.transform.position;
+                    if (Physics.SphereCast(player.transform.position, 1f, player.transform.up, out hit, 750f))
+                    {
+                        if (hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "Enemy")
+                        {
+                            lazyLook = hit.transform.position;
+                        }
+                    }
+                    player.GetComponent<JacksonCharacterMovement>().SetVelocity(player.transform.up * 750f);
+                }
+                else
+                {
+                    RaycastHit hit;
+                    lazyLook = player.transform.position;
+                    if (Physics.SphereCast(player.transform.position, 1f, player.transform.forward, out hit, 750f))
+                    {
+                        if (hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "Enemy")
+                        {
+                            lazyLook = hit.transform.position;
+                        }
+                    }
+                    player.GetComponent<JacksonCharacterMovement>().SetVelocity(player.transform.forward * 750f);
+                }
+                player.GetComponent<JacksonCharacterMovement>().SetAnim("lightAttack");
+                player.GetComponent<JacksonCharacterMovement>().GetAnim().SetFloat("Speed", player.GetComponent<JacksonCharacterMovement>().GetAttackSpeed() + lightSpeed);
+                specialTimer++;
+                return true;
+            }
+            else if (specialTimer > 5)
+            {
+
+                player.transform.LookAt(lazyLook);
+                hitbox.transform.localRotation = Quaternion.Lerp(hitbox.transform.localRotation, targetRot, lerpTime);
+                player.GetComponent<JacksonCharacterMovement>().SetVelocity(Vector3.zero);
+                specialTimer++;
+                return true;
+            }
+            else
+            {
+                specialTimer++;
+                return true;
+            }
         }
     }
     public override void LoadWeapon()
