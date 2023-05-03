@@ -16,7 +16,7 @@ public class MiniBossAi : MonoBehaviour
     GameObject charge;
     GameObject navSphere;
 
-    List<float> damageTracker;
+    public List<float> damageTracker;
 
     private bool isAttacking; // Flag for whether the character is currently attacking
 
