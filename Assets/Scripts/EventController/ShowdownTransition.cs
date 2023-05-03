@@ -20,7 +20,7 @@ public class ShowdownTransition : MonoBehaviour
   //For choosing between different arenas (if there are multiple)
   private string ChooseArena()
 	{
-    return "ShowdownArena1";
+    return "ShowdownArenaReal";
 	}
 
 
