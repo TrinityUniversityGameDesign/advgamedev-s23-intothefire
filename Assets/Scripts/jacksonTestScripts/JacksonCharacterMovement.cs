@@ -116,6 +116,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         GameManager.Instance?.StartupNewGameBegin.AddListener(StartPlayer);
         GameManager.Instance?.EnablePlayerInvincibility.AddListener(EnableInvincible);
         GameManager.Instance?.DisablePlayerInvincibility.AddListener(DisableInvincible);
+        GameManager.Instance?.ShowdownBegin.AddListener(StartShowdown);
     }
     void Start()
     {
@@ -160,10 +161,15 @@ public class JacksonCharacterMovement : MonoBehaviour
         _playerData = GetComponent<PlayerData>();
     }
     
-    private void UpdateUIBindings() {
-        
+    private void UpdateUIBindings() 
+    {
         GameManager.Instance.ShowdownBegin.AddListener(InShowdown);
+    }
 
+    private void StartShowdown()
+    {
+        _hud.ToggleMinimap();
+        _hud.showdown = true;
     }
 
     private bool inShowdown = false;
@@ -841,21 +847,21 @@ public class JacksonCharacterMovement : MonoBehaviour
         _minicam.SetIndexTexture(_playerData.PlayerIndex);
         
         // Demo Code
-        AddItem(new DamageItem());
-        AddItem(new KnockbackResistanceItem());
-        AddItem(new KnockbackItem());
-        AddItem(new DamageOverTimeItem());
-        AddItem(new AttackSpeedItem());
-        AddItem(new ArmorItem());
-        AddItem(new DamageItem());
-        AddItem(new KnockbackResistanceItem());
-        AddItem(new KnockbackItem());
-        AddItem(new DamageOverTimeItem());
-        AddItem(new AttackSpeedItem());
-        AddItem(new ArmorItem());
-        AddItem(new HealthItem());
-        AddItem(new HealthItem());
-        AddItem(new HealthItem());
+        //AddItem(new DamageItem());
+        //AddItem(new KnockbackResistanceItem());
+        //AddItem(new KnockbackItem());
+        //AddItem(new DamageOverTimeItem());
+        //AddItem(new AttackSpeedItem());
+        //AddItem(new ArmorItem());
+        //AddItem(new DamageItem());
+        //AddItem(new KnockbackResistanceItem());
+        //AddItem(new KnockbackItem());
+        //AddItem(new DamageOverTimeItem());
+        //AddItem(new AttackSpeedItem());
+        //AddItem(new ArmorItem());
+        //AddItem(new HealthItem());
+        //AddItem(new HealthItem());
+        //AddItem(new HealthItem());
         
         UpdateUIBindings();
     }

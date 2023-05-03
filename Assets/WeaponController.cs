@@ -5,7 +5,6 @@ using UnityEngine;
 public class WeaponController : MonoBehaviour
 {
     public int position;
-    public int player;
     public bool selected = false;
     private WeaponSelectController _wsc;
     private ToggleSelect _ts;
@@ -19,7 +18,7 @@ public class WeaponController : MonoBehaviour
     }
     public void OnWeaponClicked()
     {
-        GameManager.Instance.UpdatePlayerWeapon(player, position);
+        GameManager.Instance.UpdatePlayerWeapon(_wsc.player, position);
         _wsc.curr = gameObject;
     }
 

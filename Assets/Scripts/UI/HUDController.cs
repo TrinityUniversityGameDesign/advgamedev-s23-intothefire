@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class HUDController : MonoBehaviour
 {
+    public bool showdown = false;
     [SerializeField] private GameObject itemIconPrefab;
     [SerializeField] private GameObject itemRowPrefab;
     [SerializeField] private GameObject statPrefab;

@@ -16,6 +16,7 @@ public class Scythe : Weapon
         description = "Nice and edgy";
         specialDuration = 400;
         specialTimer = 0;
+        specialDamage = 18;
         specialKnockback = 60;
         lightDamage = 12;
         lightSpeed = 1.0f;
@@ -76,14 +77,14 @@ public class Scythe : Weapon
                 {
                     RaycastHit hit;
                     lazyLook = player.transform.position;
-                    if (Physics.SphereCast(player.transform.position, 1f, player.transform.up, out hit, 750f))
+                    if (Physics.SphereCast(player.transform.position, 1f, player.transform.up, out hit, 450f))
                     {
                         if (hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "Enemy")
                         {
                             lazyLook = hit.transform.position;
                         }
                     }
-                    player.GetComponent<JacksonCharacterMovement>().SetVelocity(player.transform.up * 750f);
+                    player.GetComponent<JacksonCharacterMovement>().SetVelocity(player.transform.up * 450f);
                 }
                 else
                 {

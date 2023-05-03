@@ -16,6 +16,7 @@ public class FryingPan : Weapon
         specialDuration = 30;
         specialTimer = 0;
         specialKnockback = 45;
+        specialDamage = 23f;
         lightDamage = 15;
         lightKnockback = 25;
         lightSpeed = 0.9f;

@@ -27,24 +27,23 @@ public class ShooterEnemyAI : EnemyUpdate
         if (state == "Idle") {
             if (!Physics.Raycast(transform.position, trajectory, trajectory.magnitude, LayerMask.GetMask("Ground"))) {
                 --stateTimer;
-                navMesh.enabled = false;
+                navMesh.isStopped = true;
                 ModifyVelocity(0.5f);
                 if (stateTimer <= 0) {
                     state = "Attack";
                     stateTimer = attackTimer;
                 }
             } else {
-                navMesh.enabled = true;
+                navMesh.isStopped = false;
                 navMesh.destination = targetPos;
             }
         } else if (state == "Attack") {
             --stateTimer;
-            navMesh.enabled = false;
+            navMesh.isStopped = true;
             ModifyVelocity(0.5f);
             if (stateTimer <= 0) {
                 state = "Idle";
                 stateTimer = attackCooldown;
-                navMesh.enabled = true;
             } else if (stateTimer == attackFrame) {
                 MakeProjectile(trajectory.normalized * projSpeed, damage, knockback);
             }

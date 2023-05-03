@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.SceneManagement;
 
 
 //GameState to represent the possible states the game can be in.
@@ -72,11 +73,17 @@ public class GameManager : MonoBehaviour
     public int DistanceApart = 120;
 
     public List<GameObject> players = new List<GameObject>();
-    static Color player1color = new Color(0.4f, 0.8f, 0.9f, 1); //Cyan
-    static Color player2color = new Color(0.13f, 0.53f, 0.2f, 1); //Green
-    static Color player3color = new Color(0.8f, 0.73f, 0.26f, 1); //Yellow
-    static Color player4color = new Color(0.6f,  0.2f,  0.46f, 1); //Purple
-    public static Color[] colors = new Color[4] { player1color, player2color, player3color, player4color };
+    //static Color player1color = new Color(0.4f, 0.8f, 0.9f, 1); //Cyan
+    //static Color player2color = new Color(0.13f, 0.53f, 0.2f, 1); //Green
+    //static Color player3color = new Color(0.8f, 0.73f, 0.26f, 1); //Yellow
+    //static Color player4color = new Color(0.6f,  0.2f,  0.46f, 1); //Purple
+    public Color[] colors = new Color[4]
+    {
+        new Color(0.4f, 0.8f, 0.9f, 1), 
+        new Color(0.13f, 0.53f, 0.2f, 1), 
+        new Color(0.8f, 0.73f, 0.26f, 1), 
+        new Color(0.6f,  0.2f,  0.46f, 1)
+    };
 
     public List<GameObject> playableCharacters;
     public List<GameObject> playableWeapons;
@@ -280,7 +287,6 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate()
     {
         TickState();
-
     }
 
     private void Update()
@@ -340,6 +346,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.EndScreen:
                 Instance.EndScreenBegin.Invoke();
+                //
                 gameInProgress = false;  //Get the victor of the game by doing victorScript.getVictor();
                 break;
             case GameState.Startup_New_Game:
@@ -491,8 +498,9 @@ public class GameManager : MonoBehaviour
             if(pair.Key < Instance.players.Count)
             {
                 //Debug.Log("Generating a: " + weapons[pair.Value]);
-                Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(weapons[pair.Value].Create());
-                return;
+                var weapon = weapons[pair.Value].Create();
+                Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(weapon);
+                continue;
                 //player.gameObject.GetComponent<JacksonCharacterMovement>().WeaponAssignFunction;
                 //Call the weapon function in the player @Jackson TODO
                 if(pair.Value == 0)
@@ -560,6 +568,7 @@ public class GameManager : MonoBehaviour
         GameObject newUI = Instantiate(lobbyUI, GameObject.Find("PlayerLobby" + newPlayer.playerIndex + "UI").transform);
         newUI.name = "Player" + newPlayer.playerIndex + "Canvas";
         newUI.transform.GetChild(1).GetComponent<UnityEngine.UI.Outline>().effectColor = colors[newPlayer.playerIndex];
+        newUI.transform.GetComponentInChildren<WeaponSelectController>().player = newPlayer.playerIndex;
 
         newPlayer.GetComponent<PlayerInput>().uiInputModule = newUI.transform.GetComponentInChildren<InputSystemUIInputModule>();
 
@@ -615,6 +624,7 @@ public class GameManager : MonoBehaviour
     public void ExternalEndTheShowdown()
 	  {
       Instance.OnStateEnter(GameState.EndScreen);
+      //SceneManager.LoadScene("Victory", LoadSceneMode.Single);
 	  }
 
     #endregion

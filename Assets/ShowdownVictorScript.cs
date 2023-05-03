@@ -47,20 +47,14 @@ public class ShowdownVictorScript : MonoBehaviour
       }
     }
 
-    if (showdownOn)
-    {
-      for (int i = 0; i < survivors.Count; i++)
-      {
-        if (survivors[i].transform.position.y == 350f)
-        {
-          playersInOrderOfLoss.Add(survivors[i]);
-          survivors.Remove(survivors[i]);
-        }
-      }
-    }
-
-  }
-
+		for(int i = 0; i < survivors.Count; i++)
+		{
+			if(survivors[i].transform.position.y == 350f)
+			{
+				survivors.Remove(survivors[i]);
+			}
+		}
+	}
   public void LoadVictoryScene()
   {
     SceneManager.LoadScene("Victory", LoadSceneMode.Single);

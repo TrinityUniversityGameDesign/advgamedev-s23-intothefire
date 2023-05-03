@@ -29,6 +29,7 @@ public class SpawnHallwayObjects : MonoBehaviour
 			int randomHallwayObjectIndex = Random.Range(0, numOfHallwayObjects);
 
 			Instantiate(hallwayObjects[randomHallwayObjectIndex], spawnpoints[randomIndex].position, gameObject.transform.rotation, this.transform);
+
 		}
 	}
 
