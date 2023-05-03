@@ -34,6 +34,22 @@ public class ScavengeTrial : TrialRoomScript
         scavengeEntities[Random.Range(0, scavengeEntities.Count - 1)].GetComponent<ScavengeEntity>().hasTreasure = true;
     }
 
+    void FixedUpdate()
+    {
+        List<Transform> copy = new List<Transform>(playerList);
+        if(playerList.Count > 0){
+            foreach(Transform thing in playerList)
+            {
+                if(thing && !thing.GetComponent<Collider>().bounds.Intersects(transform.GetComponent<Collider>().bounds)){
+                    copy.Remove(thing);
+                }
+            }
+            playerList = copy;
+        }
+
+        SetDoorPresence(!(playerList.Count == 0));
+    }
+
     public override void PlaceStartPad(){
         GameObject startPadReference = startPad;
 		startPadReference.GetComponent<StartPadScript>().hostRoom = this;
@@ -87,12 +103,19 @@ public class ScavengeTrial : TrialRoomScript
 	{
 		//Debug.Log(currRoomState);
 		//Debug.Log("Collided with: " + other);
-		if(other.transform.tag == "Player" && currRoomState == RoomState.empty)
+		if(other.transform.tag == "Player")
 		{
-			//Debug.Log("Player found for this room");
-			RoomClose();
-			playerRef = other.gameObject;
-            StartTrial();
+            if(currRoomState == RoomState.empty){
+                //Debug.Log("Player found for this room");
+                RoomClose();
+                //playerRef = other.gameObject;
+                StartTrial();
+            }
+
+            if(!playerList.Contains(other.transform)){
+                playerList.Add(other.transform);
+            }
+			
 		}
 		//Debug.Log(doors);
 	}
