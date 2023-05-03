@@ -7,6 +7,7 @@ public class CombatTrialScript : TrialRoomScript
 {
     [SerializeField]
     public List<GameObject> enemyPool = new List<GameObject>();
+    List<GameObject> currentEnemies = new List<GameObject>();
     int currentWave;
 
     void Start()
@@ -26,7 +27,7 @@ public class CombatTrialScript : TrialRoomScript
     void Update()
     {   
         //Debug.Log("Current Enemy Count: " + enemyCount);
-        if (currRoomState == RoomState.trialing && enemyCount <= 0) {
+        if (currRoomState == RoomState.trialing && enemyCount <= 0 && playerList.Count > 0 ) {
             ++currentWave;
             if (TrySpawnEnemyWave()) {
                 //Debug.Log("Spawning Enemy Wave " + currentWave);
@@ -36,7 +37,36 @@ public class CombatTrialScript : TrialRoomScript
         }
     }
 
+    void FixedUpdate() {
+        List<Transform> copy = new List<Transform>(playerList);
+        if(playerList.Count > 0){
+            foreach(Transform thing in playerList){
+                if(thing && !thing.GetComponent<Collider>().bounds.Intersects(transform.GetComponent<Collider>().bounds)){
+                    copy.Remove(thing);
+                }
+            }
+            playerList = copy;
+        }
+
+        if (playerList.Count == 0){
+            currentWave = 0;
+            DespawnEnemies();
+            SetDoorPresence(false);
+        }
+    }
+
+    void DespawnEnemies() {
+        foreach(GameObject enemy in currentEnemies){
+            if(enemy){
+                enemy.GetComponent<EnemyUpdate>().Kill();
+            }
+        }
+    }
+
     bool TrySpawnEnemyWave(){
+        enemyCount = 0;
+        currentEnemies = new List<GameObject>();
+
         bool didSpawn = false;
         GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("EnemySpawnPoint");
         foreach (GameObject spawnPoint in spawnPoints) {   
@@ -61,6 +91,7 @@ public class CombatTrialScript : TrialRoomScript
     }
 
     void RegisterEnemy(GameObject enemy){
+        currentEnemies.Add(enemy);
         enemy.GetComponent<EnemyUpdate>().hostRoom = this;
         enemy.GetComponent<EnemyUpdate>().trialSpawned = true;
         ++enemyCount;
@@ -97,17 +128,16 @@ public class CombatTrialScript : TrialRoomScript
         }
     }
 
-    new public void OnTriggerEnter(Collider other)
-	{
-		//Debug.Log(currRoomState);
-		//Debug.Log("Collided with: " + other);
-		if(other.transform.tag == "Player" && currRoomState == RoomState.empty)
-		{
-			//Debug.Log("Player found for this room");
-			RoomClose();
-			playerRef = other.gameObject;
-            StartTrial();
+    new public void OnTriggerEnter(Collider other){
+		if(other.transform.tag == "Player"){
+            if(currRoomState == RoomState.empty){
+                RoomClose();
+                StartTrial();
+            }
+
+            if(!playerList.Contains(other.transform)){
+                playerList.Add(other.transform);
+            }
 		}
-		//Debug.Log(doors);
 	}
 }
