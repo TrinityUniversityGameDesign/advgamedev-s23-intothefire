@@ -29,6 +29,9 @@ public class MovingPlatform : MonoBehaviour
         // }
         if(target.transform.tag == "Player" || target.transform.tag == "Object"){
             target.transform.SetParent(children);
+            if(target.transform.tag == "Player"){
+                DontDestroyOnLoad(target.gameObject);
+            }
             // if(target.transform.tag == "Player"){
             //     Debug.Log("stay");
             // }

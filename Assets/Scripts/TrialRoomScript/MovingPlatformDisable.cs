@@ -15,12 +15,7 @@ public class MovingPlatformDisable : SpecialDisable
         plat = transform.Find("Platform");
         children = transform.Find("Children");
         plat.GetComponent<MovingPlatform>().enabled = false;
-        plat.GetComponent<MeshRenderer>().enabled = false;
-        Collider[] colls = plat.GetComponents<Collider>();
-        foreach (Collider thing in colls)
-        {
-            thing.enabled = false;
-        }
+        
         //plat.GetComponent<BoxCollider>().enabled = false;
         //Destroy(plat.GetComponent<BoxCollider>());
         foreach(Transform ch in children){
@@ -35,6 +30,13 @@ public class MovingPlatformDisable : SpecialDisable
                 DontDestroyOnLoad(player.gameObject);
             }
             //Debug.Log(player);
+        }
+
+        plat.GetComponent<MeshRenderer>().enabled = false;
+        Collider[] colls = plat.GetComponents<Collider>();
+        foreach (Collider thing in colls)
+        {
+            thing.enabled = false;
         }
 
         StartCoroutine(TurnOff(player));
