@@ -82,7 +82,6 @@ public class HealthBar : MonoBehaviour
     public void UpdateHealth(float health)
     {
         _targetHealth = Mathf.Max(health, 0);
-        Debug.Log("Passed-in player health:" + health);
         //if (_initialized)
         //{
         //    if (Mathf.Approximately(health, _currentMaxHealth))
