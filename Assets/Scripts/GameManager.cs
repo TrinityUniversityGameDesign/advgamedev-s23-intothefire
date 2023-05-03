@@ -491,8 +491,9 @@ public class GameManager : MonoBehaviour
             if(pair.Key < Instance.players.Count)
             {
                 //Debug.Log("Generating a: " + weapons[pair.Value]);
-                Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(weapons[pair.Value].Create());
-                return;
+                var weapon = weapons[pair.Value].Create();
+                Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(weapon);
+                continue;
                 //player.gameObject.GetComponent<JacksonCharacterMovement>().WeaponAssignFunction;
                 //Call the weapon function in the player @Jackson TODO
                 if(pair.Value == 0)
@@ -560,6 +561,7 @@ public class GameManager : MonoBehaviour
         GameObject newUI = Instantiate(lobbyUI, GameObject.Find("PlayerLobby" + newPlayer.playerIndex + "UI").transform);
         newUI.name = "Player" + newPlayer.playerIndex + "Canvas";
         newUI.transform.GetChild(1).GetComponent<UnityEngine.UI.Outline>().effectColor = colors[newPlayer.playerIndex];
+        newUI.transform.GetComponentInChildren<WeaponSelectController>().player = newPlayer.playerIndex;
 
         newPlayer.GetComponent<PlayerInput>().uiInputModule = newUI.transform.GetComponentInChildren<InputSystemUIInputModule>();
 
