@@ -29,6 +29,9 @@ public class MovingPlatform : MonoBehaviour
         // }
         if(target.transform.tag == "Player" || target.transform.tag == "Object"){
             target.transform.SetParent(children);
+            if(target.transform.tag == "Player"){
+                DontDestroyOnLoad(target.gameObject);
+            }
             // if(target.transform.tag == "Player"){
             //     Debug.Log("stay");
             // }
@@ -59,6 +62,7 @@ public class MovingPlatform : MonoBehaviour
                 Collider col = child.GetComponent<Collider>();
                 if(!col.bounds.Intersects(colliders[0].bounds)){
                     child.SetParent(null);
+                    DontDestroyOnLoad(child.gameObject);
                 }
             }
         }
@@ -90,6 +94,7 @@ public class MovingPlatform : MonoBehaviour
         // }
         if(target.transform.tag == "Player"){
             target.transform.SetParent(null);
+            DontDestroyOnLoad(target.gameObject);
             //Debug.Log("left platform");
         }
         else if(target.transform.tag == "Object"){
