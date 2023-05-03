@@ -544,12 +544,16 @@ public class GameManager : MonoBehaviour
     
     public void TeleportPlayerToSpawn(GameObject playerToTeleport)
     {
+      if(Instance._state != GameState.Showdown)
+		  {
         for(int i = 0; i < Instance.players.Count; i++) { 
             if(Instance.players[i] == playerToTeleport)
             {
                 playerToTeleport.transform.position = GameObject.Find("Spawn" + i).transform.position;
             }
         }
+
+		  }
     }
 
     #endregion
