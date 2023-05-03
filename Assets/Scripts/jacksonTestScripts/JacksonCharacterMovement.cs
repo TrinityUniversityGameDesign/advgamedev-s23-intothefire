@@ -382,7 +382,6 @@ public class JacksonCharacterMovement : MonoBehaviour
         }
         if (transform.position.y < -40f || (state == PlayerState.dead && deadTick > 40))
         {
-            Debug.Log("player is reset");
             health = maxHealth;
             velocity = Vector3.zero;
             deadTick = 0;
