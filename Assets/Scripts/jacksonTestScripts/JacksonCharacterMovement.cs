@@ -841,21 +841,21 @@ public class JacksonCharacterMovement : MonoBehaviour
         _minicam.SetIndexTexture(_playerData.PlayerIndex);
         
         // Demo Code
-        AddItem(new DamageItem());
-        AddItem(new KnockbackResistanceItem());
-        AddItem(new KnockbackItem());
-        AddItem(new DamageOverTimeItem());
-        AddItem(new AttackSpeedItem());
-        AddItem(new ArmorItem());
-        AddItem(new DamageItem());
-        AddItem(new KnockbackResistanceItem());
-        AddItem(new KnockbackItem());
-        AddItem(new DamageOverTimeItem());
-        AddItem(new AttackSpeedItem());
-        AddItem(new ArmorItem());
-        AddItem(new HealthItem());
-        AddItem(new HealthItem());
-        AddItem(new HealthItem());
+        //AddItem(new DamageItem());
+        //AddItem(new KnockbackResistanceItem());
+        //AddItem(new KnockbackItem());
+        //AddItem(new DamageOverTimeItem());
+        //AddItem(new AttackSpeedItem());
+        //AddItem(new ArmorItem());
+        //AddItem(new DamageItem());
+        //AddItem(new KnockbackResistanceItem());
+        //AddItem(new KnockbackItem());
+        //AddItem(new DamageOverTimeItem());
+        //AddItem(new AttackSpeedItem());
+        //AddItem(new ArmorItem());
+        //AddItem(new HealthItem());
+        //AddItem(new HealthItem());
+        //AddItem(new HealthItem());
         
         UpdateUIBindings();
     }

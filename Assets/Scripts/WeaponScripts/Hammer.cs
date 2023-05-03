@@ -77,7 +77,7 @@ public class Hammer : Weapon
             if(lazy.GetJumpHold() && canJump)
             {
                 canJump = false;
-                lazy.SetVelocity((lazy.Magnitude() * player.transform.forward) + new Vector3(0f, 10f, 0f));
+                lazy.SetVelocity((lazy.Magnitude() * player.transform.forward) + new Vector3(0f, 7f, 0f));
             }
             return true;
         }

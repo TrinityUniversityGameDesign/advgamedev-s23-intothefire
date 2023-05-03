@@ -76,14 +76,14 @@ public class Scythe : Weapon
                 {
                     RaycastHit hit;
                     lazyLook = player.transform.position;
-                    if (Physics.SphereCast(player.transform.position, 1f, player.transform.up, out hit, 750f))
+                    if (Physics.SphereCast(player.transform.position, 1f, player.transform.up, out hit, 450f))
                     {
                         if (hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "Enemy")
                         {
                             lazyLook = hit.transform.position;
                         }
                     }
-                    player.GetComponent<JacksonCharacterMovement>().SetVelocity(player.transform.up * 750f);
+                    player.GetComponent<JacksonCharacterMovement>().SetVelocity(player.transform.up * 450f);
                 }
                 else
                 {

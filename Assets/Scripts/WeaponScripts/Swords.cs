@@ -34,14 +34,14 @@ public class Swords : Weapon
             hitbox.transform.localRotation = hitbox.transform.localRotation * Quaternion.AngleAxis(90f, Vector3.right);
             JacksonCharacterMovement lazy = player.GetComponent<JacksonCharacterMovement>();
             Vector3 tmp = lazy.GetVelocity();
-            if (tmp.y < 0)
-            {
-                lazy.SetVelocity(new Vector3(tmp.x, 0f, tmp.z));
-            }
+            //if (tmp.y < 0)
+            //{
+                tmp = new Vector3(tmp.x, 0f, tmp.z);
+            //}
 
             if (lazy.GetJumpHold())
             {
-                lazy.SetVelocity(lazy.GetVelocity() + player.transform.forward * 10f + new Vector3(0f, 65f, 0f));
+                lazy.SetVelocity(tmp + player.transform.forward * 10f + new Vector3(0f, 45f, 0f));
             }
             else
             {
@@ -68,9 +68,12 @@ public class Swords : Weapon
             }
             else if(specialTimer < 8 && lazy.GetJumpHold() && upToggle)
             {
+                Vector3 tmp = lazy.GetVelocity();
+                
+                tmp = new Vector3(tmp.x, 0f, tmp.z);
                 specialTimer = 1;
                 upToggle = false;
-                lazy.SetVelocity(lazy.GetVelocity() + player.transform.forward * 10f + new Vector3(0f, 65f, 0f));
+                lazy.SetVelocity(tmp + player.transform.forward * 10f + new Vector3(0f, 45f, 0f));
             }
             hitbox.transform.localRotation = hitbox.transform.localRotation * Quaternion.AngleAxis(60f, Vector3.forward);
             specialTimer++;
