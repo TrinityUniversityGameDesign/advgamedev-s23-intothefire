@@ -10,16 +10,18 @@ public class Scythe : Weapon
     Vector3 lazyLook;
     public Scythe()
     {
+       weapon = Resources.Load("Prefabs/Weapons/Scythe") as GameObject;
+        specialWeapon = Resources.Load("Prefabs/Weapons/Scythe") as GameObject;
         name = "Scythe";
         description = "Nice and edgy";
-        specialDuration = 15;
+        specialDuration = 400;
         specialTimer = 0;
         specialKnockback = 60;
-        lightDamage = 10;
-        lightSpeed = 0.2f;
+        lightDamage = 12;
+        lightSpeed = 1.0f;
         lightKnockback = 30;
-        heavyDamage = 20;
-        heavySpeed = 0.1f;
+        heavyDamage = 24;
+        heavySpeed = 1.1f;
         heavyKnockback = 60f;
         canMove = false;
     }
@@ -32,18 +34,12 @@ public class Scythe : Weapon
 
         if(specialTimer == 0)
         {
-            RaycastHit hit;
-            lazyLook = player.transform.position;
-            if (Physics.SphereCast(player.transform.position, 1f, player.transform.forward, out hit, 750f))
-            {
-                if (hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "Enemy")
-                {
-                    lazyLook = hit.transform.position;
-                }
-            }
-            player.GetComponent<JacksonCharacterMovement>().SetVelocity(player.transform.forward * 750f);
-            targetRot = hitbox.transform.localRotation * Quaternion.AngleAxis(-45f, Vector3.up); //* currSword.transform.localRotation;
-            hitbox.transform.localRotation = hitbox.transform.localRotation * Quaternion.AngleAxis(45f, Vector3.up); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);
+            //specialTimer++;
+
+            /*hitbox.transform.localRotation = hitbox.transform.localRotation * Quaternion.AngleAxis(90f, Vector3.right);
+            
+            targetRot = hitbox.transform.localRotation * Quaternion.AngleAxis(-45f, Vector3.forward); //* currSword.transform.localRotation;
+            hitbox.transform.localRotation = hitbox.transform.localRotation * Quaternion.AngleAxis(45f, Vector3.forward); //* currSword.transform.localRotation; //* Quaternion.Euler(0f, -45f, 0f);
             lerpTime = lightSpeed + player.GetComponent<JacksonCharacterMovement>().GetAttackSpeed();
             hitbox.GetComponent<DamageScript>().SetParent(player);
             hitbox.GetComponent<DamageScript>().SetDamage(player.GetComponent<JacksonCharacterMovement>().CalculateDamage(specialDamage));
@@ -52,11 +48,12 @@ public class Scythe : Weapon
             if (player.GetComponent<JacksonCharacterMovement>().GetLifesteal() > 0)
             {
                 hitbox.GetComponent<DamageScript>().DoLifesteal(player);
-            }
+            }*/
+            player.GetComponent<JacksonCharacterMovement>().SetVelocity(player.transform.up * 1f);
             specialTimer++;
             return true;
         }
-        else if (specialTimer > specialDuration || hitbox.transform.localRotation == targetRot)
+        else if (specialTimer > specialDuration || !player.GetComponent<JacksonCharacterMovement>().GetAnim().GetCurrentAnimatorStateInfo(0).IsName("lightAttack") && specialTimer > 30)
         {
 
             specialTimer = 0;
@@ -64,11 +61,66 @@ public class Scythe : Weapon
         }
         else
         {
-            player.transform.LookAt(lazyLook);
-            hitbox.transform.localRotation = Quaternion.Lerp(hitbox.transform.localRotation, targetRot, lerpTime);
-            player.GetComponent<JacksonCharacterMovement>().SetVelocity(Vector3.zero);
-            specialTimer++;
-            return true;
+            if (specialTimer == 5)
+            {
+                
+                Transform[] plz = player.GetComponentsInChildren<Transform>();
+                foreach (Transform t in plz)
+                {
+                    if (t.name == "SwordHand")
+                    {
+                        hitbox.transform.parent = t;
+                    }
+                }
+                if (player.GetComponent<JacksonCharacterMovement>().GetJumpHold())
+                {
+                    RaycastHit hit;
+                    lazyLook = player.transform.position;
+                    if (Physics.SphereCast(player.transform.position, 1f, player.transform.up, out hit, 750f))
+                    {
+                        if (hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "Enemy")
+                        {
+                            lazyLook = hit.transform.position;
+                        }
+                    }
+                    player.GetComponent<JacksonCharacterMovement>().SetVelocity(player.transform.up * 750f);
+                }
+                else
+                {
+                    RaycastHit hit;
+                    lazyLook = player.transform.position;
+                    if (Physics.SphereCast(player.transform.position, 1f, player.transform.forward, out hit, 750f))
+                    {
+                        if (hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "Enemy")
+                        {
+                            lazyLook = hit.transform.position;
+                        }
+                    }
+                    player.GetComponent<JacksonCharacterMovement>().SetVelocity(player.transform.forward * 750f);
+                }
+                player.GetComponent<JacksonCharacterMovement>().SetAnim("lightAttack");
+                player.GetComponent<JacksonCharacterMovement>().GetAnim().SetFloat("Speed", player.GetComponent<JacksonCharacterMovement>().GetAttackSpeed() + lightSpeed);
+                specialTimer++;
+                return true;
+            }
+            else if (specialTimer > 5)
+            {
+
+                player.transform.LookAt(lazyLook);
+                hitbox.transform.localRotation = Quaternion.Lerp(hitbox.transform.localRotation, targetRot, lerpTime);
+                player.GetComponent<JacksonCharacterMovement>().SetVelocity(Vector3.zero);
+                specialTimer++;
+                return true;
+            }
+            else
+            {
+                specialTimer++;
+                return true;
+            }
         }
+    }
+    public override void LoadWeapon()
+    {
+        weapon = Resources.Load("Prefabs/Weapons/Scythe") as GameObject;
     }
 }

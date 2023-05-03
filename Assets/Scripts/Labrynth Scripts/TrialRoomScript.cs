@@ -27,6 +27,7 @@ public class TrialRoomScript : MonoBehaviour
 	protected int enemyCount;
 
 	protected GameObject playerRef;
+	protected List<Transform> playerList = new List<Transform>();
 
 	private void Start()
 	{
@@ -113,11 +114,11 @@ public class TrialRoomScript : MonoBehaviour
 	//completed trial
 	public void TrialCompleted()
 	{
+		SetDoorPresence(false);
 		DespawnTrialGeometry();
 		GivePlayerLoot();
 		currRoomState = RoomState.completed;
 		//Debug.Log("Room Completed");
-		SetDoorPresence(false);
 		if(hostEmpty){
 			hostEmpty.depsawnRoom();
 		}

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -19,6 +20,40 @@ public enum GameState
     SideEvent,
     EndScreen,
     Startup_New_Game
+}
+
+public enum GameEvents
+{
+    Meteor,
+    Spleef,
+    Miniboss,
+    Explore,
+    Showdown
+}
+
+// Maybe use this if you want to pass messages to players. You can also use the notif system for rooms,
+// though figuring out how to send that through from the rooms to the players may be tricky
+public static class GameManagerGlobalStatics
+{
+    public struct GameEvent
+    {
+        public readonly string Title;
+        public readonly string Text;
+
+        public GameEvent(string title, string text)
+        {
+            Title = title;
+            Text = text;
+        }
+    }
+    public static readonly Dictionary<GameEvents, GameEvent> Events = new Dictionary<GameEvents, GameEvent>
+    {
+        { GameEvents.Meteor, new GameEvent("Meteors!", "Avoid the rocks falling from the sky.") },
+        { GameEvents.Miniboss, new GameEvent("Rampant Mummy", "Damage the mummy!") },
+        { GameEvents.Spleef, new GameEvent("Spleef", "Keep moving! Avoid falling through the holes in the floor! Knock your enemies through them!") },
+        { GameEvents.Explore, new GameEvent("Out of the Frying Pan", "Explore the labyrinth, collect rewards. Beware the Minotaur") },
+        { GameEvents.Showdown, new GameEvent("Into the Fire", "Destroy your opponents, whatever means necessary.") }
+    };
 }
 
 public class GameManager : MonoBehaviour
@@ -47,13 +82,17 @@ public class GameManager : MonoBehaviour
     public List<GameObject> playableWeapons;
 
     Dictionary<int, int> playerCharacters = new Dictionary<int, int>() { {0, 0}, { 1, 0 }, { 2, 0 }, { 3, 0 } };
+    public List<CharacterData> characters;
     Dictionary<int, int> playerWeapons = new Dictionary<int, int>() { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 } };
+    public List<WeaponData> weapons;
     public int LastJoinedPlayer = 0;
 
     [SerializeField]
     private int minPlayerCount = 1;
 
     public GameObject lobbyUI;
+    
+    public GameEvents CurrentEvent;
     #endregion
 
     #region Private Fields
@@ -68,11 +107,15 @@ public class GameManager : MonoBehaviour
 
     private bool gameInProgress = false;
 
+
+    [HideInInspector]
+    ShowdownVictorScript victorScript;
+
     #endregion
 
     #region Event Fields
-    //Timing controls between events
-    public float MaxSecondsBetweenSideEvents = 600;
+  //Timing controls between events
+  public float MaxSecondsBetweenSideEvents = 600;
     public float MinSecondsBetweenSideEvents = 300;
 
     public float MaxSecondsBetweenMicroEvents = 180;
@@ -114,8 +157,11 @@ public class GameManager : MonoBehaviour
     public UnityEvent ShowdownBegin;
     [Tooltip("Event call when the Showdown ends")]
     public UnityEvent ShowdownEnd;
+    [Tooltip("So ShowdownVictorScript can end the showdown with the victor")]
+    public UnityEvent ExternalShowdownEnd;
 
-    [Tooltip("Event called when the lobby begins")]
+
+  [Tooltip("Event called when the lobby begins")]
     public UnityEvent LobbyBegin;
     [Tooltip("Event called when the lobby ends")]
     public UnityEvent LobbyEnd;
@@ -176,6 +222,7 @@ public class GameManager : MonoBehaviour
 
         Instance.ShowdownBegin.AddListener(TestShowdownBegin);
         Instance.ShowdownEnd.AddListener(TestShowdownEnd);
+        Instance.ExternalShowdownEnd.AddListener(ExternalEndTheShowdown);
 
         Instance.LobbyBegin.AddListener(TestLobbyBegin);
         Instance.LobbyEnd.AddListener(TestLobbyEnd);
@@ -193,6 +240,9 @@ public class GameManager : MonoBehaviour
         Instance.StartupNewGameEnd.AddListener(TestStartupNewGameEnd);
 
         Instance.DungeonGenerationComplete.AddListener(TeleportPlayersToSpawnPoints);
+        
+
+
 
         secondsOfGameTime = 60 * Minutes;
 
@@ -217,7 +267,8 @@ public class GameManager : MonoBehaviour
         {
             EvtCtrl.transform.position = new Vector3((LabyrinthSize / 2) * DistanceApart, 90, (LabyrinthSize / 2) * DistanceApart);
         }
-        
+        //characters = Resources.LoadAll<CharacterData>("Characters").ToList();
+        //weapons = Resources.LoadAll<WeaponData>("Weapons").ToList();
     }
 
     private void Start()
@@ -282,13 +333,14 @@ public class GameManager : MonoBehaviour
             case GameState.Showdown:
                 Instance.ShowdownBegin.Invoke();
                 Instance.MajorEventEnd.Invoke();
+                victorScript = FindObjectOfType<ShowdownVictorScript>();
                 break;
             case GameState.SideEvent:
                 Instance.SideEventBegin.Invoke();
                 break;
             case GameState.EndScreen:
                 Instance.EndScreenBegin.Invoke();
-                gameInProgress = false;
+                gameInProgress = false;  //Get the victor of the game by doing victorScript.getVictor();
                 break;
             case GameState.Startup_New_Game:
                 Instance.StartupNewGameBegin.Invoke();
@@ -379,7 +431,7 @@ public class GameManager : MonoBehaviour
                 Instance.PausedEnd.Invoke();
                 break;
             case GameState.Showdown:
-                Instance.ShowdownEnd.Invoke();
+                //Instance.ShowdownEnd.Invoke();
                 break;
             case GameState.SideEvent:
                 Instance.SideEventEnd?.Invoke();
@@ -427,7 +479,10 @@ public class GameManager : MonoBehaviour
         {
             if (pair.Key < Instance.players.Count)
             {
-                Instantiate(Instance.playableCharacters[pair.Value], Instance.players[pair.Key].transform);
+                Instantiate(Instance.characters[pair.Value].gameObject, Instance.players[pair.Key].transform);
+                Outline temp = Instance.players[pair.Key].gameObject.AddComponent<Outline>();
+                temp.OutlineColor = colors[pair.Key];
+                temp.OutlineWidth = 8;
             }
         }
 
@@ -435,6 +490,10 @@ public class GameManager : MonoBehaviour
         {
             if(pair.Key < Instance.players.Count)
             {
+                //Debug.Log("Generating a: " + weapons[pair.Value]);
+                var weapon = weapons[pair.Value].Create();
+                Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(weapon);
+                continue;
                 //player.gameObject.GetComponent<JacksonCharacterMovement>().WeaponAssignFunction;
                 //Call the weapon function in the player @Jackson TODO
                 if(pair.Value == 0)
@@ -453,22 +512,7 @@ public class GameManager : MonoBehaviour
                 {
                     Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Scythe());
                 }
-                else if (pair.Value == 4)
-                {
-                    Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Boots());
-                }
-                else if (pair.Value == 5)
-                {
-                    Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Gauntlets());
-                }
-                else if (pair.Value == 6)
-                {
-                    Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Whip());
-                }
-                else if (pair.Value == 7)
-                {
-                    Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Jetpack());
-                }
+                
             }
         }
     }
@@ -511,13 +555,15 @@ public class GameManager : MonoBehaviour
         Instance.LastJoinedPlayer = newPlayer.playerIndex;
         newPlayer.gameObject.name = ("Player" + newPlayer.playerIndex);
         newPlayer.gameObject.GetComponent<PlayerData>().PlayerIndex = newPlayer.playerIndex;
+        newPlayer.gameObject.GetComponent<PlayerData>().playerColor = colors[newPlayer.playerIndex];
         Instance.players.Add(newPlayer.gameObject);
 
         GameObject newUI = Instantiate(lobbyUI, GameObject.Find("PlayerLobby" + newPlayer.playerIndex + "UI").transform);
         newUI.name = "Player" + newPlayer.playerIndex + "Canvas";
-        newUI.transform.GetChild(1).GetComponent<Outline>().effectColor = colors[newPlayer.playerIndex];
+        newUI.transform.GetChild(1).GetComponent<UnityEngine.UI.Outline>().effectColor = colors[newPlayer.playerIndex];
+        newUI.transform.GetComponentInChildren<WeaponSelectController>().player = newPlayer.playerIndex;
 
-        newPlayer.GetComponent<PlayerInput>().uiInputModule = newUI.transform.GetChild(0).GetComponent<InputSystemUIInputModule>();
+        newPlayer.GetComponent<PlayerInput>().uiInputModule = newUI.transform.GetComponentInChildren<InputSystemUIInputModule>();
 
         Instance.PlayerJoined.Invoke();
     }
@@ -556,13 +602,22 @@ public class GameManager : MonoBehaviour
     
     public void TeleportPlayerToSpawn(GameObject playerToTeleport)
     {
+      if(Instance._state != GameState.Showdown)
+		  {
         for(int i = 0; i < Instance.players.Count; i++) { 
             if(Instance.players[i] == playerToTeleport)
             {
                 playerToTeleport.transform.position = GameObject.Find("Spawn" + i).transform.position;
             }
         }
+
+		  }
     }
+
+    public void ExternalEndTheShowdown()
+	  {
+      Instance.OnStateEnter(GameState.EndScreen);
+	  }
 
     #endregion
     #endregion
