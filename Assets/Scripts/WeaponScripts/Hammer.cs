@@ -16,6 +16,7 @@ public class Hammer : Weapon
         specialDuration = 10000;
         specialTimer = 0;
         specialKnockback = 80;
+        specialDamage = 30;
         lightDamage = 20;
         lightSpeed = 0.8f;
         lightKnockback = 30;
@@ -77,7 +78,7 @@ public class Hammer : Weapon
             if(lazy.GetJumpHold() && canJump)
             {
                 canJump = false;
-                lazy.SetVelocity((lazy.Magnitude() * player.transform.forward) + new Vector3(0f, 10f, 0f));
+                lazy.SetVelocity((lazy.Magnitude() * player.transform.forward) + new Vector3(0f, 7f, 0f));
             }
             return true;
         }

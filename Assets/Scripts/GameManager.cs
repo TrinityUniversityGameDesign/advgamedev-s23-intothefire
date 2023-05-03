@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.SceneManagement;
 
 
 //GameState to represent the possible states the game can be in.
@@ -72,11 +73,17 @@ public class GameManager : MonoBehaviour
     public int DistanceApart = 120;
 
     public List<GameObject> players = new List<GameObject>();
-    static Color player1color = new Color(0.4f, 0.8f, 0.9f, 1); //Cyan
-    static Color player2color = new Color(0.13f, 0.53f, 0.2f, 1); //Green
-    static Color player3color = new Color(0.8f, 0.73f, 0.26f, 1); //Yellow
-    static Color player4color = new Color(0.6f,  0.2f,  0.46f, 1); //Purple
-    public static Color[] colors = new Color[4] { player1color, player2color, player3color, player4color };
+    //static Color player1color = new Color(0.4f, 0.8f, 0.9f, 1); //Cyan
+    //static Color player2color = new Color(0.13f, 0.53f, 0.2f, 1); //Green
+    //static Color player3color = new Color(0.8f, 0.73f, 0.26f, 1); //Yellow
+    //static Color player4color = new Color(0.6f,  0.2f,  0.46f, 1); //Purple
+    public Color[] colors = new Color[4]
+    {
+        new Color(0.4f, 0.8f, 0.9f, 1), 
+        new Color(0.13f, 0.53f, 0.2f, 1), 
+        new Color(0.8f, 0.73f, 0.26f, 1), 
+        new Color(0.6f,  0.2f,  0.46f, 1)
+    };
 
     public List<GameObject> playableCharacters;
     public List<GameObject> playableWeapons;
@@ -280,7 +287,6 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate()
     {
         TickState();
-
     }
 
     private void Update()
@@ -340,6 +346,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.EndScreen:
                 Instance.EndScreenBegin.Invoke();
+                SceneManager.LoadScene("Victory", LoadSceneMode.Additive);
                 gameInProgress = false;  //Get the victor of the game by doing victorScript.getVictor();
                 break;
             case GameState.Startup_New_Game:
