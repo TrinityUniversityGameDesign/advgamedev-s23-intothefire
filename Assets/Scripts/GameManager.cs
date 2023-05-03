@@ -82,8 +82,9 @@ public class GameManager : MonoBehaviour
     public List<GameObject> playableWeapons;
 
     Dictionary<int, int> playerCharacters = new Dictionary<int, int>() { {0, 0}, { 1, 0 }, { 2, 0 }, { 3, 0 } };
-    public List<CharacterData> Characters;
+    public List<CharacterData> characters;
     Dictionary<int, int> playerWeapons = new Dictionary<int, int>() { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 } };
+    public List<WeaponData> weapons;
     public int LastJoinedPlayer = 0;
 
     [SerializeField]
@@ -255,7 +256,8 @@ public class GameManager : MonoBehaviour
         {
             EvtCtrl.transform.position = new Vector3((LabyrinthSize / 2) * DistanceApart, 90, (LabyrinthSize / 2) * DistanceApart);
         }
-        Characters = Resources.LoadAll<CharacterData>("Characters").ToList();
+        //characters = Resources.LoadAll<CharacterData>("Characters").ToList();
+        //weapons = Resources.LoadAll<WeaponData>("Weapons").ToList();
     }
 
     private void Start()
@@ -465,7 +467,7 @@ public class GameManager : MonoBehaviour
         {
             if (pair.Key < Instance.players.Count)
             {
-                Instantiate(Instance.Characters[pair.Value], Instance.players[pair.Key].transform);
+                Instantiate(Instance.characters[pair.Value].gameObject, Instance.players[pair.Key].transform);
             }
         }
 
@@ -473,6 +475,9 @@ public class GameManager : MonoBehaviour
         {
             if(pair.Key < Instance.players.Count)
             {
+                //Debug.Log("Generating a: " + weapons[pair.Value]);
+                Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(weapons[pair.Value].Create());
+                return;
                 //player.gameObject.GetComponent<JacksonCharacterMovement>().WeaponAssignFunction;
                 //Call the weapon function in the player @Jackson TODO
                 if(pair.Value == 0)
@@ -557,8 +562,6 @@ public class GameManager : MonoBehaviour
         newUI.transform.GetComponentInChildren<Outline>().effectColor = colors[newPlayer.playerIndex];
 
         newPlayer.GetComponent<PlayerInput>().uiInputModule = newUI.transform.GetComponentInChildren<InputSystemUIInputModule>();
-        Debug.Log("Player: " + newPlayer + " and newUI: " + newUI);
-        Debug.Log("And input module is: ");
 
         Instance.PlayerJoined.Invoke();
     }
