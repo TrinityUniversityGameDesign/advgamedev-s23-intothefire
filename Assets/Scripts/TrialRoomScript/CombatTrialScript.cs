@@ -7,6 +7,7 @@ public class CombatTrialScript : TrialRoomScript
 {
     [SerializeField]
     public List<GameObject> enemyPool = new List<GameObject>();
+    public List<GameObject> spawnPoints = new List<GameObject>();
     List<GameObject> currentEnemies = new List<GameObject>();
     int currentWave;
 
@@ -79,6 +80,7 @@ public class CombatTrialScript : TrialRoomScript
                 enemy.GetComponent<EnemyUpdate>().Kill();
             }
         }
+        currentEnemies = new List<GameObject>();
     }
 
     bool TrySpawnEnemyWave(){
@@ -86,13 +88,14 @@ public class CombatTrialScript : TrialRoomScript
         currentEnemies = new List<GameObject>();
 
         bool didSpawn = false;
-        GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("EnemySpawnPoint");
-        foreach (GameObject spawnPoint in spawnPoints) {   
-            EnemySpawnPoint script = spawnPoint.GetComponent<EnemySpawnPoint>();
-            if (script.GetWaveNumber() == currentWave) {
-                GameObject enemy = script.SpawnEnemy();
-                RegisterEnemy(enemy);
-                didSpawn = true;
+        foreach (GameObject spawnPoint in spawnPoints) {  
+            if (spawnPoint.transform.parent == transform){
+                EnemySpawnPoint script = spawnPoint.GetComponent<EnemySpawnPoint>();
+                if (script.GetWaveNumber() == currentWave) {
+                    GameObject enemy = script.SpawnEnemy();
+                    RegisterEnemy(enemy);
+                    didSpawn = true;
+                }
             }
         }
         return didSpawn;
