@@ -28,11 +28,24 @@ public class EmptyRoom : MonoBehaviour
         state = EmptyRoomState.complete;
     }
 
+<<<<<<< Updated upstream
     public void StartTrial() {
         if(roomPrefab && state == EmptyRoomState.empty){
             room = Instantiate(roomPrefab, transform.position, transform.rotation);
             room.GetComponent<TrialRoomScript>().hostEmpty = this;
             state = EmptyRoomState.spawned;
+=======
+    void OnTriggerEnter(Collider target){
+        if(target.transform.tag == "Player" && state == EmptyRoomState.empty){
+            //Debug.Log("Empty");
+            if(roomPrefab){
+                room = Instantiate(roomPrefab, transform.position, transform.rotation);
+                room.GetComponent<TrialRoomScript>().hostEmpty = this;
+                state = EmptyRoomState.spawned;
+                //Debug.Log("Spawned");
+            }
+            
+>>>>>>> Stashed changes
         }
     }
 
