@@ -163,6 +163,25 @@ public class JacksonCharacterMovement : MonoBehaviour
     }
     
     private void UpdateUIBindings()
+
+        GameManager.Instance.ShowdownBegin.AddListener(InShowdown);
+
+    }
+
+    private bool inShowdown = false;
+    private void InShowdown()
+  	{
+      inShowdown = true;  
+	  }
+
+    private void UpdateMinimap()
+    {
+        Transform camTransform = _minicam.transform;
+        camTransform.position = new Vector3(transform.position.x, camTransform.position.y, transform.position.z);
+        camTransform.eulerAngles = new Vector3(90f, 0f, 0f) ;
+    }
+
+    private void OnEnable()
     {
         var inputSystem = GetComponentInChildren<InputSystemUIInputModule>();
         var playerInput = GetComponent<PlayerInput>();
@@ -696,6 +715,16 @@ public class JacksonCharacterMovement : MonoBehaviour
                     velocity = velocity + (new Vector3(0f, -1f, 0f) * -30f);
                     deadTick++;
                     //rb.AddForce(new Vector3(0f, -1f, 0f) * gravity);
+                    if(inShowdown == true)
+					          {
+                        
+                        state = PlayerState.spawn;
+                        transform.position = new Vector3(transform.position.x, 350f, transform.position.z);
+                        velocity = Vector3.zero;
+                        gravity = 0;
+                        disableSkinnedMeshRenderersAndOutline();
+						          
+					          }
                 }
                 break;
             case PlayerState.spawn:
@@ -739,7 +768,74 @@ public class JacksonCharacterMovement : MonoBehaviour
         //cc.Move((Quaternion.AngleAxis(Vector3.Angle(velocity.normalized, transform.forward.normalized), Vector3.up)* velocity)* Time.deltaTime);
         cc.Move(velocity * Time.deltaTime);
     }
-    public void StartPlayer()
+    
+    private void disableSkinnedMeshRenderersAndOutline()
+    {
+    if (transform.GetChild(4).name == "skeleAnim(Clone)")
+							          {
+                          transform.GetChild(4).GetChild(0).GetComponent<SkinnedMeshRenderer>().enabled = false;
+                          transform.GetComponent<Outline>().enabled = false;
+							          }
+
+    if (transform.GetChild(4).name == "Blake_anim(Clone)")
+    {
+      transform.GetChild(4).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = false;
+      transform.GetChild(4).GetChild(2).GetComponent<SkinnedMeshRenderer>().enabled = false;
+      transform.GetChild(4).GetChild(3).GetComponent<SkinnedMeshRenderer>().enabled = false;
+      transform.GetChild(4).GetChild(5).GetComponent<SkinnedMeshRenderer>().enabled = false;
+      transform.GetChild(4).GetChild(6).GetComponent<SkinnedMeshRenderer>().enabled = false;
+      transform.GetComponent<Outline>().enabled = false;
+    }
+    
+    if (transform.GetChild(4).name == "MillieAnim(Clone)")
+    {
+      transform.GetChild(4).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = false;
+      transform.GetComponent<Outline>().enabled = false;
+    }
+    
+    if (transform.GetChild(4).name == "monkeyAnim(Clone)")
+    {
+      transform.GetChild(4).GetChild(0).GetComponent<SkinnedMeshRenderer>().enabled = false;
+      transform.GetChild(4).GetChild(3).GetComponent<SkinnedMeshRenderer>().enabled = false;
+      transform.GetChild(4).GetChild(4).GetComponent<SkinnedMeshRenderer>().enabled = false;
+      transform.GetComponent<Outline>().enabled = false;
+    }
+   }
+
+    private void enableSkinnedMeshRenderersAndOutline()
+  {
+    if (transform.GetChild(4).name == "skeleAnim(Clone)")
+    {
+      transform.GetChild(4).GetChild(0).GetComponent<SkinnedMeshRenderer>().enabled = true;
+      transform.GetComponent<Outline>().enabled = true;
+    }
+
+    if (transform.GetChild(4).name == "Blake_anim(Clone)")
+    {
+      transform.GetChild(4).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = true;
+      transform.GetChild(4).GetChild(2).GetComponent<SkinnedMeshRenderer>().enabled = true;
+      transform.GetChild(4).GetChild(3).GetComponent<SkinnedMeshRenderer>().enabled = true;
+      transform.GetChild(4).GetChild(5).GetComponent<SkinnedMeshRenderer>().enabled = true;
+      transform.GetChild(4).GetChild(6).GetComponent<SkinnedMeshRenderer>().enabled = true;
+      transform.GetComponent<Outline>().enabled = true;
+    }
+
+    if (transform.GetChild(4).name == "MillieAnim(Clone)")
+    {
+      transform.GetChild(4).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = true;
+      transform.GetComponent<Outline>().enabled = true;
+    }
+
+    if (transform.GetChild(4).name == "monkeyAnim(Clone)")
+    {
+      transform.GetChild(4).GetChild(0).GetComponent<SkinnedMeshRenderer>().enabled = true;
+      transform.GetChild(4).GetChild(3).GetComponent<SkinnedMeshRenderer>().enabled = true;
+      transform.GetChild(4).GetChild(4).GetComponent<SkinnedMeshRenderer>().enabled = true;
+      transform.GetComponent<Outline>().enabled = true;
+    }
+  }
+
+  public void StartPlayer()
     {
         state = PlayerState.idle;
         anim = GetComponentInChildren<Animator>();

@@ -107,11 +107,15 @@ public class GameManager : MonoBehaviour
 
     private bool gameInProgress = false;
 
+
+    [HideInInspector]
+    ShowdownVictorScript victorScript;
+
     #endregion
 
     #region Event Fields
-    //Timing controls between events
-    public float MaxSecondsBetweenSideEvents = 600;
+  //Timing controls between events
+  public float MaxSecondsBetweenSideEvents = 600;
     public float MinSecondsBetweenSideEvents = 300;
 
     public float MaxSecondsBetweenMicroEvents = 180;
@@ -153,8 +157,11 @@ public class GameManager : MonoBehaviour
     public UnityEvent ShowdownBegin;
     [Tooltip("Event call when the Showdown ends")]
     public UnityEvent ShowdownEnd;
+    [Tooltip("So ShowdownVictorScript can end the showdown with the victor")]
+    public UnityEvent ExternalShowdownEnd;
 
-    [Tooltip("Event called when the lobby begins")]
+
+  [Tooltip("Event called when the lobby begins")]
     public UnityEvent LobbyBegin;
     [Tooltip("Event called when the lobby ends")]
     public UnityEvent LobbyEnd;
@@ -215,6 +222,7 @@ public class GameManager : MonoBehaviour
 
         Instance.ShowdownBegin.AddListener(TestShowdownBegin);
         Instance.ShowdownEnd.AddListener(TestShowdownEnd);
+        Instance.ExternalShowdownEnd.AddListener(ExternalEndTheShowdown);
 
         Instance.LobbyBegin.AddListener(TestLobbyBegin);
         Instance.LobbyEnd.AddListener(TestLobbyEnd);
@@ -232,6 +240,9 @@ public class GameManager : MonoBehaviour
         Instance.StartupNewGameEnd.AddListener(TestStartupNewGameEnd);
 
         Instance.DungeonGenerationComplete.AddListener(TeleportPlayersToSpawnPoints);
+        
+
+
 
         secondsOfGameTime = 60 * Minutes;
 
@@ -322,13 +333,14 @@ public class GameManager : MonoBehaviour
             case GameState.Showdown:
                 Instance.ShowdownBegin.Invoke();
                 Instance.MajorEventEnd.Invoke();
+                victorScript = FindObjectOfType<ShowdownVictorScript>();
                 break;
             case GameState.SideEvent:
                 Instance.SideEventBegin.Invoke();
                 break;
             case GameState.EndScreen:
                 Instance.EndScreenBegin.Invoke();
-                gameInProgress = false;
+                gameInProgress = false;  //Get the victor of the game by doing victorScript.getVictor();
                 break;
             case GameState.Startup_New_Game:
                 Instance.StartupNewGameBegin.Invoke();
@@ -419,7 +431,7 @@ public class GameManager : MonoBehaviour
                 Instance.PausedEnd.Invoke();
                 break;
             case GameState.Showdown:
-                Instance.ShowdownEnd.Invoke();
+                //Instance.ShowdownEnd.Invoke();
                 break;
             case GameState.SideEvent:
                 Instance.SideEventEnd?.Invoke();
@@ -588,13 +600,22 @@ public class GameManager : MonoBehaviour
     
     public void TeleportPlayerToSpawn(GameObject playerToTeleport)
     {
+      if(Instance._state != GameState.Showdown)
+		  {
         for(int i = 0; i < Instance.players.Count; i++) { 
             if(Instance.players[i] == playerToTeleport)
             {
                 playerToTeleport.transform.position = GameObject.Find("Spawn" + i).transform.position;
             }
         }
+
+		  }
     }
+
+    public void ExternalEndTheShowdown()
+	  {
+      Instance.OnStateEnter(GameState.EndScreen);
+	  }
 
     #endregion
     #endregion
