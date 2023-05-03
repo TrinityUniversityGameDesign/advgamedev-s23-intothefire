@@ -155,8 +155,6 @@ public class JacksonCharacterMovement : MonoBehaviour
         _hud = GetComponentInChildren<HUDController>();
         // _minicam = GetComponentInChildren<Camera>();
         _minicam = transform.GetComponentInChildren<MiniCam>();
-        Debug.Log("Got minicam?");
-        Debug.Log(_minicam.name);
         // UI Variables
         Icon = Resources.Load<Sprite>("Sprites/gun");
         _playerData = GetComponent<PlayerData>();

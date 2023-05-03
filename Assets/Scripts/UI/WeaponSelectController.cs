@@ -33,6 +33,5 @@ public class WeaponSelectController : MonoBehaviour
             newObject.GetComponent<WeaponController>().position = i;
         }
         _firstButton = transform.GetChild(0).gameObject;
-        Debug.Log("First button is: " + _firstButton);
     }
 }

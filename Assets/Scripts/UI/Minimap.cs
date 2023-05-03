@@ -15,7 +15,6 @@ public class Minimap : MonoBehaviour
 
     public void SetIndexTexture(int index)
     {
-        Debug.Log(index);
         GetComponentInChildren<RawImage>().texture = Resources.Load<RenderTexture>($"Textures/Minimap{index}");
     }
 }
