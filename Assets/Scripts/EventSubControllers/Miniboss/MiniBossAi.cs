@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MiniBossAI : MonoBehaviour
+public class MiniBossAi : MonoBehaviour
 {
     float range = 50f; // Distance to target for attacking
     public float moveSpeed = 10f; // Movement speed
@@ -14,6 +14,9 @@ public class MiniBossAI : MonoBehaviour
 
     GameObject stomp;
     GameObject charge;
+    GameObject navSphere;
+
+    List<float> damageTracker;
 
     private bool isAttacking; // Flag for whether the character is currently attacking
 
@@ -28,6 +31,8 @@ public class MiniBossAI : MonoBehaviour
 
         stomp = transform.GetChild(2).gameObject;
         charge = transform.GetChild(3).gameObject;
+        navSphere = transform.GetChild(4).gameObject;
+        if(navSphere != null) navSphere.transform.parent = null;
 
         SetRandomDestination();
     }
@@ -60,8 +65,12 @@ public class MiniBossAI : MonoBehaviour
     // Called by the Animator when the attack animation finishes
     public void FinishAttack()
     {
+        isAttacking = false;
+
         stomp.SetActive(false);
         charge.SetActive(false);
+
+        agent.speed = 10;
 
         SetRandomDestination();
     }
@@ -77,6 +86,52 @@ public class MiniBossAI : MonoBehaviour
         {
             // set the NavMeshAgent's destination to the nearest point on the NavMesh
             agent.SetDestination(hit.position);
+            if (navSphere != null) navSphere.transform.position = hit.position;
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        if (other.gameObject.tag == "Damage")
+        {
+            int damageDealer = GameManager.Instance.players.IndexOf(other.gameObject.transform.parent.gameObject);
+            DamageScript otherScript = other.gameObject.GetComponent<DamageScript>();
+
+            if (damageDealer != -1)
+            {
+                //Get the damage total
+                damageTracker[damageDealer] += otherScript.GetDamage();
+
+                //Compute the DOT
+                float dotAmt = otherScript.GetDamageOverTime();
+                if (dotAmt > 0) StartCoroutine(TickDOT(damageDealer, dotAmt));
+
+            }
+        }
+    }
+
+    IEnumerator TickDOT(int player, float dotAmt)
+    {
+        for (int i = 1; i <= 10; i++)
+        {
+            yield return new WaitForSeconds(1);
+            damageTracker[player] += dotAmt;
+        }
+    }
+
+    public int GetWinner()
+    {
+        float maxVal = 0;
+        int player = 0;
+        for (int i = 0; i < damageTracker.Count; i++)
+        {
+            if (damageTracker[i] > maxVal)
+            {
+                maxVal = damageTracker[i];
+                player = i;
+            }
+        }
+        return player;
     }
 }

@@ -21,7 +21,7 @@ public class MiniBossAnimatorAI : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.transform.parent.GetComponent<MiniBossAI>().FinishAttack();
+        animator.transform.parent.GetComponent<MiniBossAi>().FinishAttack();
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

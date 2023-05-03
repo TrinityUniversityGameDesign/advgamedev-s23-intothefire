@@ -6,8 +6,8 @@ public class MiniBossSideEventController : SideEventController_General
 {
     public override List<int> ComputeVictor()
     {
-    List<int> winner = new List<int>();
-    winner.Add(GetComponentInChildren<MiniBossAi_Old>().GetWinner());
-    return winner;
-  }
+        List<int> winner = new List<int>();
+        winner.Add(GetComponentInChildren<MiniBossAi>().GetWinner());
+        return winner;
+    }
 }
