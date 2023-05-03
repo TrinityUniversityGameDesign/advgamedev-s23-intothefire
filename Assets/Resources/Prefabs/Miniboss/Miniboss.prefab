@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7235311188350509992
 Transform:
   m_ObjectHideFlags: 0
@@ -111,6 +111,7 @@ GameObject:
   - component: {fileID: 9005872389670858027}
   - component: {fileID: 3932379304007294973}
   - component: {fileID: 1547761078639940220}
+  - component: {fileID: 1002232454682629592}
   m_Layer: 0
   m_Name: Miniboss
   m_TagString: Untagged
@@ -186,10 +187,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 3.1837833
-  m_Height: 10.664284
+  m_Radius: 7.08
+  m_Height: 18.18
   m_Direction: 1
-  m_Center: {x: 0, y: 5.035734, z: 0}
+  m_Center: {x: 0, y: 2.3, z: 0}
 --- !u!23 &3932379304007294973
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -245,6 +246,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
+  isCenterBoss: 1
+  damageTracker: []
+--- !u!114 &1002232454682629592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2381000845682810882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40778ec4c6440244a9c255270a8d24fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bossHealth: 100
 --- !u!1 &6681574337111129313
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,7 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfc98f4d60377f34b95e4ffc82ae074f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 0
+  damage: 5
   dot: 0
   knockback: 15
   lifesteal: 0
@@ -455,9 +471,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfc98f4d60377f34b95e4ffc82ae074f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 0
+  damage: 5
   dot: 0
-  knockback: 20
+  knockback: 35
   lifesteal: 0
 --- !u!198 &3211389207264855398
 ParticleSystem:
@@ -5335,7 +5351,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9046634012106172505}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5352,8 +5368,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 3.2037306
-  m_Height: 11.123932
+  m_Radius: 3.69
+  m_Height: 15.5
   m_Direction: 1
   m_Center: {x: 0.09513807, y: 5, z: 0.6672077}
 --- !u!114 &8033916576483936244
@@ -5368,9 +5384,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfc98f4d60377f34b95e4ffc82ae074f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 0
+  damage: 10
   dot: 0
-  knockback: 8
+  knockback: 40
   lifesteal: 0
 --- !u!1001 &2381000844744973345
 PrefabInstance:

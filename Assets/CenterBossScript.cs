@@ -8,7 +8,7 @@ public class CenterBossScript : MonoBehaviour
     List<float> damageList;
 
     float damageSum = 0;
-    public float bossHealth = 200;
+    public float bossHealth = 100;
     int lastPlayerToDoDamage;
 
     // Start is called before the first frame update
