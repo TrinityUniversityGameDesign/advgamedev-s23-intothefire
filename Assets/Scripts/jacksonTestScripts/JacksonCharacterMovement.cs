@@ -691,7 +691,6 @@ public class JacksonCharacterMovement : MonoBehaviour
                 break;
             case PlayerState.dead:
                 {
-                    Debug.Log("DEAD");
                     //gravity = -30;
                     velocity = velocity + (new Vector3(0f, -1f, 0f) * -30f);
                     deadTick++;
@@ -701,7 +700,6 @@ public class JacksonCharacterMovement : MonoBehaviour
                         
                         state = PlayerState.spawn;
                         transform.position = new Vector3(transform.position.x, 350f, transform.position.z);
-                        Debug.Log("BINGO");
                         velocity = Vector3.zero;
                         gravity = 0;
                         disableSkinnedMeshRenderersAndOutline();
