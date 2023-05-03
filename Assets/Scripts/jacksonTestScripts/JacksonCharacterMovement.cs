@@ -1141,6 +1141,11 @@ public class JacksonCharacterMovement : MonoBehaviour
         return specialHold;
     }
 
+    public bool GetJumpHold()
+    {
+        return jumpHold;
+    }
+
     public void ChangeHealth(float f)
     {
         maxHealth += f; 
