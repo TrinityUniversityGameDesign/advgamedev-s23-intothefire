@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class ShowdownVictorScript : MonoBehaviour
 {
-	List<GameObject> survivors = new List<GameObject>();
+	public List<GameObject> survivors = new List<GameObject>();
 
 	public UnityEvent ShowdownWinnerDecided = new UnityEvent();
 
