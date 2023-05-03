@@ -29,8 +29,6 @@ public class RoamingBoss_MajorController : MonoBehaviour
         // Start moving to a random point on the NavMesh
         MoveToRandomPoint();
 
-        //damageScript = gameObject.GetComponent<DamageScript>();
-
     }
 
 

@@ -24,7 +24,7 @@ public class MajorEventController : MonoBehaviour
         GameManager.Instance.MajorEventBegin.AddListener(StartNewMajorEvent);
         GameManager.Instance.MajorEventEnd.AddListener(EndCurrentMajorEvent);
 
-        startPoint = GameObject.FindGameObjectWithTag("StartPoint").transform;
+        //startPoint = GameObject.FindGameObjectWithTag("StartPoint").transform;
         Debug.Log("Found Destination: " + startPoint.position);
     }
 
