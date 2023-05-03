@@ -162,8 +162,8 @@ public class JacksonCharacterMovement : MonoBehaviour
         _playerData = GetComponent<PlayerData>();
     }
     
-    private void UpdateUIBindings()
-
+    private void UpdateUIBindings() {
+        
         GameManager.Instance.ShowdownBegin.AddListener(InShowdown);
 
     }
