@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -81,6 +82,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> playableWeapons;
 
     Dictionary<int, int> playerCharacters = new Dictionary<int, int>() { {0, 0}, { 1, 0 }, { 2, 0 }, { 3, 0 } };
+    public List<CharacterData> Characters;
     Dictionary<int, int> playerWeapons = new Dictionary<int, int>() { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 } };
     public int LastJoinedPlayer = 0;
 
@@ -253,7 +255,7 @@ public class GameManager : MonoBehaviour
         {
             EvtCtrl.transform.position = new Vector3((LabyrinthSize / 2) * DistanceApart, 90, (LabyrinthSize / 2) * DistanceApart);
         }
-        
+        Characters = Resources.LoadAll<CharacterData>("Characters").ToList();
     }
 
     private void Start()
@@ -463,7 +465,7 @@ public class GameManager : MonoBehaviour
         {
             if (pair.Key < Instance.players.Count)
             {
-                Instantiate(Instance.playableCharacters[pair.Value], Instance.players[pair.Key].transform);
+                Instantiate(Instance.Characters[pair.Value], Instance.players[pair.Key].transform);
             }
         }
 
@@ -552,9 +554,11 @@ public class GameManager : MonoBehaviour
 
         GameObject newUI = Instantiate(lobbyUI, GameObject.Find("PlayerLobby" + newPlayer.playerIndex + "UI").transform);
         newUI.name = "Player" + newPlayer.playerIndex + "Canvas";
-        newUI.transform.GetChild(1).GetComponent<Outline>().effectColor = colors[newPlayer.playerIndex];
+        newUI.transform.GetComponentInChildren<Outline>().effectColor = colors[newPlayer.playerIndex];
 
-        newPlayer.GetComponent<PlayerInput>().uiInputModule = newUI.transform.GetChild(0).GetComponent<InputSystemUIInputModule>();
+        newPlayer.GetComponent<PlayerInput>().uiInputModule = newUI.transform.GetComponentInChildren<InputSystemUIInputModule>();
+        Debug.Log("Player: " + newPlayer + " and newUI: " + newUI);
+        Debug.Log("And input module is: ");
 
         Instance.PlayerJoined.Invoke();
     }
