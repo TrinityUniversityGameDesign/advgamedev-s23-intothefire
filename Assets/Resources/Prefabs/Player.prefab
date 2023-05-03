@@ -654,7 +654,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6603305871798692760}
   - component: {fileID: 4789341166248396756}
-  - component: {fileID: 3223613246385630735}
   - component: {fileID: 7966971383318888303}
   m_Layer: 0
   m_Name: Camera
@@ -721,14 +720,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &3223613246385630735
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5461421479861709948}
-  m_Enabled: 1
 --- !u!114 &7966971383318888303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1120,7 +1111,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7331627599604854836, guid: 003decb78118441deb75e98859920f87, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1.7065444
+      value: -0.0000014305115
       objectReference: {fileID: 0}
     - target: {fileID: 7554958827279034075, guid: 003decb78118441deb75e98859920f87, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1144,11 +1135,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7976211750895125306, guid: 003decb78118441deb75e98859920f87, type: 3}
       propertyPath: m_Size
-      value: 0.9954775
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7976211750895125306, guid: 003decb78118441deb75e98859920f87, type: 3}
       propertyPath: m_Value
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8624585772173617699, guid: 003decb78118441deb75e98859920f87, type: 3}
       propertyPath: m_AnchorMax.x
