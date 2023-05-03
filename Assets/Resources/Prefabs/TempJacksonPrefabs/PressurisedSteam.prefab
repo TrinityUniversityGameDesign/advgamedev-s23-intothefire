@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4363000815121756}
   - component: {fileID: 198124144702787664}
   - component: {fileID: 199092248008267778}
+  - component: {fileID: -7468681996307214128}
   m_Layer: 0
   m_Name: PressurisedSteam
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1533138625715334}
   m_LocalRotation: {x: 0.06374033, y: -0.42913568, z: 0.019533236, w: 0.90077645}
   m_LocalPosition: {x: 8.25, y: 2.5, z: 26.5}
-  m_LocalScale: {x: 20, y: 20, z: 20}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4317674116079516}
@@ -4825,6 +4826,18 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &-7468681996307214128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1533138625715334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ae26f6d81a92034689fd29ebb05d556, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1824827258223664
 GameObject:
   m_ObjectHideFlags: 0
