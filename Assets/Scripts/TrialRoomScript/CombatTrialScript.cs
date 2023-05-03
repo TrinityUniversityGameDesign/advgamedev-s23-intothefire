@@ -32,26 +32,44 @@ public class CombatTrialScript : TrialRoomScript
             if (TrySpawnEnemyWave()) {
                 //Debug.Log("Spawning Enemy Wave " + currentWave);
             } else {
+                AwardItems();
                 TrialCompleted();
             }
         }
     }
 
-    void FixedUpdate() {
-        List<Transform> copy = new List<Transform>(playerList);
-        if(playerList.Count > 0){
-            foreach(Transform thing in playerList){
-                if(thing && !thing.GetComponent<Collider>().bounds.Intersects(transform.GetComponent<Collider>().bounds)){
-                    copy.Remove(thing);
+    void AwardItems() {
+        GameObject manager = GameObject.Find("Global_GameManager");
+        if (manager){
+            foreach (Transform thing in playerList){
+                if(thing && thing.GetComponent<Collider>().bounds.Intersects(transform.GetComponent<Collider>().bounds)){
+                    if(thing.gameObject.name == "Player0"){manager.GetComponent<GameManager>().AwardRandomItem(0);}
+                    else if(thing.gameObject.name == "Player1"){manager.GetComponent<GameManager>().AwardRandomItem(1);}
+                    else if(thing.gameObject.name == "Player2"){manager.GetComponent<GameManager>().AwardRandomItem(2);}
+                    else if(thing.gameObject.name == "Player3"){manager.GetComponent<GameManager>().AwardRandomItem(3);}
                 }
             }
-            playerList = copy;
         }
+    }
 
-        if (playerList.Count == 0){
-            currentWave = 0;
-            DespawnEnemies();
-            SetDoorPresence(false);
+    void FixedUpdate() {
+        if (currRoomState == RoomState.trialing){
+            List<Transform> copy = new List<Transform>(playerList);
+            if(playerList.Count > 0){
+                foreach(Transform thing in playerList){
+                    if(thing && !thing.GetComponent<Collider>().bounds.Intersects(transform.GetComponent<Collider>().bounds)){
+                        copy.Remove(thing);
+                    }
+                }
+                playerList = copy;
+            }
+
+            if (playerList.Count == 0){
+                currentWave = 0;
+                DespawnEnemies();
+            }
+
+            SetDoorPresence(playerList.Count > 0);
         }
     }
 
