@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.SceneManagement;
 
 
 //GameState to represent the possible states the game can be in.
@@ -286,7 +287,6 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate()
     {
         TickState();
-
     }
 
     private void Update()
@@ -346,6 +346,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.EndScreen:
                 Instance.EndScreenBegin.Invoke();
+                SceneManager.LoadScene("Victory", LoadSceneMode.Additive);
                 gameInProgress = false;  //Get the victor of the game by doing victorScript.getVictor();
                 break;
             case GameState.Startup_New_Game:

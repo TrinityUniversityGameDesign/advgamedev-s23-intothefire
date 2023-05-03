@@ -116,6 +116,7 @@ public class JacksonCharacterMovement : MonoBehaviour
         GameManager.Instance?.StartupNewGameBegin.AddListener(StartPlayer);
         GameManager.Instance?.EnablePlayerInvincibility.AddListener(EnableInvincible);
         GameManager.Instance?.DisablePlayerInvincibility.AddListener(DisableInvincible);
+        GameManager.Instance?.ShowdownBegin.AddListener(StartShowdown);
     }
     void Start()
     {
@@ -160,10 +161,15 @@ public class JacksonCharacterMovement : MonoBehaviour
         _playerData = GetComponent<PlayerData>();
     }
     
-    private void UpdateUIBindings() {
-        
+    private void UpdateUIBindings() 
+    {
         GameManager.Instance.ShowdownBegin.AddListener(InShowdown);
+    }
 
+    private void StartShowdown()
+    {
+        _hud.ToggleMinimap();
+        _hud.showdown = true;
     }
 
     private bool inShowdown = false;
