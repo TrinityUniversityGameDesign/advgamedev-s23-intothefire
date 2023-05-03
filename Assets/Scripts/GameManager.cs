@@ -428,6 +428,9 @@ public class GameManager : MonoBehaviour
             if (pair.Key < Instance.players.Count)
             {
                 Instantiate(Instance.playableCharacters[pair.Value], Instance.players[pair.Key].transform);
+                Outline temp = Instance.players[pair.Key].gameObject.AddComponent<Outline>();
+                temp.OutlineColor = colors[pair.Key];
+                temp.OutlineWidth = 8;
             }
         }
 
@@ -453,22 +456,7 @@ public class GameManager : MonoBehaviour
                 {
                     Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Scythe());
                 }
-                else if (pair.Value == 4)
-                {
-                    Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Boots());
-                }
-                else if (pair.Value == 5)
-                {
-                    Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Gauntlets());
-                }
-                else if (pair.Value == 6)
-                {
-                    Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Whip());
-                }
-                else if (pair.Value == 7)
-                {
-                    Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(new Jetpack());
-                }
+                
             }
         }
     }
@@ -515,7 +503,7 @@ public class GameManager : MonoBehaviour
 
         GameObject newUI = Instantiate(lobbyUI, GameObject.Find("PlayerLobby" + newPlayer.playerIndex + "UI").transform);
         newUI.name = "Player" + newPlayer.playerIndex + "Canvas";
-        newUI.transform.GetChild(1).GetComponent<Outline>().effectColor = colors[newPlayer.playerIndex];
+        newUI.transform.GetChild(1).GetComponent<UnityEngine.UI.Outline>().effectColor = colors[newPlayer.playerIndex];
 
         newPlayer.GetComponent<PlayerInput>().uiInputModule = newUI.transform.GetChild(0).GetComponent<InputSystemUIInputModule>();
 

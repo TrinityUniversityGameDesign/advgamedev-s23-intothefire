@@ -23,13 +23,12 @@ public class MicroEventController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.Instance.MicroEventBegin.AddListener(StartNewMicroEvent);
-        GameManager.Instance.MicroEventEnd.AddListener(EndCurrentMicroEvent);
+        //GameManager.Instance.MicroEventBegin.AddListener(StartNewMicroEvent);
+        //GameManager.Instance.MicroEventEnd.AddListener(EndCurrentMicroEvent);
     }
 
     void StartNewMicroEvent()
     {
-        Debug.Log("Beginning MicroEvent from MicroEventController");
 
         // Get the number of options in the enum
         int numOptions = System.Enum.GetNames(typeof(MicroEvents)).Length;
@@ -39,8 +38,6 @@ public class MicroEventController : MonoBehaviour
 
         // Get the corresponding option from the enum
         _currentEvent = (MicroEvents)randomIndex;
-
-        Debug.Log("Chosen option: " + _currentEvent);
 
         switch (_currentEvent)
         {

@@ -22,7 +22,7 @@ public class CameraCylinder : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         //Debug.Log("cylinder exit");
-        if(other.gameObject.tag == "Player" && noGo != other.gameObject && other.gameObject != null)
+        if((other.gameObject.tag == "Player" || other.gameObject.tag == "Enemy") && noGo != other.gameObject && other.gameObject != null)
         {
 
             cam.RemoveTarget(other.gameObject);

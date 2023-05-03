@@ -19,6 +19,8 @@ public class Weapon
     public float specialTimer = 0;
     public GameObject player;
     public GameObject hitbox;
+    public GameObject weapon;
+    public GameObject specialWeapon;
     public bool canMove = false;
 
     public Weapon() { }
@@ -38,5 +40,9 @@ public class Weapon
     public void AssignHitbox(GameObject g)
     {
         hitbox = g;
+    }
+    public virtual void LoadWeapon()
+    {
+
     }
 }
