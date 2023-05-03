@@ -20,7 +20,9 @@ public class WeaponSelectController : MonoBehaviour
         for (int i = 0; i < GameManager.Instance.weapons.Count; i++)
         {
             var weapon = GameManager.Instance.weapons[i];
+            //Debug.Log("Weapon " + i + ": " + weapon);
             var newObject = Instantiate(weaponObject, transform);
+            newObject.name = weapon.name;
             var tooltip = newObject.GetComponentInChildren<TooltipController>();
             var toggle = newObject.GetComponentInChildren<ToggleSelect>();
             
