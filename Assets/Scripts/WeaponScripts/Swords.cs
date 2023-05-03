@@ -5,6 +5,7 @@ using UnityEngine;
 public class Swords : Weapon
 {
     // Start is called before the first frame update
+    bool upToggle = true;
     public Swords()
     {
         weapon = Resources.Load("Prefabs/Weapons/Sword") as GameObject;
@@ -38,8 +39,14 @@ public class Swords : Weapon
                 lazy.SetVelocity(new Vector3(tmp.x, 0f, tmp.z));
             }
 
-
-            lazy.SetVelocity(lazy.GetVelocity() + player.transform.forward * 10f + new Vector3(0f, 65f, 0f));
+            if (lazy.GetJumpHold())
+            {
+                lazy.SetVelocity(lazy.GetVelocity() + player.transform.forward * 10f + new Vector3(0f, 65f, 0f));
+            }
+            else
+            {
+                lazy.SetVelocity(player.transform.forward * 30f);
+            }
             
             specialTimer++;
             return true;
@@ -48,14 +55,22 @@ public class Swords : Weapon
         {
 
             specialTimer = 0;
+            upToggle = true;
             return false;
         }
         else
         {
+            JacksonCharacterMovement lazy = player.GetComponent<JacksonCharacterMovement>();
             if (specialTimer == 8)
             {
-                JacksonCharacterMovement lazy = player.GetComponent<JacksonCharacterMovement>();
+                
                 lazy.SetVelocity(player.transform.forward * 30f + new Vector3(0f, 1f, 0f));
+            }
+            else if(specialTimer < 8 && lazy.GetJumpHold() && upToggle)
+            {
+                specialTimer = 1;
+                upToggle = false;
+                lazy.SetVelocity(lazy.GetVelocity() + player.transform.forward * 10f + new Vector3(0f, 65f, 0f));
             }
             hitbox.transform.localRotation = hitbox.transform.localRotation * Quaternion.AngleAxis(60f, Vector3.forward);
             specialTimer++;
