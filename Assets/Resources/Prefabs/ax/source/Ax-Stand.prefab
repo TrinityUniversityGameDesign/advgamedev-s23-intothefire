@@ -41,8 +41,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2236561610384513589}
-  - component: {fileID: 4527259548921627911}
   - component: {fileID: 1317117226935748716}
+  - component: {fileID: 4527259548921627911}
   - component: {fileID: 3004921855164340365}
   - component: {fileID: 6906009954442140986}
   m_Layer: 0
@@ -71,22 +71,6 @@ Transform:
   m_Father: {fileID: 415587580128311418}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 359.978, y: -181.622, z: 179.097}
---- !u!114 &4527259548921627911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 368524530227731842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7caa4bec6fb11ba44953102a5163338c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ax: {fileID: 368524530227731842}
-  axis: {fileID: 2819403412011399186}
-  amplitude: 45
-  speed: 4
 --- !u!114 &1317117226935748716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,6 +101,22 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 0}
   m_BuildHeightMesh: 0
+--- !u!114 &4527259548921627911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368524530227731842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7caa4bec6fb11ba44953102a5163338c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ax: {fileID: 368524530227731842}
+  axis: {fileID: 2819403412011399186}
+  amplitude: 45
+  speed: 4
 --- !u!114 &3004921855164340365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -670,7 +670,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4638360887852932076}
-  - component: {fileID: 8394998975021962}
   - component: {fileID: 7301778005506815881}
   m_Layer: 0
   m_Name: Ax-Stand
@@ -697,36 +696,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8394998975021962
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4638360887852932078}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AgentTypeID: 0
-  m_CollectObjects: 0
-  m_Size: {x: 10, y: 10, z: 10}
-  m_Center: {x: 0, y: 2, z: 0}
-  m_LayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_UseGeometry: 0
-  m_DefaultArea: 0
-  m_IgnoreNavMeshAgent: 1
-  m_IgnoreNavMeshObstacle: 1
-  m_OverrideTileSize: 0
-  m_TileSize: 256
-  m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.33333334
-  m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: c7cd560b6890b6c4dbee4b93aeed27b6, type: 2}
-  m_BuildHeightMesh: 0
 --- !u!54 &7301778005506815881
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1098,7 +1067,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4638360889556127272}
   - component: {fileID: 4638360889556127273}
-  - component: {fileID: 2687827837168352445}
   - component: {fileID: 1731311805178891320}
   - component: {fileID: 2135007908364227963}
   m_Layer: 0
@@ -1143,36 +1111,6 @@ MonoBehaviour:
   axis: {fileID: 4638360889423756478}
   amplitude: 45
   speed: 4
---- !u!114 &2687827837168352445
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4638360889556127274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AgentTypeID: 1479372276
-  m_CollectObjects: 0
-  m_Size: {x: 10, y: 10, z: 10}
-  m_Center: {x: 0, y: 2, z: 0}
-  m_LayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_UseGeometry: 0
-  m_DefaultArea: 0
-  m_IgnoreNavMeshAgent: 1
-  m_IgnoreNavMeshObstacle: 1
-  m_OverrideTileSize: 0
-  m_TileSize: 256
-  m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
-  m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 0}
-  m_BuildHeightMesh: 0
 --- !u!114 &1731311805178891320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1594,7 +1532,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4509326019103742900}
   - component: {fileID: 7597553439678331755}
-  - component: {fileID: 1358431320626339970}
   - component: {fileID: 3152390596781405492}
   - component: {fileID: 7492919977854382659}
   m_Layer: 0
@@ -1639,36 +1576,6 @@ MonoBehaviour:
   axis: {fileID: 4993774636739374378}
   amplitude: 45
   speed: 4
---- !u!114 &1358431320626339970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7989341009635469917}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AgentTypeID: 1479372276
-  m_CollectObjects: 0
-  m_Size: {x: 10, y: 10, z: 10}
-  m_Center: {x: 0, y: 2, z: 0}
-  m_LayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_UseGeometry: 0
-  m_DefaultArea: 0
-  m_IgnoreNavMeshAgent: 1
-  m_IgnoreNavMeshObstacle: 1
-  m_OverrideTileSize: 0
-  m_TileSize: 256
-  m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
-  m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 0}
-  m_BuildHeightMesh: 0
 --- !u!114 &3152390596781405492
 MonoBehaviour:
   m_ObjectHideFlags: 0

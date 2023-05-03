@@ -49,11 +49,11 @@ public static class GameManagerGlobalStatics
     }
     public static readonly Dictionary<GameEvents, GameEvent> Events = new Dictionary<GameEvents, GameEvent>
     {
-        { GameEvents.Meteor, new GameEvent("Meteors!", "Avoid the rocks falling from the sky.") },
-        { GameEvents.Miniboss, new GameEvent("Rampant Mummy", "Damage the mummy!") },
-        { GameEvents.Spleef, new GameEvent("Spleef", "Keep moving! Avoid falling through the holes in the floor! Knock your enemies through them!") },
-        { GameEvents.Explore, new GameEvent("Out of the Frying Pan", "Explore the labyrinth, collect rewards. Beware the Minotaur") },
-        { GameEvents.Showdown, new GameEvent("Into the Fire", "Destroy your opponents, whatever means necessary.") }
+        { GameEvents.Meteor, new GameEvent("Meteors!", "Avoid the rocks falling from the sky!") },
+        { GameEvents.Miniboss, new GameEvent("Rampant Mummy", "Deal the most damage to the mummy!") },
+        { GameEvents.Spleef, new GameEvent("Falling Platforms", "Keep moving! Avoid falling through the holes in the floor!") },
+        { GameEvents.Explore, new GameEvent("Out of the Frying Pan", "Explore the labyrinth and collect rewards!") },
+        { GameEvents.Showdown, new GameEvent("Into the Fire", "Destroy your opponents and be the last one standing!") }
     };
 }
 
