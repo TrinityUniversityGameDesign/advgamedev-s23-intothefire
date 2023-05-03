@@ -1,0 +1,36 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/menu.uss?fileID=7433441132597879392&amp;guid=68ae899bd11c945feace9450e11381fa&amp;type=3#menu" />
+    <ui:VisualElement style="flex-grow: 1; flex-direction: column; background-image: resource(&apos;Textures/background&apos;); -unity-background-scale-mode: scale-and-crop;">
+        <ui:VisualElement style="flex-direction: row; flex-grow: 0; background-color: rgba(0, 0, 0, 0.75); justify-content: space-between;">
+            <ui:VisualElement name="Logo" class="logo" style="flex-grow: 0; justify-content: center; margin-left: 20px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px;">
+                <ui:Label text="INTO" display-tooltip-when-elided="true" enable-rich-text="true" name="Into" style="font-size: 24px; margin-top: 0; flex-grow: 0; flex-shrink: 0; -unity-font: url(&apos;project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&amp;guid=13c8197c21db74ab78408d4a2c19037d&amp;type=3#NotInter-Regular&apos;); -unity-font-style: bold; margin-left: 0; margin-right: 0; margin-bottom: -8px; -unity-text-align: middle-center; white-space: normal; color: rgb(226, 1, 5); -unity-text-outline-width: 1px; -unity-text-outline-color: rgb(0, 0, 0); text-shadow: 2px 2px 3px rgb(0, 0, 0);" />
+                <ui:Label text="THE" display-tooltip-when-elided="true" enable-rich-text="true" name="The" style="font-size: 12px; margin-top: 0; flex-grow: 0; flex-shrink: 0; -unity-font: url(&apos;project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&amp;guid=13c8197c21db74ab78408d4a2c19037d&amp;type=3#NotInter-Regular&apos;); -unity-font-style: bold; margin-left: 0; margin-right: 0; margin-bottom: 0; -unity-text-align: middle-center; white-space: normal; color: rgb(226, 1, 5); -unity-text-outline-width: 0.5px; -unity-text-outline-color: rgb(0, 0, 0); text-shadow: 2px 5px 3px rgb(0, 0, 0);" />
+                <ui:Label text="FIRE" display-tooltip-when-elided="true" enable-rich-text="true" name="Fire" style="font-size: 24px; margin-top: -8px; flex-grow: 0; flex-shrink: 0; -unity-font: url(&apos;project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&amp;guid=13c8197c21db74ab78408d4a2c19037d&amp;type=3#NotInter-Regular&apos;); -unity-font-style: bold; margin-left: 0; margin-right: 0; margin-bottom: 0; -unity-text-align: middle-center; white-space: normal; color: rgb(226, 1, 5); -unity-text-outline-width: 1px; -unity-text-outline-color: rgb(0, 0, 0); text-shadow: 2px 5px 3px rgb(0, 0, 0);" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-direction: row; margin-right: 20px;">
+                <ui:Button text="PLAY AGAIN" display-tooltip-when-elided="true" name="Start-Button" class="unity-button final-button" />
+                <ui:Button text="EXIT TO MENU" display-tooltip-when-elided="true" name="Quit-Button" class="unity-button final-button" style="margin-right: 0;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+            <ui:VisualElement style="width: 40%; margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px; background-color: rgba(0, 0, 0, 0.75);">
+                <ui:VisualElement style="background-image: url(&apos;project://database/Packages/com.unity.collab-proxy/Editor/PlasticSCM/Assets/Images/d_expertbuhoshe.png?fileID=2800000&amp;guid=8325d4ef0a6eb3d43952aff8a06d9f45&amp;type=3#d_expertbuhoshe&apos;); -unity-background-scale-mode: scale-to-fit; flex-grow: 1;" />
+                <ui:VisualElement name="First-Items" style="flex-grow: 1;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="width: 60%; margin-bottom: 10px;">
+                <ui:VisualElement name="Second-Place" class="place-container" style="justify-content: space-between;">
+                    <ui:VisualElement name="Second-Icon" class="place-icon" />
+                    <ui:VisualElement name="Second-Items" class="place-items" />
+                </ui:VisualElement>
+                <ui:VisualElement name="Third-Place" class="place-container" style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="Third-Icon" class="place-icon" />
+                    <ui:VisualElement name="Third-Items" class="place-items" />
+                </ui:VisualElement>
+                <ui:VisualElement name="Fourth-Place" class="place-container" style="flex-grow: 1; flex-direction: row;">
+                    <ui:VisualElement name="Fourth-Icon" class="place-icon" />
+                    <ui:VisualElement name="Fourth-Items" class="place-items" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
