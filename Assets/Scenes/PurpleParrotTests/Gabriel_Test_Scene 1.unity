@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -224,10 +224,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1121182613394760751, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: DistanceApart
+      value: 120
+      objectReference: {fileID: 0}
     - target: {fileID: 1121182613830952574, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
       propertyPath: Minutes
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 1831125836570860741, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: m_PlayerPrefab
+      value: 
+      objectReference: {fileID: 3250911807961025809, guid: 8642ac5fd1e334613a438c2a11573cf5, type: 3}
     - target: {fileID: 3430062973120331862, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -272,6 +284,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+<<<<<<< HEAD
+=======
+    - target: {fileID: 4206242978843695156, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: orthographic size
+      value: 540
+      objectReference: {fileID: 0}
+    - target: {fileID: 5147701913855847209, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+>>>>>>> green/backup-ui
     - target: {fileID: 7466906755869850125, guid: 8df0d52605a2a63419bbc48dbb4b0c04, type: 3}
       propertyPath: m_Name
       value: GameLogicDriver

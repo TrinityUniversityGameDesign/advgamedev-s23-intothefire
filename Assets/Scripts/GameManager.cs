@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -19,6 +20,40 @@ public enum GameState
     SideEvent,
     EndScreen,
     Startup_New_Game
+}
+
+public enum GameEvents
+{
+    Meteor,
+    Spleef,
+    Miniboss,
+    Explore,
+    Showdown
+}
+
+// Maybe use this if you want to pass messages to players. You can also use the notif system for rooms,
+// though figuring out how to send that through from the rooms to the players may be tricky
+public static class GameManagerGlobalStatics
+{
+    public struct GameEvent
+    {
+        public readonly string Title;
+        public readonly string Text;
+
+        public GameEvent(string title, string text)
+        {
+            Title = title;
+            Text = text;
+        }
+    }
+    public static readonly Dictionary<GameEvents, GameEvent> Events = new Dictionary<GameEvents, GameEvent>
+    {
+        { GameEvents.Meteor, new GameEvent("Meteors!", "Avoid the rocks falling from the sky.") },
+        { GameEvents.Miniboss, new GameEvent("Rampant Mummy", "Damage the mummy!") },
+        { GameEvents.Spleef, new GameEvent("Spleef", "Keep moving! Avoid falling through the holes in the floor! Knock your enemies through them!") },
+        { GameEvents.Explore, new GameEvent("Out of the Frying Pan", "Explore the labyrinth, collect rewards. Beware the Minotaur") },
+        { GameEvents.Showdown, new GameEvent("Into the Fire", "Destroy your opponents, whatever means necessary.") }
+    };
 }
 
 public class GameManager : MonoBehaviour
@@ -47,13 +82,17 @@ public class GameManager : MonoBehaviour
     public List<GameObject> playableWeapons;
 
     Dictionary<int, int> playerCharacters = new Dictionary<int, int>() { {0, 0}, { 1, 0 }, { 2, 0 }, { 3, 0 } };
+    public List<CharacterData> characters;
     Dictionary<int, int> playerWeapons = new Dictionary<int, int>() { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 } };
+    public List<WeaponData> weapons;
     public int LastJoinedPlayer = 0;
 
     [SerializeField]
     private int minPlayerCount = 1;
 
     public GameObject lobbyUI;
+    
+    public GameEvents CurrentEvent;
     #endregion
 
     #region Private Fields
@@ -217,7 +256,8 @@ public class GameManager : MonoBehaviour
         {
             EvtCtrl.transform.position = new Vector3((LabyrinthSize / 2) * DistanceApart, 90, (LabyrinthSize / 2) * DistanceApart);
         }
-        
+        //characters = Resources.LoadAll<CharacterData>("Characters").ToList();
+        //weapons = Resources.LoadAll<WeaponData>("Weapons").ToList();
     }
 
     private void Start()
@@ -427,10 +467,14 @@ public class GameManager : MonoBehaviour
         {
             if (pair.Key < Instance.players.Count)
             {
+<<<<<<< HEAD
                 Instantiate(Instance.playableCharacters[pair.Value], Instance.players[pair.Key].transform);
                 Outline temp = Instance.players[pair.Key].gameObject.AddComponent<Outline>();
                 temp.OutlineColor = colors[pair.Key];
                 temp.OutlineWidth = 8;
+=======
+                Instantiate(Instance.characters[pair.Value].gameObject, Instance.players[pair.Key].transform);
+>>>>>>> green/backup-ui
             }
         }
 
@@ -438,6 +482,9 @@ public class GameManager : MonoBehaviour
         {
             if(pair.Key < Instance.players.Count)
             {
+                //Debug.Log("Generating a: " + weapons[pair.Value]);
+                Instance.players[pair.Key].gameObject.GetComponent<JacksonCharacterMovement>().AssignWeapon(weapons[pair.Value].Create());
+                return;
                 //player.gameObject.GetComponent<JacksonCharacterMovement>().WeaponAssignFunction;
                 //Call the weapon function in the player @Jackson TODO
                 if(pair.Value == 0)
@@ -499,13 +546,18 @@ public class GameManager : MonoBehaviour
         Instance.LastJoinedPlayer = newPlayer.playerIndex;
         newPlayer.gameObject.name = ("Player" + newPlayer.playerIndex);
         newPlayer.gameObject.GetComponent<PlayerData>().PlayerIndex = newPlayer.playerIndex;
+        newPlayer.gameObject.GetComponent<PlayerData>().playerColor = colors[newPlayer.playerIndex];
         Instance.players.Add(newPlayer.gameObject);
 
         GameObject newUI = Instantiate(lobbyUI, GameObject.Find("PlayerLobby" + newPlayer.playerIndex + "UI").transform);
         newUI.name = "Player" + newPlayer.playerIndex + "Canvas";
+<<<<<<< HEAD
         newUI.transform.GetChild(1).GetComponent<UnityEngine.UI.Outline>().effectColor = colors[newPlayer.playerIndex];
+=======
+        newUI.transform.GetComponentInChildren<Outline>().effectColor = colors[newPlayer.playerIndex];
+>>>>>>> green/backup-ui
 
-        newPlayer.GetComponent<PlayerInput>().uiInputModule = newUI.transform.GetChild(0).GetComponent<InputSystemUIInputModule>();
+        newPlayer.GetComponent<PlayerInput>().uiInputModule = newUI.transform.GetComponentInChildren<InputSystemUIInputModule>();
 
         Instance.PlayerJoined.Invoke();
     }
