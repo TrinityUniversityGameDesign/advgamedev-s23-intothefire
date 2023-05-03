@@ -16,6 +16,7 @@ public class Hammer : Weapon
         specialDuration = 10000;
         specialTimer = 0;
         specialKnockback = 80;
+        specialDamage = 30;
         lightDamage = 20;
         lightSpeed = 0.8f;
         lightKnockback = 30;

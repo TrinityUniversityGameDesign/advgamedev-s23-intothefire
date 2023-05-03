@@ -16,6 +16,7 @@ public class Scythe : Weapon
         description = "Nice and edgy";
         specialDuration = 400;
         specialTimer = 0;
+        specialDamage = 18;
         specialKnockback = 60;
         lightDamage = 12;
         lightSpeed = 1.0f;

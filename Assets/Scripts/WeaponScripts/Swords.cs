@@ -14,6 +14,7 @@ public class Swords : Weapon
         description = "Basic sword, pretty fast, with a dash slash to move around";
         specialDuration = 25;
         specialTimer = 0;
+        specialDamage = 15;
         specialKnockback = 60;
         lightDamage = 10;
         lightSpeed = 1.1f;
