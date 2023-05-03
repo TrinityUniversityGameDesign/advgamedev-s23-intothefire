@@ -102,16 +102,14 @@ public class MiniBossAi : MonoBehaviour
     }
 
     private IEnumerator PerformStompAttack()
-    {
-        Debug.Log("Stomp Attack Triggered");
+    { 
         stomp.SetActive(true);
         canAttack = false;
         return AttackCooldown(5);
     }
 
     private IEnumerator PerformJumpAttack()
-    {
-        
+    {  
         canAttack = false;
         Debug.Log("Jump Attack Triggered");
         return AttackCooldown(4);
@@ -121,7 +119,6 @@ public class MiniBossAi : MonoBehaviour
     {
         charge.SetActive(true);
         canAttack = false;
-        Debug.Log("Charge Triggered");
         RaycastHit hit;
         Physics.Raycast(new Ray(transform.position, transform.forward * 100), out hit);
 
